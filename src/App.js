@@ -1,25 +1,35 @@
-import logo from './logo.svg';
+import React, { Component } from 'react';
+
 import './App.css';
+
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+
+import 'firebase/auth'; // needed??
+
+import { useCollection} from 'react-firebase-hooks/firestore';
+
+firebase.initializeApp ({
+  apiKey: "AIzaSyBbsQt-_FlVo9OGBIonHrk0ij0U55IRTy8",
+  authDomain: "kashbuddy-4aeb1.firebaseapp.com",
+  projectId: "kashbuddy-4aeb1",
+  storageBucket: "kashbuddy-4aeb1.appspot.com",
+  messagingSenderId: "221935808539",
+  appId: "1:221935808539:web:b1e397adb2b599102888be",
+  measurementId: "G-8JJH5VV6NM"
+})
+
+const firestore = firebase.firestore();
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+
       </header>
     </div>
   );
 }
+
 
 export default App;
