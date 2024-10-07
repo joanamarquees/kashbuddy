@@ -5,24 +5,26 @@ import { useGetUserInfo } from './useGetUserInfo';
 /**
  * Add docs to the expenses colection on the database (firebase)
  */
-export const useAddExpense = () => {
+export const useAddTransaction = () => {
 
-  const expensesCollection = collection(db, 'expenses');
+  const transactionsCollection = collection(db, 'transactions');
   const { userId } = useGetUserInfo();
 
-  const addExpense = async ({
+  const addTransaction = async ({
     description,
     amount,
     category,
+    transactionType,
   } ) => {
-    await addDoc(expensesCollection, { // choose what we want to add to our collection
+    await addDoc(transactionsCollection, { // choose what we want to add to our collection
       userId, // TODO: change this to 'auth.currentUser.uid
       description, // description of the transaction
       amount,
       category, // category of the transaction
+      transactionType, // type of transaction (income or expense)
       createdAt: serverTimestamp(), // date of the transaction
     });
   };
 
-  return { addExpense };
+  return { addTransaction };
 }

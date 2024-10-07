@@ -1,7 +1,13 @@
 import React from 'react';
 import { Drawer, Button } from '@material-ui/core';
 
-const DrawerForm = ({ isOpen, onClose, title, formClassName, children }) => {
+const DrawerForm = ({
+  isOpen,
+  onClose,
+  title,
+  formClassName,
+  children
+}) => {
   return (
     <div>
       <Button onClick={onClose}>Close</Button>
