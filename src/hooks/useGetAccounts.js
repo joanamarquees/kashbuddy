@@ -16,7 +16,7 @@ export const useGetAccounts = () => {
       const queryAccounts = query(
         accountsCollection,
         where("userId", "==", userId),
-        orderBy("amount", "desc")// TODO: check if the desc is correctly set
+        orderBy("createdAt", "desc")// TODO: check if the desc is correctly set
       );
 
     unsubscribe = onSnapshot(queryAccounts, (snapshot) => {

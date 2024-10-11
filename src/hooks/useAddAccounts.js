@@ -1,4 +1,4 @@
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '../config/firebase-config';
 import { useGetUserInfo } from './useGetUserInfo';
 
@@ -18,6 +18,7 @@ export const useAddAccount = () => {
       userId, // TODO: change this to 'auth.currentUser.uid
       bankName, 
       amount,
+      createdAt: serverTimestamp(), // date of the transaction
     });
   };
 

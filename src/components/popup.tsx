@@ -2,13 +2,13 @@ import React, { Fragment, useState }  from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { IoCloseOutline } from 'react-icons/io5';
 
-// import { useUpdateAmount } from '../hooks/useUpdateAmount';
+import { useUpdateAmount } from '../hooks/useUpdateAmount';
 import { Button } from './button.tsx'
 import { Input } from './input.tsx'
 
 export function Popup({bankName, amount}) {
   let [isOpen, setIsOpen] = useState(false)
-  // const { updateAmount } = useUpdateAmount();
+  const { updateAmount } = useUpdateAmount();
   const [newAmount, setNewAmount] = useState(amount);
 
   function closeModal() {
@@ -22,6 +22,14 @@ export function Popup({bankName, amount}) {
   function handleAmountInput(amount) {
     const newAmount = parseFloat(amount.replace(/\D/g, '').replace(/^0+/, '')) || 0;
     setNewAmount(newAmount);
+  }
+
+  async function handleUpdateAmount() {
+    await updateAmount({
+      bankName,
+      "amount": newAmount,
+    });
+    closeModal();
   }
 
 
@@ -83,7 +91,7 @@ export function Popup({bankName, amount}) {
                       <Button variant="secondary">
                         Delete
                       </Button>
-                      <Button onClick={closeModal}>
+                      <Button onClick={handleUpdateAmount}>
                         Save
                       </Button>
                     </div>
