@@ -3,12 +3,14 @@ import { Dialog, Transition } from '@headlessui/react'
 import { IoCloseOutline } from 'react-icons/io5';
 
 import { useUpdateAmount } from '../hooks/useUpdateAmount';
+import { useDeleteAccount } from '../hooks/useDeleteAccount';
 import { Button } from './button.tsx'
 import { Input } from './input.tsx'
 
 export function Popup({bankName, amount}) {
   let [isOpen, setIsOpen] = useState(false)
   const { updateAmount } = useUpdateAmount();
+  const { deleteAccount } = useDeleteAccount();
   const [newAmount, setNewAmount] = useState(amount);
 
   function closeModal() {
@@ -29,6 +31,11 @@ export function Popup({bankName, amount}) {
       bankName,
       "amount": newAmount,
     });
+    closeModal();
+  }
+
+  async function handleDeleteAccount() {
+    await deleteAccount({bankName});
     closeModal();
   }
 
@@ -88,8 +95,8 @@ export function Popup({bankName, amount}) {
                       </div>
                     </div>
                     <div className="flex gap-2">
-                      <Button variant="secondary">
-                        Delete
+                      <Button variant="secondary" onClick={handleDeleteAccount}>
+                        Delete account
                       </Button>
                       <Button onClick={handleUpdateAmount}>
                         Save
