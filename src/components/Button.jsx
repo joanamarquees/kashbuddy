@@ -1,13 +1,12 @@
-import React from 'react'
-import { forwardRef, type ComponentProps } from 'react'
-import { tv, type VariantProps } from 'tailwind-variants'
+import React, { forwardRef }  from 'react'
+import { tv } from 'tailwind-variants'
 
 const button = tv({
   base: 'flex items-center justify-center gap-2 rounded-full font-sans font-semibold',
 
   variants: {
     variant: {
-      primary:'bg-pink-500 hover:bg-pink-400 ring-pink-500',
+      primary:'bg-indigo-400 hover:bg-indigo-300 ring-indigo-400',
       secondary: 'bg-gray-500 hover:bg-gray-400 ring-gray-500',
     },
 
@@ -23,9 +22,7 @@ const button = tv({
   },
 })
 
-type ButtonProps = ComponentProps<'button'> & VariantProps<typeof button>
-
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+export const Button = forwardRef(
   ({ className, variant, size, ...props }, ref) => {
     return (
       <button

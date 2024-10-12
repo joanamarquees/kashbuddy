@@ -1,7 +1,7 @@
 import React, { useState }  from 'react'
-import { Input } from './Input.tsx'
-import { Button } from './Button.tsx'
-import { setDrawerState } from './Drawer.tsx'
+import { Input } from './Input.jsx'
+import { Button } from './Button.jsx'
+import { setDrawerState } from './Drawer.jsx'
 import { useAddAccount } from '../hooks/useAddAccounts.js'
 
 export function NewAccountForms() {
