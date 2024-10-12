@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 
 import { useAddTransaction } from '../hooks/useAddTransaction.js'
 
-import { Input } from './Input.tsx'
-import { Button } from './Button.tsx'
-import { setDrawerState } from './Drawer.tsx'
+import { Input } from './Input.jsx'
+import { Button } from './Button.jsx'
+import { setDrawerState } from './Drawer.jsx'
 import { Dropdown } from './TransactionType.jsx'
 import { TransactionSwitch } from './TransactionSwitch.jsx'
 
@@ -18,6 +18,10 @@ export function NewTransactionForms() {
   });
 
   const [error, setError] = useState('');
+
+  const handleTransactionTypeChange = (e) => {
+    setTransactionData({ ...transactionData, transactionType: e.target.value });
+  };
 
   const handleAddTransaction = async () => {
     if (!transactionData.description || !transactionData.amount
@@ -42,7 +46,7 @@ export function NewTransactionForms() {
       <h1 className="mb-4 text-center font-semibold font-sans text-xl">Add a new transaction</h1>
 
       {/* Transaction type switch */}
-      <TransactionSwitch transactionData={transactionData} setTransactionData={setTransactionData} />
+      <TransactionSwitch type={transactionData.transactionType} handleChange={handleTransactionTypeChange} />
 
       {/* Transaction description */}
       <Input

@@ -4,8 +4,8 @@ import { IoCloseOutline } from 'react-icons/io5';
 
 import { useUpdateAmount } from '../hooks/useUpdateAmount.js';
 import { useDeleteAccount } from '../hooks/useDeleteAccount.js';
-import { Button } from './Button.tsx'
-import { Input } from './Input.tsx'
+import { Button } from './Button.jsx'
+import { Input } from './Input.jsx'
 
 export function Popup({bankName, amount}) {
   let [isOpen, setIsOpen] = useState(false)
