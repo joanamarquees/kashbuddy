@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { MdOutlineLocalGroceryStore } from "react-icons/md";
 import { BsCashCoin } from "react-icons/bs";
 
@@ -42,7 +42,7 @@ export const TransactionSwitch = ({ transactionData, setTransactionData }) => {
 
       {/* Slider for active tab */}
       <div
-        className={`absolute w-1/2 h-12 bg-pink-500 rounded-full transition-all duration-300 ease-in-out z-0 ${
+        className={`absolute w-[49%] h-12 ml-1 bg-pink-500 rounded-full transition-all duration-300 ease-in-out z-0 ${
           transactionData.transactionType === 'income' ? 'translate-x-full' : ''
         }`}
       />

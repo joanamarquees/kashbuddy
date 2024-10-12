@@ -1,9 +1,8 @@
-import React from 'react'
-import { Input } from './input.tsx'
-import { Button } from './button.tsx'
-import { setDrawerState } from './drawer.tsx'
+import React, { useState }  from 'react'
+import { Input } from './Input.tsx'
+import { Button } from './Button.tsx'
+import { setDrawerState } from './Drawer.tsx'
 import { useAddAccount } from '../hooks/useAddAccounts.js'
-import { useState } from 'react'
 
 export function NewAccountForms() {
   const { addAccount } = useAddAccount();
@@ -34,7 +33,6 @@ export function NewAccountForms() {
       <p className="ml-2 font-medium"> Bank name </p>
       <Input
         id='bankName'
-        autoFocus
         placeholder='Insert your bank name...'
         value={accountData.bankName}
         onChange={(e) => setAccountData({ ...accountData, bankName: e.target.value })}

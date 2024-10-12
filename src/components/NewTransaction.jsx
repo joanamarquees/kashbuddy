@@ -1,13 +1,12 @@
-import React from 'react'
-import { useState } from 'react'
+import React, { useState } from 'react'
 
 import { useAddTransaction } from '../hooks/useAddTransaction.js'
 
-import { Input } from './input.tsx'
-import { Button } from './button.tsx'
-import { setDrawerState } from './drawer.tsx'
-import { Dropdown } from './transaction-type.tsx'
-import { TransactionSwitch } from './transaction-switch.tsx'
+import { Input } from './Input.tsx'
+import { Button } from './Button.tsx'
+import { setDrawerState } from './Drawer.tsx'
+import { Dropdown } from './TransactionType.jsx'
+import { TransactionSwitch } from './TransactionSwitch.jsx'
 
 export function NewTransactionForms() {
   const { addTransaction } = useAddTransaction();
@@ -48,7 +47,6 @@ export function NewTransactionForms() {
       {/* Transaction description */}
       <Input
         id='description'
-        autoFocus
         placeholder='transaction description'
         value={transactionData.description}
         onChange={(e) => setTransactionData({ ...transactionData, description: e.target.value })}

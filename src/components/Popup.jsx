@@ -2,10 +2,10 @@ import React, { Fragment, useState }  from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { IoCloseOutline } from 'react-icons/io5';
 
-import { useUpdateAmount } from '../hooks/useUpdateAmount';
-import { useDeleteAccount } from '../hooks/useDeleteAccount';
-import { Button } from './button.tsx'
-import { Input } from './input.tsx'
+import { useUpdateAmount } from '../hooks/useUpdateAmount.js';
+import { useDeleteAccount } from '../hooks/useDeleteAccount.js';
+import { Button } from './Button.tsx'
+import { Input } from './Input.tsx'
 
 export function Popup({bankName, amount}) {
   let [isOpen, setIsOpen] = useState(false)
