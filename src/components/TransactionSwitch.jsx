@@ -38,7 +38,7 @@ export const TransactionSwitch = ({ type, handleChange }) => {
 
       {/* Slider for active tab */}
       <div
-        className={`absolute w-[49%] h-12 ml-1 bg-indigo-400 rounded-full transition-all duration-300 ease-in-out z-0 ${
+        className={`absolute w-[49%] h-12 ml-[1%] bg-indigo-400 rounded-full transition-all duration-300 ease-in-out z-0 ${
           type === 'income' ? 'translate-x-full' : ''
         }`}
       />

@@ -8,13 +8,13 @@ import { setDrawerState } from './Drawer.jsx'
 import { Dropdown } from './TransactionType.jsx'
 import { TransactionSwitch } from './TransactionSwitch.jsx'
 
-export function NewTransactionForms() {
+export function NewTransactionForms({type}) {
   const { addTransaction } = useAddTransaction();
   const [transactionData, setTransactionData] = useState({
     description: '',
     amount: '',
     category: '',
-    transactionType: 'expense',
+    transactionType: type,
   });
 
   const [error, setError] = useState('');
