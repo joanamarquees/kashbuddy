@@ -93,7 +93,7 @@ export function TransactionPopup({transaction}) {
                   <button className="ml-1 mt-1">
                     <IoCloseOutline size={30} onClick={closeModal}/>
                   </button>
-                  <div className="px-4 pb-4 sm:p-6 sm:pb-4 flex flex-col justify-center items-center align-center text-zinc-50">
+                  <div className="px-4 pb-4 sm:p-6 sm:pb-4 flex flex-col justify-center items-center align-center">
                     <div className="sm:flex sm:items-center">
                       <div className="modal-box space-y-4 mb-6">
     

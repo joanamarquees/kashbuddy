@@ -30,7 +30,7 @@ export function FinancialStats() {
   if (chartData.length === 0) {
     return (
       <div className="mx-auto w-full md:w-[353px] h-60 mb-5 items-center">
-        <p className="text-zinc-50 text-center align-middle"> You have no expenses this month! </p>
+        <p className="text-center align-middle"> You have no expenses this month! </p>
       </div>
     );
   }
