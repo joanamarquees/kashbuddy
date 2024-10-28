@@ -4,7 +4,7 @@ import { db } from '../config/firebase-config';
 /**
  * Update the amount value on a given account on the database (firebase)
  */
-export const useUpdateAmount = () => {
+export const useUpdateAccount = () => {
 
   const updateAmount = async ({bankName, amount}) => {
     const accountsCollection = collection(db, 'accounts');
