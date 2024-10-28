@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Drawer, setDrawerState } from './Drawer';
 import { NewTransactionForms } from './NewTransaction';
+import { TransactionPopup } from './TransactionPopup.jsx';
 
 import { useGetTransactions } from '../hooks/useGetTransactions';
 import { IoAddCircle } from 'react-icons/io5';
@@ -22,7 +23,7 @@ export function DisplayTransactions({type}){
       <>
         <Drawer views={{"New-transaction": <NewTransactionForms type={type}/>}}/>
         <div
-          className="container mx-auto w-full h-24 my-3 flex items-center border-dashed border-[1.5px] border-white rounded-lg cursor-pointer"
+          className="container mx-auto w-full h-24 my-3 flex items-center border-dashed border-[1.5px] border-white rounded-xl cursor-pointer"
           onClick={() => setDrawerState("New-transaction")}
         >
           <IoAddCircle
@@ -42,16 +43,21 @@ export function DisplayTransactions({type}){
     <>
       <ul> 
         {transactions.map((transaction) => {
-          const { description, amount, transactionType } = transaction;
+          const { id, description, amount, transactionType } = transaction;
 
           if (transactionType === type){
             return (
-              <li className="container mx-auto w-full h-16 my-3 flex align-middle border-dashed border-[1.5px] border-white rounded-lg">
-                <p className="pl-3 mx-auto ml-0 content-center"> {description} </p>
-                <p className="pr-3 mx-auto mr-0 content-center"> {amount}€</p> 
-              </li>
+              <TransactionPopup 
+                key={id}
+                transaction={transaction}
+                description={description}
+                amount={amount}
+                category={transaction.category}
+                transactionType={transactionType}
+              />
             )
           }
+          return null;
         })}
       </ul>
     </>

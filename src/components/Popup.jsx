@@ -2,14 +2,14 @@ import React, { Fragment, useState }  from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { IoCloseOutline } from 'react-icons/io5';
 
-import { useUpdateAmount } from '../hooks/useUpdateAmount.js';
+import { useUpdateAccount } from '../hooks/useUpdateAccount.js';
 import { useDeleteAccount } from '../hooks/useDeleteAccount.js';
 import { Button } from './Button.jsx'
 import { Input } from './Input.jsx'
 
 export function Popup({bankName, amount}) {
   let [isOpen, setIsOpen] = useState(false)
-  const { updateAmount } = useUpdateAmount();
+  const { updateAmount } = useUpdateAccount();
   const { deleteAccount } = useDeleteAccount();
   const [newAmount, setNewAmount] = useState(amount);
 
@@ -45,7 +45,7 @@ export function Popup({bankName, amount}) {
       <button
         type="button"
         onClick={openModal}
-        className="container mx-auto w-5/6 h-16 align-middle flex border-dashed border-[1.5px]  border-white rounded-lg">
+        className="container mx-auto w-5/6 h-16 align-middle flex border-dashed border-[1.5px]  border-white rounded-xl">
           <p className="pl-3 mx-auto ml-0  content-center"> {bankName} </p>
           <p className="pr-3 mx-auto mr-0  content-center"> {amount}€ </p> 
       </button>

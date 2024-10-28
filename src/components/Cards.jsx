@@ -1,10 +1,30 @@
 import React from 'react';
 
+import { useGetAccounts } from '../hooks/useGetAccounts';
 import { IoMdArrowRoundBack } from 'react-icons/io';
+import { useGetTransactions } from '../hooks/useGetTransactions';
+// import dayjs from 'dayjs';
+// import isoWeek from 'dayjs/plugin/isoWeek';
+
+// dayjs.extend(isoWeek);
 
 export const FinancialCard = () => {
+  const { accounts } = useGetAccounts();
+  const { transactions } = useGetTransactions();
+  // const currentMonth = dayjs().month();
+
+  const accountsTotal = accounts.reduce((acc, account) => acc + parseFloat(account.amount), 0);
+  //TODO: display only those transactions that are from the current month, and change when changing in the Calendar
+  const expenses = transactions.filter(transaction => transaction.transactionType === 'expense'); // && transaction.createdAt.toDate().getMonth() === currentMonth);
+  const totalExpenses = expenses.reduce((exp, transaction) => exp + parseFloat(transaction.amount), 0);
+  
+  const incomes = transactions.filter(transaction => transaction.transactionType === 'income');
+  const totalIncomes = incomes.reduce((inc, transaction) => inc + parseFloat(transaction.amount), 0);
+  
+  const totalNetWorth = accountsTotal + totalIncomes - totalExpenses;
+
   return (
-    <div className="relative mx-auto w-[353px] h-60 mb-5 items-center">
+    <div className="relative mx-auto w-full md:w-[353px] h-60 mb-5 items-center">
       
       {/* Background Layer 1 */}
       <div className="absolute w-[90%] h-56 top-0 left-4 bg-slate-700 rounded-[22px]"></div>
@@ -15,7 +35,7 @@ export const FinancialCard = () => {
       {/* Total Balance Section */}
       <div className="absolute top-14 left-0 right-0 flex flex-col items-center">
         <h2 className="text-zinc-100 font-sans font-semibold text-lg">Total Balance</h2>
-        <p className="text-zinc-100 font-sans font-extrabold text-4xl">5,000 €</p>
+        <p className="text-zinc-100 font-sans font-extrabold text-4xl"> {totalNetWorth} €</p>
       </div>
 
       {/* Income and Expenses Section */}
@@ -33,7 +53,7 @@ export const FinancialCard = () => {
           {/* Expenses Text */}
           <div>
             <p className="text-zinc-100 text-xs font-semibold"> Expenses </p>
-            <p className="text-zinc-100 text-sm font-extrabold"> 500 €</p>
+            <p className="text-zinc-100 text-sm font-extrabold"> -{totalExpenses} €</p>
           </div>
         </div>
 
@@ -50,7 +70,7 @@ export const FinancialCard = () => {
           {/* Income Text */}
           <div>
             <p className="text-zinc-100 text-xs font-semibold"> Income </p>
-            <p className="text-zinc-100 text-sm font-extrabold"> 630 €</p>
+            <p className="text-zinc-100 text-sm font-extrabold"> +{totalIncomes} €</p>
           </div>
         </div>
       </div>

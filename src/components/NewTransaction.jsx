@@ -5,7 +5,7 @@ import { useAddTransaction } from '../hooks/useAddTransaction.js'
 import { Input } from './Input.jsx'
 import { Button } from './Button.jsx'
 import { setDrawerState } from './Drawer.jsx'
-import { Dropdown } from './TransactionType.jsx'
+import { Dropdown } from './TransactionCategory.jsx'
 import { TransactionSwitch } from './TransactionSwitch.jsx'
 
 export function NewTransactionForms({type}) {
@@ -68,7 +68,6 @@ export function NewTransactionForms({type}) {
         />
         <Dropdown transactionData={transactionData} setTransactionData={setTransactionData}/>
       </div>
-
       <div className="flex gap-2 justify-center my-4">
         <Button variant="secondary">
           Cancel

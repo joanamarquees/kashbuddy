@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // to change from login to home page
+import ReactCardFlip from 'react-card-flip';
 
 import { Drawer, setDrawerState } from "../../components/Drawer.jsx";
 import { NewTransactionForms } from "../../components/NewTransaction.jsx";
@@ -7,15 +8,22 @@ import { Calendar } from "../../components/Calendar.jsx";
 import { TransactionSwitch } from "../../components/TransactionSwitch.jsx";
 import { FinancialCard } from "../../components/Cards.jsx";
 import { DisplayTransactions } from "../../components/DisplayTransactions.jsx";
+import { FinancialStats } from "../../components/FinancialStats.jsx";
+import { DisplayCategories } from "../../components/DisplayCategories.jsx";
 
 import { IoAddCircle, IoCardOutline, IoSettingsOutline  } from "react-icons/io5";
 
 export function Home() {
   const navigate = useNavigate();
   const [transactionType, setTransactionType] = useState('expense');
+  const [flip, setFlip]  = useState(false);
 
   const handleTransactionTypeChange = (e) => {
     setTransactionType(e.target.value);
+  };
+
+  const flipCard = () => {
+    setFlip(!flip);
   };
 
   return (
@@ -38,16 +46,32 @@ export function Home() {
         />
       </div>
 
-      <div className="w-[353px] md:w-[50%] mx-auto place-items-center">
-        {/* Netwoth card */}
-        <FinancialCard />
+      <div
+        className="w-[353px] md:w-[50%] mx-auto place-items-center"
+      >
+        <ReactCardFlip flipDirection='horizontal' isFlipped={flip}>
+
+          <div className="cursor-pointer" onClick={flipCard}>
+            <FinancialCard />
+          </div>
+
+          <div className="cursor-pointer" onClick={flipCard}>
+            <FinancialStats />
+          </div>
+
+        </ReactCardFlip>
 
         {/* Transaction switch */}
-        <TransactionSwitch type={transactionType} handleChange={handleTransactionTypeChange} />
+        <TransactionSwitch type={transactionType} handleChange={handleTransactionTypeChange} />         
 
-        {/* Transactions */}
-        <DisplayTransactions type={transactionType} />
-      </div>
+        {/* If flip is true display categories, else display transactions */}
+        { flip ?
+          <DisplayCategories type={transactionType}/>
+          :
+          <DisplayTransactions type={transactionType}/>
+        }
+                   
+        </div>
 
       {/* Footer */}
       <Drawer views={{"New-transaction": <NewTransactionForms />}}/>
