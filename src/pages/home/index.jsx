@@ -60,6 +60,7 @@ export function Home() {
         <IoSettingsOutline
           size={35}
           className='text-indigo-400 cursor-pointer mx-2'
+          onClick={() => navigate("/settings")}
         />
       </div>
 

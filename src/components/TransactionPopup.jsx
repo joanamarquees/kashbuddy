@@ -49,7 +49,7 @@ export function TransactionPopup({transaction}) {
       <button
         type="button"
         onClick={openModal}
-        className="container mx-auto h-20 my-3 flex items-center shadow-[0px_-2px_4px_rgba(0,0,0,0.3),0px_2px_4px_rgba(0,0,0,0.3)] rounded-xl cursor-pointer"
+        className="container mx-auto h-20 my-3 flex items-center shadow-[0px_-2px_4px_rgba(0,0,0,0.5),0px_2px_4px_rgba(0,0,0,0.5)] rounded-xl cursor-pointer"
       > 
         {/* Render the icon with its color */}
         {IconComponent && (
