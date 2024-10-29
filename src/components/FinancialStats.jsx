@@ -1,12 +1,9 @@
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Cell } from 'recharts';
 
-import { useGetTransactions } from '../hooks/useGetTransactions';
 import { getCategoryColor } from '../utils/categories';
 
-export function FinancialStats() {
-  const { transactions } = useGetTransactions();
-
+export function FinancialStats({transactions}) {
   // Calculate total amount for each category
   const categoryTotals = transactions.reduce((acc, transaction) => {
     if (transaction.transactionType === 'income') {

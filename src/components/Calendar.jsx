@@ -1,20 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { SlArrowLeft } from 'react-icons/sl';
-import dayjs from 'dayjs';
-import isoWeek from 'dayjs/plugin/isoWeek';
 
-dayjs.extend(isoWeek);
-
-export const Calendar = () => {
-  const [currentDate, setCurrentMonth] = useState(dayjs());
+export const Calendar = ({currentDate, setCurrentDate}) => {
 
   const previousMonth = () => {
-    setCurrentMonth(currentDate.subtract(1, 'month'));
+    setCurrentDate(currentDate.subtract(1, 'month'));
   };
 
   const nextMonth = () => {
-    setCurrentMonth(currentDate.add(1, 'month'));
+    setCurrentDate(currentDate.add(1, 'month'));
   };
 
 
@@ -28,8 +23,9 @@ export const Calendar = () => {
       />
 
       {/* Month Text */}
-      <div className="text-center font-sans font-semibold text-sm text-zinc-100">
-        {currentDate.format('MMMM')}
+      <div className="text-center font-sans font-semibold">
+        <p className="text-sm text-zinc-100">{currentDate.format('MMMM')}</p>
+        <p className="text-xs text-zinc-400">{currentDate.format('YYYY')}</p>
       </div>
 
       {/* Right Arrow */}

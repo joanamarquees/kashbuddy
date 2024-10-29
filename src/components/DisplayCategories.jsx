@@ -1,14 +1,12 @@
 import React from 'react';
 
-import { useGetTransactions } from '../hooks/useGetTransactions';
 import { Drawer, setDrawerState } from './Drawer';
 import { NewTransactionForms } from './NewTransaction';
 import { getCategoryColor } from '../utils/categories';
 
 import { IoAddCircle } from 'react-icons/io5';
 
-export function DisplayCategories({type}) {
-  const { transactions } = useGetTransactions();
+export function DisplayCategories({type, transactions}) {
 
   // Calculate total amount for each category
   const categoryTotals = transactions.reduce((acc, transaction) => {

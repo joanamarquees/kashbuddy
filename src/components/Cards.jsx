@@ -2,15 +2,13 @@ import React from 'react';
 
 import { useGetAccounts } from '../hooks/useGetAccounts';
 import { IoMdArrowRoundBack } from 'react-icons/io';
-import { useGetTransactions } from '../hooks/useGetTransactions';
 // import dayjs from 'dayjs';
 // import isoWeek from 'dayjs/plugin/isoWeek';
 
 // dayjs.extend(isoWeek);
 
-export const FinancialCard = () => {
+export const FinancialCard = ({transactions}) => {
   const { accounts } = useGetAccounts();
-  const { transactions } = useGetTransactions();
   // const currentMonth = dayjs().month();
 
   const accountsTotal = accounts.reduce((acc, account) => acc + parseFloat(account.amount), 0);

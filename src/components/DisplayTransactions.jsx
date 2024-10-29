@@ -4,12 +4,9 @@ import { Drawer, setDrawerState } from './Drawer';
 import { NewTransactionForms } from './NewTransaction';
 import { TransactionPopup } from './TransactionPopup.jsx';
 
-import { useGetTransactions } from '../hooks/useGetTransactions';
 import { IoAddCircle } from 'react-icons/io5';
 
-export function DisplayTransactions({type}){
-  const { transactions } = useGetTransactions();
-  
+export function DisplayTransactions({type, transactions}){  
 
   const total = transactions.reduce((counter, transaction) => {
     if (transaction.transactionType === type){

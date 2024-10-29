@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // to change from login to home page
 import ReactCardFlip from 'react-card-flip';
 
@@ -10,13 +10,22 @@ import { FinancialCard } from "../../components/Cards.jsx";
 import { DisplayTransactions } from "../../components/DisplayTransactions.jsx";
 import { FinancialStats } from "../../components/FinancialStats.jsx";
 import { DisplayCategories } from "../../components/DisplayCategories.jsx";
+import { useGetTransactions } from "../../hooks/useGetTransactions.js";
 
 import { IoAddCircle, IoCardOutline, IoSettingsOutline  } from "react-icons/io5";
 
+import dayjs from 'dayjs';
+import isoWeek from 'dayjs/plugin/isoWeek';
+
+dayjs.extend(isoWeek);
+
 export function Home() {
   const navigate = useNavigate();
-  const [transactionType, setTransactionType] = useState('expense');
+  const { transactions } = useGetTransactions();
+  const [filteredTransactions, setFilteredTransactions] = useState(transactions);
   const [flip, setFlip]  = useState(false);
+  const [currentDate, setCurrentDate] = useState(dayjs());
+  const [transactionType, setTransactionType] = useState('expense');
 
   const handleTransactionTypeChange = (e) => {
     setTransactionType(e.target.value);
@@ -26,18 +35,26 @@ export function Home() {
     setFlip(!flip);
   };
 
+  useEffect(() => {
+    const filtered = transactions.filter((transaction) => {
+      return dayjs(transaction.date).isSame(currentDate, 'month');
+    });
+
+    setFilteredTransactions(filtered);
+  }, [currentDate, transactions]);
+
   return (
     <div className="container mx-auto px-4 h-full">
       {/* Header */}
       <div className="py-6 flex flex-row items-center justify-center gap-3 md:gap-52">
         <IoCardOutline
-          size={40}
+          size={40}transactions
           className='text-indigo-400 cursor-pointer mx-2'
           onClick={() => navigate("/accounts")}
         />
 
         {/* Month search */}
-        <Calendar />
+        <Calendar currentDate={currentDate} setCurrentDate={setCurrentDate}/>
 
         {/* Seatings */}
         <IoSettingsOutline
@@ -52,11 +69,11 @@ export function Home() {
         <ReactCardFlip flipDirection='horizontal' isFlipped={flip}>
 
           <div className="cursor-pointer" onClick={flipCard}>
-            <FinancialCard />
+            <FinancialCard transactions={filteredTransactions}/>
           </div>
 
           <div className="cursor-pointer" onClick={flipCard}>
-            <FinancialStats />
+            <FinancialStats transactions={filteredTransactions}/>
           </div>
 
         </ReactCardFlip>
@@ -66,9 +83,9 @@ export function Home() {
 
         {/* If flip is true display categories, else display transactions */}
         { flip ?
-          <DisplayCategories type={transactionType}/>
+          <DisplayCategories type={transactionType} transactions={filteredTransactions}/>
           :
-          <DisplayTransactions type={transactionType}/>
+          <DisplayTransactions type={transactionType} transactions={filteredTransactions}/>
         }
                    
         </div>
