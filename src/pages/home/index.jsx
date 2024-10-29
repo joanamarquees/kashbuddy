@@ -13,6 +13,8 @@ import { DisplayCategories } from "../../components/DisplayCategories.jsx";
 import { useGetTransactions } from "../../hooks/useGetTransactions.js";
 
 import { IoAddCircle, IoCardOutline, IoSettingsOutline  } from "react-icons/io5";
+import { PiBank } from "react-icons/pi";
+
 
 import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
@@ -47,8 +49,8 @@ export function Home() {
     <div className="container mx-auto px-4 h-full">
       {/* Header */}
       <div className="py-6 flex flex-row items-center justify-center gap-3 md:gap-52">
-        <IoCardOutline
-          size={40}transactions
+        <PiBank
+          size={35}
           className='text-indigo-400 cursor-pointer mx-2'
           onClick={() => navigate("/accounts")}
         />

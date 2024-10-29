@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { IoGrid, IoNotificationsOutline, IoLogOutOutline } from "react-icons/io5";
-import { PiBank } from "react-icons/pi";
 import { TbFaceId } from "react-icons/tb";
 
 export function Settings() {
@@ -29,17 +28,11 @@ export function Settings() {
 
       {/* Settings */}
 
-      {/* Bank accounts */}
-      <div className="container mx-auto h-14 my-3 flex items-center shadow-[0px_-2px_4px_rgba(0,0,0,0.5),0px_2px_4px_rgba(0,0,0,0.5)] rounded-full cursor-pointer">
-        <PiBank
-          size={25}
-          style={{ color: '#90a955', marginRight: '10px', marginLeft: '20px' }}
-        />
-        <p className="text-left text-base ml-3"> Accounts </p>
-      </div>
-
       {/* Categories */}
-      <div className="container mx-auto h-14 my-3 flex items-center shadow-[0px_-2px_4px_rgba(0,0,0,0.4),0px_2px_4px_rgba(0,0,0,0.4)] rounded-full cursor-pointer">
+      <div
+        className="container mx-auto h-14 my-3 flex items-center shadow-[0px_-2px_4px_rgba(0,0,0,0.4),0px_2px_4px_rgba(0,0,0,0.4)] rounded-full cursor-pointer"
+        onClick={() => navigate('/settings/categories')}
+      >
         <IoGrid
           size={25}
           style={{ color: 'purple', marginRight: '10px', marginLeft: '20px' }}

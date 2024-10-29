@@ -3,6 +3,7 @@ import { Auth } from './pages/auth/index';
 import { Home } from './pages/home/index';
 import { Accounts } from './pages/accounts/index';
 import { Settings } from './pages/settings/index';
+import { Categories } from './pages/settings/categories/index';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route path="home" element={<Home />} /> {/* Home page */}
           <Route path="accounts" element={<Accounts />} /> {/* Accounts  page */}
           <Route path="settings" element={<Settings />} />
+          <Route path="settings/categories" element={<Categories />} /> {/* Categories page */}
           {/* Add the forms page to add a new expense */}
         </Routes>
       </Router>
