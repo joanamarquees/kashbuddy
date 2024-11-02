@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { motion, useMotionValue, AnimatePresence } from "framer-motion";
+import React, { useState } from 'react';
+import { motion, useMotionValue, AnimatePresence } from 'framer-motion';
 
 export let setDrawerState;
 
@@ -12,7 +12,7 @@ export const Drawer = ({ views }) => {
     if (views[id] === undefined) id = null;
 
     //enable/disable scrolling of the page
-    document.body.style.overflow = id === null ? "auto" : "hidden";
+    document.body.style.overflow = id === null ? 'auto' : 'hidden';
     setContentId(id);
   };
 
@@ -22,24 +22,24 @@ export const Drawer = ({ views }) => {
         <>
           {/* black background  */}
           <motion.div
-            className="fixed inset-0 bg-black/80 h-screen w-full z-40"
+            className='fixed inset-0 bg-black/80 h-screen w-full z-40'
             onClick={() => setDrawerState(null)}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2, ease: "easeInOut" }}
+            transition={{ duration: 0.2, ease: 'easeInOut' }}
           />
 
           {/* drawer */}
           <motion.div
-            className="fixed -bottom-20 inset-x-0 mx-auto w-full min-h-50 bg-[#2c2d34] overflow-y-auto rounded-t-lg max-h-[calc(100%-10rem)] z-50"
+            className='fixed -bottom-20 inset-x-0 mx-auto w-full min-h-50 max-h-screen bg-[#2c2d34] overflow-y-auto rounded-t-lg z-50'
             initial={{ y: 336 }}
             animate={{ y: 0 }}
             exit={{ y: 500 }}
             transition={{ duration: 0.3 }}
             style={{ y: dragY }}
             layout
-            drag="y"
+            drag='y'
             dragConstraints={{
               top: 0,
               bottom: 0,
@@ -56,21 +56,21 @@ export const Drawer = ({ views }) => {
             }}
           >
             {/* drawer tip */}
-            <button className="my-3 mx-auto flex justify-center">
+            <button className='my-3 mx-auto flex justify-center'>
               <motion.div
-                className="h-2 w-14 cursor-grab touch-none bg-[#808188] active:cursor-grabbing rounded-lg"
-                key="drag-bar"
+                className='h-2 w-14 cursor-grab touch-none bg-[#808188] active:cursor-grabbing rounded-lg'
+                key='drag-bar'
                 layout
               />
             </button>
 
             {/* drawer content */}
             <motion.div
-              className="pb-[calc(6rem+env(safe-area-inset-bottom))]"
+              className='pb-[calc(6rem+env(safe-area-inset-bottom))]'
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               key={contentId}
-              layout="position"
+              layout='position'
             >
               {views[contentId]}
             </motion.div>

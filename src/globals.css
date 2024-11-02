@@ -56,3 +56,93 @@ body {
 	font-family: 'Nunito', sans-serif;
 	background-color: rgb(24 24 27);
 }
+
+/* Basic reset for all input, select, and textarea elements */
+input,
+select,
+textarea {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  outline: none;
+  box-sizing: border-box;
+  appearance: none;
+}
+
+/* Remove specific styles for checkboxes, radio buttons, and color picker */
+input[type="checkbox"],
+input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+input[type="color"] {
+  appearance: none;
+  -webkit-appearance: none;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+	border: none;
+}
+
+input[type="color"]::-webkit-color-swatch {
+  border: none;
+	padding: 0;
+}
+
+/* Remove spin buttons from number inputs */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Reset file input */
+input[type="file"] {
+  color: inherit;
+  background: none;
+  padding: 0;
+  border: none;
+}
+
+/* Reset for range inputs */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: none;
+}
+
+/* Custom style for range thumb */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input[type="range"]::-moz-range-thumb {
+  -moz-appearance: none;
+}
+
+/* Remove resize for textarea */
+textarea {
+  resize: none;
+}
+
+/* Set cursor style for interactive elements */
+input[type="button"],
+input[type="submit"],
+button {
+  cursor: pointer;
+}
