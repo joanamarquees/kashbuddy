@@ -11,7 +11,7 @@ import { IconPicker } from './IconPicker.jsx'
 
 import { iconList } from '../utils/categories.js'
 
-export function NewCategoryForms() {
+export function NewCategoryForms({ allCategories }) {
   const { addCategory } = useAddCategory(); 
   const [categoryData, setCategoryData] = useState({
     value: '',
@@ -51,6 +51,10 @@ export function NewCategoryForms() {
     setDrawerState(null);
   }
 
+  if (categoryData.iconIndex === undefined) {
+    setCategoryData({ ...categoryData, iconIndex: 5 });
+  }
+
   const Icon = iconList[categoryData.iconIndex];
 
   return (
@@ -82,7 +86,7 @@ export function NewCategoryForms() {
 
       {/* Scrollable Color Bars */}
       <p className='ml-2 font-medium'>Color</p>
-      <ColorPicker categoryData={categoryData} setCategoryData={setCategoryData}/>
+      <ColorPicker categoryData={categoryData} setCategoryData={setCategoryData} allCategories={allCategories}/>
 
       {/* Icon Grid */}
       <p className='ml-2 font-medium'>Icon</p>
