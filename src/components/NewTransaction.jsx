@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 
 import { useAddTransaction } from '../hooks/useAddTransaction.js'
 
-import { Input } from './Input.jsx'
-import { Button } from './Button.jsx'
-import { setDrawerState } from './Drawer.jsx'
+import { Input } from './ui/Input.jsx'
+import { Button } from './ui/Button.jsx'
+import { setDrawerState } from './ui/Drawer.jsx'
 import { Dropdown } from './TransactionCategory.jsx'
 import { TransactionSwitch } from './TransactionSwitch.jsx'
 
@@ -13,7 +13,7 @@ export function NewTransactionForms({type}) {
   const [transactionData, setTransactionData] = useState({
     description: '',
     amount: '',
-    category: '',
+    categoryId: '',
     transactionType: type,
   });
 
@@ -25,25 +25,25 @@ export function NewTransactionForms({type}) {
 
   const handleAddTransaction = async () => {
     if (!transactionData.description || !transactionData.amount
-      || !transactionData.category || !transactionData.transactionType
+      || !transactionData.categoryId || !transactionData.transactionType
     ) {
       setError('Please fill in all fields');
       return;
     }
 
     await addTransaction({
-      "description": transactionData.description,
-      "amount": transactionData.amount,
-      "category": transactionData.category,
-      "transactionType": transactionData.transactionType,
+      'description': transactionData.description,
+      'amount': transactionData.amount,
+      'categoryId': transactionData.categoryId,
+      'transactionType': transactionData.transactionType,
     });
 
     setDrawerState(null);
   }
 
   return (
-    <div className="mx-auto w-5/6 align-middle flex flex-col justify-center align-center gap-5">
-      <h1 className="mb-4 text-center font-semibold font-sans text-xl">Add a new transaction</h1>
+    <div className='mx-auto w-5/6 align-middle flex flex-col justify-center align-center gap-5'>
+      <h1 className='mb-4 text-center font-semibold font-sans text-xl'>Add a new transaction</h1>
 
       {/* Transaction type switch */}
       <TransactionSwitch type={transactionData.transactionType} handleChange={handleTransactionTypeChange} />
@@ -57,7 +57,7 @@ export function NewTransactionForms({type}) {
       />
 
       {/* Transaction amount && category*/}
-      <div className="flex justify-between gap-4 w-full">
+      <div className='flex justify-between gap-4 w-full'>
         <Input
           id='amount'
           inputMode='numeric'
@@ -66,17 +66,17 @@ export function NewTransactionForms({type}) {
           value={transactionData.amount}
           onChange={(e) => setTransactionData({ ...transactionData, amount: e.target.value.replace(/\D/g, '').replace(/^0+/, '') })}
         />
-        <Dropdown transactionData={transactionData} setTransactionData={setTransactionData}/>
+        <Dropdown transactionData={transactionData} setTransactionData={setTransactionData} /> 
       </div>
-      <div className="flex gap-2 justify-center my-4">
-        <Button variant="secondary">
+      <div className='flex gap-2 justify-center my-4'>
+        <Button variant='secondary'>
           Cancel
         </Button>
         <Button onClick={handleAddTransaction}>
           Save
         </Button>
       </div>
-      {error && <p className="text-red-500 text-center">{error}</p>}
+      {error && <p className='text-red-500 text-center'>{error}</p>}
     </div>
   )
 }

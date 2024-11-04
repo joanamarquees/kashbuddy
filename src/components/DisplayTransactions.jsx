@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Drawer, setDrawerState } from './Drawer';
+import { Drawer, setDrawerState } from './ui/Drawer';
 import { NewTransactionForms } from './NewTransaction';
 import { TransactionPopup } from './TransactionPopup.jsx';
 
@@ -18,17 +18,17 @@ export function DisplayTransactions({type, transactions}){
   if (total === 0) {
     return (
       <>
-        <Drawer views={{"New-transaction": <NewTransactionForms type={type}/>}}/>
+        <Drawer views={{'New-transaction': <NewTransactionForms type={type}/>}}/>
         <div
-          className="container mx-auto w-full h-24 my-3 flex items-center border-dashed border-[1.5px] border-white rounded-xl cursor-pointer"
-          onClick={() => setDrawerState("New-transaction")}
+          className='container mx-auto w-full h-24 my-3 flex items-center border-dashed border-[1.5px] border-white rounded-xl cursor-pointer'
+          onClick={() => setDrawerState('New-transaction')}
         >
           <IoAddCircle
             size={70}
-            className="text-center ml-3"
-            style={{color : type === "expense" ? "#f73131" : "#82f576" }}
+            className='text-center ml-3'
+            style={{color : type === 'expense' ? '#f73131' : '#82f576' }}
           />
-          <p className="text-left text-sm ml-3">
+          <p className='text-left text-sm ml-3'>
             You don’t have any {type} this month. Tap to add one.
           </p>
         </div>
@@ -40,17 +40,13 @@ export function DisplayTransactions({type, transactions}){
     <>
       <ul> 
         {transactions.map((transaction) => {
-          const { id, description, amount, transactionType } = transaction;
+          const { id, transactionType } = transaction;
 
           if (transactionType === type){
             return (
               <TransactionPopup 
                 key={id}
                 transaction={transaction}
-                description={description}
-                amount={amount}
-                category={transaction.category}
-                transactionType={transactionType}
               />
             )
           }

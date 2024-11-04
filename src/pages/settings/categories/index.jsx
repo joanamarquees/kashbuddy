@@ -7,7 +7,8 @@ import { IoAdd } from 'react-icons/io5';
 import { Button } from '../../../components/ui/Button.jsx';
 import { Drawer, setDrawerState } from '../../../components/ui/Drawer.jsx';
 import { NewCategoryForms } from '../../../components/NewCategory.jsx';
-import { getCategoryColor, iconList } from '../../../utils/categories.js';
+import { iconList } from '../../../utils/categories.js';
+import { Popup } from '../../../components/CategoryPopup.jsx';
 
 import { useGetCategories } from '../../../hooks/useGetCategories.js';
 
@@ -17,7 +18,7 @@ export function Categories() {
 
   return (
     <div className='container mx-auto px-4 h-full'>
-      <Drawer views={{'New-category': <NewCategoryForms />}}/>
+      <Drawer views={{'New-category': <NewCategoryForms allCategories={categories}/>}}/>
       {/* Header */}
       <div className='py-6 flex flex-row items-center justify-between gap-6'>
         <IoMdArrowRoundBack
@@ -53,28 +54,19 @@ export function Categories() {
         </div>
       ) : (
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3'>
+      
       {categories.map((category) => {
-          const Icon = iconList[category.iconIndex];
-
           return (
-            <div
-              key={category.value}
-              className='container mx-auto h-14 flex items-center shadow-[0px_-2px_4px_rgba(0,0,0,0.4),0px_2px_4px_rgba(0,0,0,0.4)] rounded-full cursor-pointer'
-            >
-              {/* Render the icon with its color */}
-              {Icon && (
-                <Icon
-                  size={35}
-                  style={{ color: category.color, marginRight: '10px', marginLeft: '10px' }}
-                />
-              )}
-              <p className='text-left text-base ml-3'> {category.label} </p>
-            </div>
+            <Popup
+              key={category.id}
+              category={category}
+              allCategories={categories}
+            />
           );
         })}
-      </div>
-      )}
 
+      </div>
+      )}     
     </div>
   );
 }
