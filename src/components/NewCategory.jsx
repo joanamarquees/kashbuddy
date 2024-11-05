@@ -18,7 +18,7 @@ export function NewCategoryForms({ allCategories }) {
     label: '',
     icon: 5,
     color: '#ffffff',
-    categoryType: 'expenses',
+    categoryType: 'expense',
   });
   
   const [error, setError] = useState('');

@@ -1,126 +1,126 @@
-import React, { Fragment, useState, useEffect }  from 'react'
-import { Dialog, Transition } from '@headlessui/react'
+import React, { Fragment, useState, useEffect } from 'react';
+import { Dialog, Transition } from '@headlessui/react';
 import { IoCloseOutline } from 'react-icons/io5';
-import { getDoc } from 'firebase/firestore';
-
-import { useUpdateTransaction  } from '../hooks/useUpdateTransaction.js';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../config/firebase-config';
+import { useUpdateTransaction } from '../hooks/useUpdateTransaction.js';
 import { useDeleteTransaction } from '../hooks/useDeleteTransaction.js';
-import { Dropdown } from './TransactionCategory.jsx'
-
+import { TransactionSwitch } from './TransactionSwitch.jsx';
+import { Dropdown } from './TransactionCategory.jsx';
 import { iconList } from '../utils/categories.js';
-
-import { Button } from './ui/Button.jsx'
-import { Input } from './ui/Input.jsx'
+import { Button } from './ui/Button.jsx';
+import { Input } from './ui/Input.jsx';
 
 export function TransactionPopup({ transaction }) {
   const { id } = transaction;
   const [transactionData, setTransactionData] = useState(transaction);
-  const [categoryData, setCategoryData] = useState(null);
-  let [isOpen, setIsOpen] = useState(false) 
+  const [category, setCategory] = useState(null);
+
+  let [isOpen, setIsOpen] = useState(false);
   const { deleteTransaction } = useDeleteTransaction();
   const { updateTransaction } = useUpdateTransaction();
 
   useEffect(() => {
-    const fetchCategoryData = async () => {
-      const categoryRef = transaction.category;
-      const categoryDoc = await getDoc(categoryRef);
-      if (categoryDoc.exists()) {
-        setCategoryData(categoryDoc.data());
-      }
+    const fetchCategory = async () => {
+      const categoryDoc = await getDoc(doc(db, 'categories', transaction.categoryId));
+      setCategory(categoryDoc.data());
     };
-
-    fetchCategoryData();
-  }, [transaction]);   
+    fetchCategory();
+  }, [transaction.categoryId]);
 
   function closeModal() {
-    setIsOpen(false)
+    setIsOpen(false);
   }
 
   function openModal() {
-    setIsOpen(true)
+    setIsOpen(true);
   }
 
   async function handleDeleteTransaction() {
-    await deleteTransaction({id});
+    await deleteTransaction({ id });
     closeModal();
   }
 
   async function handleUpdateTransaction() {
+    const categoryRef = doc(db, 'categories', transactionData.categoryId);
     await updateTransaction({
       ...transactionData,
+      category: categoryRef,
     });
     closeModal();
   }
 
-  // Get the icon and color for the category
-  const IconComponent = iconList[categoryData?.iconIndex];
-  const color = categoryData?.color;
+  const Icon = iconList[category?.iconIndex];
 
   return (
     <>
-      {/* Style this accordingly to transactions */}
       <button
-        type='button'
+        type="button"
         onClick={openModal}
-        className='container mx-auto h-20 my-3 flex items-center shadow-[0px_-2px_4px_rgba(0,0,0,0.5),0px_2px_4px_rgba(0,0,0,0.5)] rounded-xl cursor-pointer'
-      > 
-        {/* Render the icon with its color */}
-        {IconComponent && (
-          <IconComponent
+        className="container mx-auto h-20 my-3 flex items-center shadow-[0px_-2px_4px_rgba(0,0,0,0.5),0px_2px_4px_rgba(0,0,0,0.5)] rounded-xl cursor-pointer"
+      >
+        {Icon && (
+          <Icon
             size={35}
-            style={{ color: color, marginRight: '10px', marginLeft: '10px' }}
+            style={{ color: category.color, marginRight: '10px', marginLeft: '10px' }}
           />
         )}
-        <p className='text-left text-base ml-3'>
+        <p className="text-left text-base ml-3">
           {transaction.description}
         </p>
-        <p className='pr-3 mx-auto mr-0 content-center'> {transaction.amount}€</p> 
+        <p className="pr-3 mx-auto mr-0 content-center"> {transaction.amount}€</p>
       </button>
 
       <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as='div' className='relative z-10' onClose={closeModal}>
+        <Dialog as="div" className="relative z-10" onClose={closeModal}>
           <Transition.Child
             as={Fragment}
-            enter='ease-out duration-300'
-            enterFrom='opacity-0'
-            enterTo='opacity-100'
-            leave='ease-in duration-200'
-            leaveFrom='opacity-100'
-            leaveTo='opacity-0'
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
           >
-            <div className='fixed inset-0 bg-black/50' />
+            <div className="fixed inset-0 bg-black/50" />
           </Transition.Child>
 
-          <div className='fixed inset-0 overflow-y-auto'>
-            <div className='flex min-h-full items-center justify-center p-4 text-center'>
+          <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center p-4 text-center">
               <Transition.Child
                 as={Fragment}
-                enter='ease-out duration-300'
-                enterFrom='opacity-0 scale-95'
-                enterTo='opacity-100 scale-100'
-                leave='ease-in duration-200'
-                leaveFrom='opacity-100 scale-100'
-                leaveTo='opacity-0 scale-95'
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className='w-full max-w-md transform overflow-hidden rounded-2xl bg-zinc-800 p-6 text-left align-middle shadow-xl transition-all'>
-                  <button className='ml-1 mt-1'>
+                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-zinc-800 p-6 text-left align-middle shadow-xl transition-all">
+                  <button className="ml-1 mt-1">
                     <IoCloseOutline size={30} onClick={closeModal}/>
                   </button>
-                  <div className='px-4 pb-4 sm:p-6 sm:pb-4 flex flex-col justify-center items-center align-center'>
-                    <div className='sm:flex sm:items-center'>
-                      <div className='modal-box space-y-4 mb-6'>
+                  <div className="px-4 pb-4 sm:p-6 sm:pb-4 flex flex-col justify-center items-center align-center">
+                    <div className="sm:flex sm:items-center">
+                      <div className="modal-box space-y-4 mb-6">
     
-                        <h3 className='font-bold text-xl text-center mb-3'> {transactionData.description} </h3>
+                        <h3 className="font-bold text-xl text-center mb-3"> {transactionData.description} </h3>
+
+                        <TransactionSwitch
+                          type={transactionData.transactionType}
+                          placeholder={transactionData.transactionType}
+                          value={transactionData.transactionType}
+                        />
 
                         <Input
                           id='description'
                           placeholder={transactionData.description}
                           value={transactionData.description}
-                          className='w-full'
+                          className="w-full"
                           onChange={(e) => setTransactionData({ ...transactionData, description: e.target.value })}
                         />
 
-                        <div className='flex justify-between gap-4 w-full'>
+                        <div className="flex justify-between gap-4 w-full">
                           <Input
                             id='update amount'
                             inputMode='numeric'
@@ -133,8 +133,8 @@ export function TransactionPopup({ transaction }) {
                         </div>
                       </div>
                     </div>
-                    <div className='flex gap-2'>
-                      <Button variant='secondary' onClick={handleDeleteTransaction}>
+                    <div className="flex gap-2">
+                      <Button variant="secondary" onClick={handleDeleteTransaction}>
                         Delete transaction
                       </Button>
                       <Button onClick={handleUpdateTransaction}>
@@ -151,4 +151,3 @@ export function TransactionPopup({ transaction }) {
     </>
   )
 }
-

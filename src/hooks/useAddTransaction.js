@@ -17,13 +17,12 @@ export const useAddTransaction = () => {
     categoryId,
     transactionType,
   } ) => {
-    const categoryRef = doc(db, 'categories', categoryId);
 
     await addDoc(transactionsCollection, { // choose what we want to add to our collection
       userId, // TODO: change this to 'auth.currentUser.uid
       description, // description of the transaction
       amount,
-      category: categoryRef, // category of the transaction
+      categoryId, // category of the transaction
       transactionType, // type of transaction (income or expense)
       createdAt: serverTimestamp(), // date of the transaction
     });

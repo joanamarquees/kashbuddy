@@ -8,7 +8,9 @@ export function Dropdown({ transactionData, setTransactionData }){
   const { categories } = useGetCategories();
 
   const handleCategoryChange = (e) => {
+    console.log(transactionData);
     setTransactionData({ ...transactionData, categoryId: e.target.value });
+    console.log(e.target.value);
   };
 
   return transactionData.transactionType === 'income' ? (
@@ -31,7 +33,7 @@ export function Dropdown({ transactionData, setTransactionData }){
       required
     >
       <option value='' disabled selected>category</option>
-      {getCategoriesByType(categories, 'expenses').map(({ id, label }) => (
+      {getCategoriesByType(categories, 'expense').map(({ id, label }) => (
         <option key={id} value={id}>{label}</option>
       ))}
     </select>

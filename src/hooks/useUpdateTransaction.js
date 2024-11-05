@@ -1,4 +1,4 @@
-import { updateDoc, doc } from 'firebase/firestore';
+import { updateDoc, doc, getDoc } from 'firebase/firestore';
 import { db } from '../config/firebase-config';
 
 /**
@@ -6,19 +6,21 @@ import { db } from '../config/firebase-config';
  */
 export const useUpdateTransaction = () => {
 
-  const updateTransaction = async ({id, transactionType, description, amount, category}) => {
+  const updateTransaction = async ({id, transactionType, description, amount, categoryId}) => {
     const transactionRef = doc(db, 'transactions', id);
-
-    const updated = await updateDoc(transactionRef, {
-      transactionType,
+    
+    const transactionDoc = await getDoc(transactionRef);
+    if (!transactionDoc.exists()) {
+      console.error('No matching documents found');
+      return;
+    }
+    
+    await updateDoc(transactionRef, {
       description,
       amount,
-      category
+      categoryId,
+      transactionType,
     });
-
-    if (!updated) {
-      console.error('No matching documents found');
-    }
   }
 
   return {
