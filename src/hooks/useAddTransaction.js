@@ -16,15 +16,17 @@ export const useAddTransaction = () => {
     amount,
     categoryId,
     transactionType,
+    date,
+    accountId,
   } ) => {
-
     await addDoc(transactionsCollection, { // choose what we want to add to our collection
       userId, // TODO: change this to 'auth.currentUser.uid
-      description, // description of the transaction
+      description,
       amount,
-      categoryId, // category of the transaction
-      transactionType, // type of transaction (income or expense)
-      createdAt: serverTimestamp(), // date of the transaction
+      categoryId,
+      transactionType,
+      date,
+      accountId,
     });
   };
 

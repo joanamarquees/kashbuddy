@@ -15,7 +15,7 @@ export const TransactionSwitch = ({ type, handleChange }) => {
             name='transactionType'
             value='expense'
             onChange={handleChange}
-            checked={type === 'expense'}
+            defaultChecked={type === 'expense'}
             className='hidden'
           />
           <span className='text-center font-normal w-full flex gap-2'>
@@ -28,7 +28,7 @@ export const TransactionSwitch = ({ type, handleChange }) => {
             name='transactionType'
             value='income'
             onChange={handleChange}
-            checked={type === 'income'}
+            defaultChecked={type === 'income'}
             className='hidden'
           />
           <span className='text-center font-normal w-full flex gap-2'>

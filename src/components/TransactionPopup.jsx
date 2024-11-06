@@ -6,7 +6,7 @@ import { db } from '../config/firebase-config';
 import { useUpdateTransaction } from '../hooks/useUpdateTransaction.js';
 import { useDeleteTransaction } from '../hooks/useDeleteTransaction.js';
 import { TransactionSwitch } from './TransactionSwitch.jsx';
-import { Dropdown } from './TransactionCategory.jsx';
+import { Dropdown } from './Dropdown.jsx';
 import { iconList } from '../utils/categories.js';
 import { Button } from './ui/Button.jsx';
 import { Input } from './ui/Input.jsx';
@@ -15,6 +15,7 @@ export function TransactionPopup({ transaction }) {
   const { id } = transaction;
   const [transactionData, setTransactionData] = useState(transaction);
   const [category, setCategory] = useState(null);
+  const [account, setAccount] = useState(null);
 
   let [isOpen, setIsOpen] = useState(false);
   const { deleteTransaction } = useDeleteTransaction();
@@ -27,6 +28,14 @@ export function TransactionPopup({ transaction }) {
     };
     fetchCategory();
   }, [transaction.categoryId]);
+
+  useEffect(() => {
+    const fetchAccount = async () => {
+      const accountDoc = await getDoc(doc(db, 'accounts', transaction.accountId));
+      setAccount(accountDoc.data());
+    };
+    fetchAccount();
+  }, [transaction.accountId]);
 
   function closeModal() {
     setIsOpen(false);
@@ -129,7 +138,28 @@ export function TransactionPopup({ transaction }) {
                             value={transactionData.amount}
                             onChange={(e) => setTransactionData({ ...transactionData, amount: e.target.value.replace(/\D/g, '').replace(/^0+/, '') })}
                           />
-                          <Dropdown transactionData={transactionData} setTransactionData={setTransactionData}/>
+                          <Input
+                            id="date"
+                            type="date"
+                            value={transactionData.date}
+                            className={`w-full z-50 ${!transactionData.date && 'text-zinc-400'}`}
+                            onChange={(e) => setTransactionData({ ...transactionData, date: e.target.value })}
+                          />
+                        </div>
+
+                        <div className='flex justify-between gap-4 w-full'>
+                          <Dropdown
+                            transactionData={transactionData}
+                            setTransactionData={setTransactionData}
+                            placeholder={category?.label}
+                            field='categoryId'
+                          />
+                          <Dropdown
+                            transactionData={transactionData}
+                            setTransactionData={setTransactionData}
+                            placeholder={account?.bankName}
+                            field='accountId'
+                          />
                         </div>
                       </div>
                     </div>

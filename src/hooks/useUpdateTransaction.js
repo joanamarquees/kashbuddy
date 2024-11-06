@@ -6,7 +6,7 @@ import { db } from '../config/firebase-config';
  */
 export const useUpdateTransaction = () => {
 
-  const updateTransaction = async ({id, transactionType, description, amount, categoryId}) => {
+  const updateTransaction = async ({id, transactionType, description, amount, categoryId, date, accountId}) => {
     const transactionRef = doc(db, 'transactions', id);
     
     const transactionDoc = await getDoc(transactionRef);
@@ -20,6 +20,8 @@ export const useUpdateTransaction = () => {
       amount,
       categoryId,
       transactionType,
+      date,
+      accountId,
     });
   }
 

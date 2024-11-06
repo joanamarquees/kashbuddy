@@ -16,7 +16,7 @@ export const useGetTransactions = () => {
       const queryTransactions = query(
         transactionCollectionRef,
         where("userId", "==", userId),
-        orderBy("createdAt", "desc")// TODO: check if the desc is correctly set
+        orderBy("date", "desc")// TODO: check if the desc is correctly set
       );
 
     unsubscribe = onSnapshot(queryTransactions, (snapshot) => {

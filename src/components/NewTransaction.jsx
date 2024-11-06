@@ -1,22 +1,22 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { serverTimestamp } from 'firebase/firestore';
+import { useAddTransaction } from '../hooks/useAddTransaction.js';
+import { Input } from './ui/Input.jsx';
+import { Button } from './ui/Button.jsx';
+import { setDrawerState } from './ui/Drawer.jsx';
+import { Dropdown } from './Dropdown.jsx';
+import { TransactionSwitch } from './TransactionSwitch.jsx';
 
-import { useAddTransaction } from '../hooks/useAddTransaction.js'
-
-import { Input } from './ui/Input.jsx'
-import { Button } from './ui/Button.jsx'
-import { setDrawerState } from './ui/Drawer.jsx'
-import { Dropdown } from './TransactionCategory.jsx'
-import { TransactionSwitch } from './TransactionSwitch.jsx'
-
-export function NewTransactionForms({type}) {
+export function NewTransactionForms({ type }) {
   const { addTransaction } = useAddTransaction();
   const [transactionData, setTransactionData] = useState({
     description: '',
     amount: '',
     categoryId: '',
     transactionType: type,
+    date: serverTimestamp(),
+    accountId: '',
   });
-
   const [error, setError] = useState('');
 
   const handleTransactionTypeChange = (e) => {
@@ -26,29 +26,26 @@ export function NewTransactionForms({type}) {
   const handleAddTransaction = async () => {
     if (!transactionData.description || !transactionData.amount
       || !transactionData.categoryId || !transactionData.transactionType
-    ) {
+      || !transactionData.date || !transactionData.accountId) {
       setError('Please fill in all fields');
       return;
     }
-
+    
     await addTransaction({
       'description': transactionData.description,
       'amount': transactionData.amount,
       'categoryId': transactionData.categoryId,
       'transactionType': transactionData.transactionType,
+      'date': new Date(transactionData.date),
+      'accountId': transactionData.accountId,
     });
-
     setDrawerState(null);
-  }
+  };
 
   return (
     <div className='mx-auto w-5/6 align-middle flex flex-col justify-center align-center gap-5'>
       <h1 className='mb-4 text-center font-semibold font-sans text-xl'>Add a new transaction</h1>
-
-      {/* Transaction type switch */}
       <TransactionSwitch type={transactionData.transactionType} handleChange={handleTransactionTypeChange} />
-
-      {/* Transaction description */}
       <Input
         id='description'
         placeholder='transaction description'
@@ -66,7 +63,29 @@ export function NewTransactionForms({type}) {
           value={transactionData.amount}
           onChange={(e) => setTransactionData({ ...transactionData, amount: e.target.value.replace(/\D/g, '').replace(/^0+/, '') })}
         />
-        <Dropdown transactionData={transactionData} setTransactionData={setTransactionData} /> 
+        <Input
+          id='date'
+          type='date'
+          placeholder='date'
+          className={`w-full z-50 ${!transactionData.date && 'text-zinc-400'}`}
+          value={transactionData.date}
+          onChange={(e) => setTransactionData({ ...transactionData, date: e.target.value })}
+        />
+      </div>
+
+      <div className='flex justify-between gap-4 w-full'>
+        <Dropdown
+          transactionData={transactionData}
+          setTransactionData={setTransactionData}
+          field='categoryId'
+          placeholder='category'
+        />
+        <Dropdown
+          transactionData={transactionData}
+          setTransactionData={setTransactionData}
+          placeholder='account'
+          field='accountId'
+        />
       </div>
       <div className='flex gap-2 justify-center my-4'>
         <Button variant='secondary'>
