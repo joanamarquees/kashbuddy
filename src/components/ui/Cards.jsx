@@ -2,19 +2,11 @@ import React from 'react';
 
 import { useGetAccounts } from '../../hooks/useGetAccounts';
 import { IoMdArrowRoundBack } from 'react-icons/io';
+import { calculateNetworth } from '../../utils/networth.js'
 
 export const FinancialCard = ({transactions}) => {
   const { accounts } = useGetAccounts();
-
-  const accountsTotal = accounts.reduce((acc, account) => acc + parseFloat(account.amount), 0);
-  //TODO: display only those transactions that are from the current month, and change when changing in the Calendar
-  const expenses = transactions.filter(transaction => transaction.transactionType === 'expense'); // && transaction.createdAt.toDate().getMonth() === currentMonth);
-  const totalExpenses = expenses.reduce((exp, transaction) => exp + parseFloat(transaction.amount), 0);
-  
-  const incomes = transactions.filter(transaction => transaction.transactionType === 'income');
-  const totalIncomes = incomes.reduce((inc, transaction) => inc + parseFloat(transaction.amount), 0);
-  
-  const totalNetWorth = accountsTotal + totalIncomes - totalExpenses;
+  const { totalNetworth, totalExpenses, totalIncomes} = calculateNetworth(accounts, transactions);
 
   return (
     <div className='relative mx-auto w-full md:w-[353px] h-60 mb-5 items-center'>
@@ -28,7 +20,7 @@ export const FinancialCard = ({transactions}) => {
       {/* Total Balance Section */}
       <div className='absolute top-14 left-0 right-0 flex flex-col items-center'>
         <h2 className='text-zinc-100 font-sans font-semibold text-lg'>Total Balance</h2>
-        <p className='text-zinc-100 font-sans font-extrabold text-4xl'> {totalNetWorth} €</p>
+        <p className='text-zinc-100 font-sans font-extrabold text-4xl'> {totalNetworth} €</p>
       </div>
 
       {/* Income and Expenses Section */}

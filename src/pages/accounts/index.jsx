@@ -8,12 +8,13 @@ import { Popup } from '../../components/AccountPopup.jsx';
 import { NewAccountForms } from '../../components/NewAccount.jsx';
 
 import { useGetAccounts } from '../../hooks/useGetAccounts.js';
+import { calculateNetworth } from '../../utils/networth.js'
 
 export function Accounts() {
   const navigate = useNavigate();
-  
+
   const { accounts } = useGetAccounts();
-  const totalNetWorth = accounts.reduce((acc, account) => acc + parseFloat(account.amount), 0);
+  const { totalNetworth } = calculateNetworth(accounts);
 
   return (
     <div className='container mx-auto px-4 h-full'>
@@ -54,8 +55,8 @@ export function Accounts() {
       (
         // Accounts page list
         <div>
-          <h2 className='text-zinc-400 text-center text-2xl md:text-4xl font-sans'> NET WORTH </h2>
-          <h3 className='text-indigo-400 text-center font-extrabold text-5xl md:text-7xl py-10 font-sans'> {totalNetWorth}€ </h3>
+          <h2 className='text-zinc-400 text-center text-2xl md:text-4xl font-sans'> NETWORTH </h2>
+          <h3 className='text-indigo-400 text-center font-extrabold text-5xl md:text-7xl py-10 font-sans'> {totalNetworth}€ </h3>
           <div className='flex flex-col gap-3'>
             {accounts.map(({bankName, amount}) => (
               <Popup key={bankName} bankName={bankName} amount={amount}/> 
