@@ -21,15 +21,10 @@ export function Popup({bankName, amount}) {
     setIsOpen(true)
   }
 
-  function handleAmountInput(amount) {
-    const newAmount = parseFloat(amount.replace(/\D/g, '').replace(/^0+/, '')) || 0;
-    setNewAmount(newAmount);
-  }
-
   async function handleUpdateAmount() {
     await updateAmount({
       bankName,
-      'amount': newAmount,
+      'amount': parseFloat(newAmount),
     });
     closeModal();
   }
@@ -90,7 +85,7 @@ export function Popup({bankName, amount}) {
                           inputMode='numeric'
                           placeholder={amount}
                           value={newAmount}
-                          onChange={(e) => handleAmountInput(e.target.value)} 
+                          onChange={(e) => setNewAmount(e.target.value.replace(/[^0-9.]/g, '').replace(/^0+(\d)/, '$1').replace(/(\..*)\./g, '$1'))} 
                         />
                       </div>
                     </div>

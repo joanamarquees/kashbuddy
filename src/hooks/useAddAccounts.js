@@ -18,7 +18,7 @@ export const useAddAccount = () => {
       userId, // TODO: change this to 'auth.currentUser.uid
       bankName, 
       amount,
-      createdAt: serverTimestamp(), // date of the transaction
+      createdAt: serverTimestamp(),
     });
   };
 

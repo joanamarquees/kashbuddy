@@ -37,9 +37,13 @@ export function Home() {
   };
 
   useEffect(() => {
-    const filtered = transactions.filter((transaction) => {
-      return dayjs(transaction.date).isSame(currentDate, 'month');
-    });
+    const filtered = transactions
+    .filter((transaction) => {
+      const transactionDate = transaction.date instanceof Date ? transaction.date : transaction.date.toDate();
+      return dayjs(transactionDate).isSame(currentDate, 'month');
+    })
+
+    console.log(filtered)
 
     setFilteredTransactions(filtered);
   }, [currentDate, transactions]);

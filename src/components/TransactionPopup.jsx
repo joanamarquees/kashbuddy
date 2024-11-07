@@ -6,7 +6,7 @@ import { db } from '../config/firebase-config';
 import { useUpdateTransaction } from '../hooks/useUpdateTransaction.js';
 import { useDeleteTransaction } from '../hooks/useDeleteTransaction.js';
 import { TransactionSwitch } from './TransactionSwitch.jsx';
-import { Dropdown } from './Dropdown.jsx';
+import { Dropdown } from './ui/Dropdown.jsx';
 import { iconList } from '../utils/categories.js';
 import { Button } from './ui/Button.jsx';
 import { Input } from './ui/Input.jsx';
@@ -53,8 +53,13 @@ export function TransactionPopup({ transaction }) {
   async function handleUpdateTransaction() {
     const categoryRef = doc(db, 'categories', transactionData.categoryId);
     await updateTransaction({
-      ...transactionData,
-      category: categoryRef,
+      'id': transactionData.id,
+      'transactionType': transactionData.transactionType,
+      'description': transactionData.description,
+      'amount': parseFloat(transactionData.amount),
+      'categoryId': transactionData.categoryId,
+      'date': new Date(transactionData.date),
+      'accountId': transactionData.accountId,
     });
     closeModal();
   }
@@ -136,7 +141,7 @@ export function TransactionPopup({ transaction }) {
                             placeholder={transactionData.amount}
                             className='w-1/2'
                             value={transactionData.amount}
-                            onChange={(e) => setTransactionData({ ...transactionData, amount: e.target.value.replace(/\D/g, '').replace(/^0+/, '') })}
+                            onChange={(e) => setTransactionData({ ...transactionData, amount: e.target.value.replace(/[^0-9.]/g, '').replace(/^0+(\d)/, '$1').replace(/(\..*)\./g, '$1') })}
                           />
                           <Input
                             id="date"

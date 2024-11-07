@@ -20,7 +20,7 @@ export function NewAccountForms() {
 
     await addAccount({
       'bankName': accountData.bankName,
-      'amount': accountData.amount,
+      'amount': parseFloat(accountData.amount),
     });
 
     setDrawerState(null);
@@ -44,7 +44,7 @@ export function NewAccountForms() {
         inputMode='numeric'
         placeholder='Insert your bank networth...'
         value={accountData.amount}
-        onChange={(e) => setAccountData({ ...accountData, amount: e.target.value.replace(/\D/g, '').replace(/^0+/, '') })}
+        onChange={(e) => setAccountData({ ...accountData, amount: e.target.value.replace(/[^0-9.]/g, '').replace(/^0+(\d)/, '$1').replace(/(\..*)\./g, '$1') })}
       />
 
       <div className='my-4 flex justify-center'>

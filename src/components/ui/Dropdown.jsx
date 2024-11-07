@@ -1,7 +1,7 @@
 import React from 'react';
-import { useGetCategories } from '../hooks/useGetCategories';
-import { useGetAccounts } from '../hooks/useGetAccounts';
-import { getCategoriesByType } from '../utils/categories';
+import { useGetCategories } from '../../hooks/useGetCategories';
+import { useGetAccounts } from '../../hooks/useGetAccounts';
+import { getCategoriesByType } from '../../utils/categories';
 
 export function Dropdown({ transactionData, setTransactionData, field, placeholder }) {
   const { categories } = useGetCategories();

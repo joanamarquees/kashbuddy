@@ -4,7 +4,7 @@ import { useAddTransaction } from '../hooks/useAddTransaction.js';
 import { Input } from './ui/Input.jsx';
 import { Button } from './ui/Button.jsx';
 import { setDrawerState } from './ui/Drawer.jsx';
-import { Dropdown } from './Dropdown.jsx';
+import { Dropdown } from './ui/Dropdown.jsx';
 import { TransactionSwitch } from './TransactionSwitch.jsx';
 
 export function NewTransactionForms({ type }) {
@@ -33,7 +33,7 @@ export function NewTransactionForms({ type }) {
     
     await addTransaction({
       'description': transactionData.description,
-      'amount': transactionData.amount,
+      'amount': parseFloat(transactionData.amount),
       'categoryId': transactionData.categoryId,
       'transactionType': transactionData.transactionType,
       'date': new Date(transactionData.date),
@@ -61,14 +61,13 @@ export function NewTransactionForms({ type }) {
           placeholder='0.00€'
           className='w-1/2'
           value={transactionData.amount}
-          onChange={(e) => setTransactionData({ ...transactionData, amount: e.target.value.replace(/\D/g, '').replace(/^0+/, '') })}
+          onChange={(e) => setTransactionData({ ...transactionData, amount: e.target.value.replace(/[^0-9.]/g, '').replace(/^0+(\d)/, '$1').replace(/(\..*)\./g, '$1')})}
         />
         <Input
           id='date'
           type='date'
           placeholder='date'
           className={`w-full z-50 ${!transactionData.date && 'text-zinc-400'}`}
-          value={transactionData.date}
           onChange={(e) => setTransactionData({ ...transactionData, date: e.target.value })}
         />
       </div>
