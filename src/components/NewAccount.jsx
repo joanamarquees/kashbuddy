@@ -20,7 +20,7 @@ export function NewAccountForms() {
 
     await addAccount({
       'bankName': accountData.bankName,
-      'amount': parseFloat(accountData.amount),
+      'amount': Number(parseFloat(accountData.amount)),
     });
 
     setDrawerState(null);

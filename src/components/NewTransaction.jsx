@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { serverTimestamp } from 'firebase/firestore';
 import { useAddTransaction } from '../hooks/useAddTransaction.js';
 import { Input } from './ui/Input.jsx';
 import { Button } from './ui/Button.jsx';
@@ -14,13 +13,19 @@ export function NewTransactionForms({ type }) {
     amount: '',
     categoryId: '',
     transactionType: type,
-    date: serverTimestamp(),
+    date: '',
     accountId: '',
   });
   const [error, setError] = useState('');
 
   const handleTransactionTypeChange = (e) => {
     setTransactionData({ ...transactionData, transactionType: e.target.value });
+  };
+
+  const handleDateChange = (e) => {
+    const dateString = e.target.value;
+    const dateObject = new Date(dateString);
+    setTransactionData({ ...transactionData, date: dateObject });
   };
 
   const handleAddTransaction = async () => {
@@ -33,7 +38,7 @@ export function NewTransactionForms({ type }) {
     
     await addTransaction({
       'description': transactionData.description,
-      'amount': parseFloat(transactionData.amount),
+      'amount': Number(parseFloat(transactionData.amount)),
       'categoryId': transactionData.categoryId,
       'transactionType': transactionData.transactionType,
       'date': new Date(transactionData.date),
@@ -66,9 +71,8 @@ export function NewTransactionForms({ type }) {
         <Input
           id='date'
           type='date'
-          placeholder='date'
           className={`w-full z-50 ${!transactionData.date && 'text-zinc-400'}`}
-          onChange={(e) => setTransactionData({ ...transactionData, date: e.target.value })}
+          onChange={handleDateChange}
         />
       </div>
 

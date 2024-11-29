@@ -11,15 +11,22 @@ import { iconList } from '../utils/categories.js';
 import { Button } from './ui/Button.jsx';
 import { Input } from './ui/Input.jsx';
 
+import daysjs from 'dayjs';
+
 export function TransactionPopup({ transaction }) {
   const { id } = transaction;
-  const [transactionData, setTransactionData] = useState(transaction);
+  const [transactionData, setTransactionData] = useState({
+    ...transaction,
+    date: transaction.date instanceof Date ? transaction.date : new Date(transaction.date.seconds * 1000)  // Handle Firestore Timestamp format
+  });
   const [category, setCategory] = useState(null);
   const [account, setAccount] = useState(null);
 
   let [isOpen, setIsOpen] = useState(false);
   const { deleteTransaction } = useDeleteTransaction();
   const { updateTransaction } = useUpdateTransaction();
+
+  console.log(daysjs(transactionData.date).format('YYYY-MM-DD'));
 
   useEffect(() => {
     const fetchCategory = async () => {
@@ -50,16 +57,21 @@ export function TransactionPopup({ transaction }) {
     closeModal();
   }
 
+  const handleDateChange = (e) => {
+    const dateString = e.target.value;
+    const dateObject = new Date(dateString);
+    setTransactionData({ ...transactionData, date: dateObject });
+  }  
+
   async function handleUpdateTransaction() {
-    const categoryRef = doc(db, 'categories', transactionData.categoryId);
     await updateTransaction({
-      'id': transactionData.id,
-      'transactionType': transactionData.transactionType,
-      'description': transactionData.description,
-      'amount': parseFloat(transactionData.amount),
-      'categoryId': transactionData.categoryId,
-      'date': new Date(transactionData.date),
-      'accountId': transactionData.accountId,
+      id: transactionData.id,
+      transactionType: transactionData.transactionType,
+      description: transactionData.description,
+      amount: Number(parseFloat(transactionData.amount)),
+      categoryId: transactionData.categoryId,
+      date: transactionData.date instanceof Date ? transactionData.date : new Date(transactionData.date),
+      accountId: transactionData.accountId,
     });
     closeModal();
   }
@@ -144,11 +156,11 @@ export function TransactionPopup({ transaction }) {
                             onChange={(e) => setTransactionData({ ...transactionData, amount: e.target.value.replace(/[^0-9.]/g, '').replace(/^0+(\d)/, '$1').replace(/(\..*)\./g, '$1') })}
                           />
                           <Input
-                            id="date"
-                            type="date"
-                            value={transactionData.date}
+                            id='date'
+                            type='date'
+                            value={daysjs(transactionData.date).format('YYYY-MM-DD')}
                             className={`w-full z-50 ${!transactionData.date && 'text-zinc-400'}`}
-                            onChange={(e) => setTransactionData({ ...transactionData, date: e.target.value })}
+                            onChange={handleDateChange}
                           />
                         </div>
 
