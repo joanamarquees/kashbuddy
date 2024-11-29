@@ -21,7 +21,7 @@ export function Accounts() {
       <Drawer views={{'New-account': <NewAccountForms/>}}/>
       {/* Header */}
       <div className='py-6 flex flex-row items-center justify-center gap-6'>
-        {accounts.length >= 1 ?
+        {accounts.length >= 1 &&
           <button> 
             <MdAddCard
               size={30}
@@ -29,16 +29,19 @@ export function Accounts() {
               className='cursor-pointer mx-2'
             />
           </button>
-          : <MdAddCard size={30} className='invisible' />
         }
 
         <h1 className='text-2xl md:text-4xl font-bold font-sans mx-2'> BankAccounts </h1>
 
-        <IoMdArrowRoundBack
-          size={30}
-          className='cursor-pointer mx-2 translate rotate-180'
-          onClick={() => navigate('/home')}
-        />
+        {accounts.length >= 1 &&
+          <button> 
+            <IoMdArrowRoundBack
+              size={30}
+              className='cursor-pointer mx-2 translate rotate-180'
+              onClick={() => navigate('/home')}
+            />
+          </button>
+        }
       </div>
 
       {accounts.length <= 0 ? (

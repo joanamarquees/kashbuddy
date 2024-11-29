@@ -11,6 +11,7 @@ import { DisplayTransactions } from '../../components/DisplayTransactions.jsx';
 import { FinancialStats } from '../../components/FinancialStats.jsx';
 import { DisplayCategories } from '../../components/DisplayCategories.jsx';
 import { useGetTransactions } from '../../hooks/useGetTransactions.js';
+import { useGetAccounts } from '../../hooks/useGetAccounts.js';
 
 import { IoAddCircle, IoSettingsOutline  } from 'react-icons/io5';
 import { PiBank } from 'react-icons/pi';
@@ -23,10 +24,17 @@ dayjs.extend(isoWeek);
 export function Home() {
   const navigate = useNavigate();
   const { transactions } = useGetTransactions();
+  const { accounts, loading: accountsLoading } = useGetAccounts();
   const [flip, setFlip]  = useState(false);
   const [currentDate, setCurrentDate] = useState(dayjs());
   const [transactionType, setTransactionType] = useState('expense');
   const [filteredTransactions, setFilteredTransactions] = useState(transactions);
+
+  useEffect(() => {
+    if (!accountsLoading && accounts.length === 0) {
+      navigate('/accounts');
+    }
+  }, [accountsLoading])
 
   const handleTransactionTypeChange = (e) => {
     setTransactionType(e.target.value);

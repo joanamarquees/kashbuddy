@@ -5,43 +5,46 @@ import { useGetUserInfo } from "./useGetUserInfo";
 
 export const useGetAccounts = () => {
   const [accounts, setAccounts] = useState([]);
-
+  const [loading, setLoading] = useState(true);
   const accountsCollection = collection(db, 'accounts');
   const { userId } = useGetUserInfo();
 
-  const getAccounts = async () => {
-    let unsubscribe;
-
-    try {
-      const queryAccounts = query(
-        accountsCollection,
-        where("userId", "==", userId),
-        orderBy("createdAt", "desc")// TODO: check if the desc is correctly set
-      );
-
-    unsubscribe = onSnapshot(queryAccounts, (snapshot) => {
-        let docs = [];
-
-        snapshot.forEach((doc) => {
-          const data = doc.data(); // get the data from the firebase doc
-          const id = doc.id
-          
-          docs.push({ id, ...data });            
-        })
-
-        setAccounts(docs);
-      })
-      
-    } catch (err) {
-      console.error(err);
+  useEffect(() => {
+    if (!userId) {
+      setLoading(false);
+      return;
     }
 
-    return () => unsubscribe();
-  }
-  
-  useEffect(() => {
-    getAccounts()
-  }, []);
+    const queryAccounts = query(
+      accountsCollection,
+      where("userId", "==", userId),
+      orderBy("createdAt", "desc")
+    );
 
-  return { accounts };
-}
+    const unsubscribe = onSnapshot(
+      queryAccounts,
+      (snapshot) => {
+        let docs = [];
+        snapshot.forEach((doc) => {
+          const data = doc.data();
+          const id = doc.id;
+          docs.push({ id, ...data });
+        });
+
+        setAccounts(docs);
+        setLoading(false);
+      },
+      (error) => {
+        console.error("Error fetching accounts: ", error);
+        setLoading(false);
+      }
+    );
+
+    return () => unsubscribe();
+  }, [userId]);
+
+  return {
+    accounts,
+    loading
+  };
+};
