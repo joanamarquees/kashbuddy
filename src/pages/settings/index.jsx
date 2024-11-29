@@ -1,4 +1,6 @@
 import React from 'react';
+import { signOut } from 'firebase/auth';
+import { auth } from '../../config/firebase-config'
 import { useNavigate } from 'react-router-dom';
 
 import { IoMdArrowRoundBack } from 'react-icons/io';
@@ -7,6 +9,16 @@ import { TbFaceId } from 'react-icons/tb';
 
 export function Settings() {
   const navigate = useNavigate();
+
+  const signUserOut = async () => {
+    try {
+      await signOut(auth);
+      localStorage.clear();
+      navigate('/');
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   return (
     <div className='container mx-auto px-4 h-full'>
@@ -71,14 +83,17 @@ export function Settings() {
       </div>
 
       {/* Logout */}
-      <div className='container mx-auto h-14 my-3 flex items-center shadow-[0px_-2px_4px_rgba(0,0,0,0.5),0px_2px_4px_rgba(0,0,0,0.5)] rounded-full cursor-pointer'>
+      <button
+        className='container mx-auto h-14 my-3 flex items-center shadow-[0px_-2px_4px_rgba(0,0,0,0.5),0px_2px_4px_rgba(0,0,0,0.5)] rounded-full cursor-pointer'
+        onClick = {signUserOut}
+      >
         <IoLogOutOutline
           size={25}
           style={{ marginRight: '10px', marginLeft: '20px' }}
           className='translate rotate-180'
         />
         <p className='text-left text-base ml-3'> Logout </p>
-      </div>
+      </button>
 
     </div>
   );
