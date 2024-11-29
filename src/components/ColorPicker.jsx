@@ -24,10 +24,10 @@ export function ColorPicker({ categoryData, setCategoryData, allCategories }) {
   };
 
   return (
-    <div className='flex flex-row'>
+    <div className='flex flex-row overflow-x-auto overflow-hidden max-w-[19rem] md:max-w-sm'>
       <div className='flex gap-3 ml-1'>
         {/* Color Picker Input */}
-        <div className='flex-col text-center space-y-1'>
+        <div className='flex-col text-center space-y-1 max-w-full'>
           <div className='w-8 h-8 relative flex align-middle mx-auto'>
             <input
               ref={inputRef}
@@ -51,13 +51,13 @@ export function ColorPicker({ categoryData, setCategoryData, allCategories }) {
 
         {/* Display the selected colors as balls */}
         {colors.map((color, index) => (
-            <div
-              key={index}
-              className='w-8 h-8 rounded-full cursor-pointer'
-              onClick={() => setCategoryData({ ...categoryData, color: color })}
-              style={{ backgroundColor: color }}
-            />
-          ))}
+          <div
+            key={index}
+            className='w-8 h-8 rounded-full cursor-pointer'
+            onClick={() => setCategoryData({ ...categoryData, color: color })}
+            style={{ backgroundColor: color }}
+          />
+        ))}
       </div>
     </div>
   )

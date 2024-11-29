@@ -24,7 +24,7 @@ export function Popup({bankName, amount}) {
   async function handleUpdateAmount() {
     await updateAmount({
       bankName,
-      'amount': parseFloat(newAmount),
+      'amount': Number(parseFloat(newAmount)),
     });
     closeModal();
   }

@@ -7,7 +7,6 @@ import { useUpdateCategory } from '../hooks/useUpdateCategory.js';
 import { iconList } from '../utils/categories.js';
 import { Button } from './ui/Button.jsx'
 import { Input } from './ui/Input.jsx'
-import { TransactionSwitch } from './TransactionSwitch.jsx'
 import { ColorPicker } from './ColorPicker.jsx'
 import { IconPicker } from './IconPicker.jsx'
 
@@ -138,4 +137,3 @@ export function Popup({ category, allCategories }) {
     </>
   )
 }
-
