@@ -23,9 +23,9 @@ dayjs.extend(isoWeek);
 
 export function Home() {
   const navigate = useNavigate();
-  const { transactions } = useGetTransactions();
+  const { transactions, loading } = useGetTransactions();
   const { accounts, loading: accountsLoading } = useGetAccounts();
-  const [flip, setFlip]  = useState(false);
+  const [flip, setFlip] = useState(false);
   const [currentDate, setCurrentDate] = useState(dayjs());
   const [transactionType, setTransactionType] = useState('expense');
   const [filteredTransactions, setFilteredTransactions] = useState(transactions);
@@ -34,7 +34,7 @@ export function Home() {
     if (!accountsLoading && accounts.length === 0) {
       navigate('/accounts');
     }
-  }, [accountsLoading])
+  }, [accountsLoading]);
 
   const handleTransactionTypeChange = (e) => {
     setTransactionType(e.target.value);
@@ -45,72 +45,84 @@ export function Home() {
   };
 
   useEffect(() => {
-    const filtered = transactions
-    .filter((transaction) => {
-      const transactionDate = transaction.date instanceof Date ? transaction.date : transaction.date.toDate();
+    const filtered = transactions.filter((transaction) => {
+      const transactionDate =
+        transaction.date instanceof Date ? transaction.date : transaction.date.toDate();
       return dayjs(transactionDate).isSame(currentDate, 'month');
-    })
-
-    console.log(filtered)
+    });
 
     setFilteredTransactions(filtered);
   }, [currentDate, transactions]);
 
   return (
-    <div className='container mx-auto px-4 h-full'>
+    <div className="container mx-auto px-4 h-full">
       {/* Header */}
-      <div className='py-6 flex flex-row items-center justify-center gap-3 md:gap-52'>
+      <div className="py-6 flex flex-row items-center justify-center gap-3 md:gap-52">
         <PiBank
           size={35}
-          className='text-indigo-400 cursor-pointer mx-2'
+          className="text-indigo-400 cursor-pointer mx-2"
           onClick={() => navigate('/accounts')}
         />
 
         {/* Month search */}
-        <Calendar currentDate={currentDate} setCurrentDate={setCurrentDate}/>
+        <Calendar currentDate={currentDate} setCurrentDate={setCurrentDate} />
 
-        {/* Seatings */}
+        {/* Settings */}
         <IoSettingsOutline
           size={35}
-          className='text-indigo-400 cursor-pointer mx-2'
+          className="text-indigo-400 cursor-pointer mx-2"
           onClick={() => navigate('/settings')}
         />
       </div>
 
-      <div
-        className='w-[353px] md:w-[50%] mx-auto place-items-center'
-      >
-        <ReactCardFlip flipDirection='horizontal' isFlipped={flip}>
+      {/* Main Content */}
+      <div className="w-[353px] md:w-[50%] mx-auto place-items-center">
+        {loading || accountsLoading ? (
+          // Skeleton for the card and categories/transactions
+          <>
+            <div className="w-full h-64 bg-gray-300 animate-pulse rounded-lg mb-6"></div>
+            <div className="flex gap-2 mb-4">
+              <div className="w-1/2 h-8 bg-gray-300 animate-pulse rounded-md"></div>
+              <div className="w-1/2 h-8 bg-gray-300 animate-pulse rounded-md"></div>
+            </div>
+            <div className="space-y-4">
+              <div className="w-full h-20 bg-gray-300 animate-pulse rounded-lg"></div>
+              <div className="w-full h-20 bg-gray-300 animate-pulse rounded-lg"></div>
+              <div className="w-full h-20 bg-gray-300 animate-pulse rounded-lg"></div>
+            </div>
+          </>
+        ) : (
+          <>
+            <ReactCardFlip flipDirection="horizontal" isFlipped={flip}>
+              <div className="cursor-pointer" onClick={flipCard}>
+                <FinancialCard transactions={filteredTransactions} accounts={accounts} />
+              </div>
 
-          <div className='cursor-pointer' onClick={flipCard}>
-            <FinancialCard transactions={filteredTransactions}/>
-          </div>
+              <div className="cursor-pointer" onClick={flipCard}>
+                <FinancialStats transactions={filteredTransactions} type={transactionType} />
+              </div>
+            </ReactCardFlip>
 
-          <div className='cursor-pointer' onClick={flipCard}>
-            <FinancialStats transactions={filteredTransactions} type={transactionType}/>
-          </div>
+            {/* Transaction switch */}
+            <TransactionSwitch type={transactionType} handleChange={handleTransactionTypeChange} />
 
-        </ReactCardFlip>
-
-        {/* Transaction switch */}
-        <TransactionSwitch type={transactionType} handleChange={handleTransactionTypeChange} />         
-
-        {/* If flip is true display categories, else display transactions */}
-        { flip ?
-          <DisplayCategories type={transactionType} transactions={filteredTransactions}/>
-          :
-          <DisplayTransactions type={transactionType} transactions={filteredTransactions}/>
-        }
-                   
-        </div>
+            {/* If flip is true display categories, else display transactions */}
+            {flip ? (
+              <DisplayCategories type={transactionType} transactions={filteredTransactions} />
+            ) : (
+              <DisplayTransactions type={transactionType} transactions={filteredTransactions} />
+            )}
+          </>
+        )}
+      </div>
 
       {/* Footer */}
-      <Drawer views={{'New-transaction': <NewTransactionForms />}}/>
+      <Drawer views={{ 'New-transaction': <NewTransactionForms /> }} />
       <IoAddCircle
         size={70}
-        className='text-indigo-400 cursor-pointer fixed bottom-4 right-4'
+        className="text-indigo-400 cursor-pointer fixed bottom-4 right-4"
         onClick={() => setDrawerState('New-transaction')}
       />
     </div>
-  )
+  );
 }

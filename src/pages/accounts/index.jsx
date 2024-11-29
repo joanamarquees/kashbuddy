@@ -12,8 +12,7 @@ import { calculateNetworth } from '../../utils/networth.js'
 
 export function Accounts() {
   const navigate = useNavigate();
-
-  const { accounts } = useGetAccounts();
+  const { accounts, loading } = useGetAccounts();
   const { totalNetworth } = calculateNetworth(accounts);
 
   return (
@@ -22,7 +21,7 @@ export function Accounts() {
       {/* Header */}
       <div className='py-6 flex flex-row items-center justify-center gap-6'>
         {accounts.length >= 1 &&
-          <button> 
+          <button>
             <MdAddCard
               size={30}
               onClick={() => setDrawerState('New-account')}
@@ -34,7 +33,7 @@ export function Accounts() {
         <h1 className='text-2xl md:text-4xl font-bold font-sans mx-2'> BankAccounts </h1>
 
         {accounts.length >= 1 &&
-          <button> 
+          <button>
             <IoMdArrowRoundBack
               size={30}
               className='cursor-pointer mx-2 translate rotate-180'
@@ -44,19 +43,41 @@ export function Accounts() {
         }
       </div>
 
-      {accounts.length <= 0 ? (
-        <div className='py-6 flex flex-col items-center justify-center gap-8 md:text-lg'>
-          <p className='text-zinc-300 leading-relaxed max-w-80 md:max-w-lg text-center font-sans'>
+      {loading ? (
+        <div>
+          {/* Skeleton for Networth */}
+          <div className="animate-pulse">
+            <h2 className="text-gray-300 text-center text-2xl md:text-4xl font-sans">
+              NETWORTH
+            </h2>
+            <div className="text-center font-extrabold py-10">
+              <div className="w-48 h-16 bg-gray-300 rounded-lg mx-auto"></div>
+            </div>
+          </div>
+
+          {/* Skeleton for Accounts List */}
+          <div className="flex flex-col gap-3">
+            {[1, 2, 3].map((index) => (
+              <div
+                key={index}
+                className="flex h-16 justify-between items-center p-4 bg-gray-300 rounded-lg animate-pulse"
+              >
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : accounts.length <= 0 ? (
+        // No Accounts
+        <div className="py-6 flex flex-col items-center justify-center gap-8 md:text-lg">
+          <p className="text-zinc-300 leading-relaxed max-w-80 md:max-w-lg text-center font-sans">
             You haven't registered any bank account, how about registering one right now?
           </p>
-          <Button onClick={() => setDrawerState('New-account')}> 
+          <Button onClick={() => setDrawerState('New-account')}>
             Add an account
           </Button>
         </div>
-      )
-      :
-      (
-        // Accounts page list
+      ) : (
+        // Accounts Page Content
         <div>
           <h2 className='text-zinc-400 text-center text-2xl md:text-4xl font-sans'> NETWORTH </h2>
           <h3 className='text-indigo-400 text-center font-extrabold text-5xl md:text-7xl py-10 font-sans'> {totalNetworth}€ </h3>
@@ -68,5 +89,6 @@ export function Accounts() {
         </div>
       )}
     </div>
-  )
+  );
 }
+

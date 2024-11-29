@@ -5,8 +5,9 @@ import { useGetUserInfo } from "./useGetUserInfo";
 
 export const useGetTransactions = () => {
   const [transactions, setTransactions] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const transactionCollectionRef = collection(db, "transactions"); // change to incomes or expenses
+  const transactionCollectionRef = collection(db, "transactions");
   const { userId } = useGetUserInfo();
 
   const getTransactions = async () => {
@@ -16,32 +17,38 @@ export const useGetTransactions = () => {
       const queryTransactions = query(
         transactionCollectionRef,
         where("userId", "==", userId),
-        orderBy("date", "desc")// TODO: check if the desc is correctly set
+        orderBy("date", "desc")
       );
 
-    unsubscribe = onSnapshot(queryTransactions, (snapshot) => {
-        let docs = [];
+      unsubscribe = onSnapshot(queryTransactions, (snapshot) => {
+        const docs = [];
 
         snapshot.forEach((doc) => {
-          const data = doc.data(); // get the data from the firebase doc
-          const id = doc.id
-          
-          docs.push({ id, ...data });            
-        })
+          const data = doc.data();
+          const id = doc.id;
+          docs.push({ id, ...data });
+        });
 
         setTransactions(docs);
-      })
-      
+        setLoading(false);
+      });
     } catch (err) {
       console.error(err);
+      setLoading(false);
     }
 
-    return () => unsubscribe();
-  }
-  
+    return () => unsubscribe && unsubscribe();
+  };
+
   useEffect(() => {
-    getTransactions()
+    getTransactions();
+    return () => {
+      setLoading(true);
+    };
   }, []);
 
-  return { transactions };
-}
+  return {
+    transactions,
+    loading
+  };
+};

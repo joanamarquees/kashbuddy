@@ -4,8 +4,7 @@ import { useGetAccounts } from '../../hooks/useGetAccounts';
 import { IoMdArrowRoundBack } from 'react-icons/io';
 import { calculateNetworth } from '../../utils/networth.js'
 
-export const FinancialCard = ({transactions}) => {
-  const { accounts } = useGetAccounts();
+export const FinancialCard = ({transactions, accounts}) => {
   const { totalNetworth, totalExpenses, totalIncomes} = calculateNetworth(accounts, transactions);
 
   return (
