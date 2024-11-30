@@ -40,7 +40,7 @@ export function Popup({bankName, amount}) {
       <button
         type='button'
         onClick={openModal}
-        className='container mx-auto w-5/6 h-16 align-middle flex border-dashed border-[1.5px]  border-white rounded-xl'>
+        className='container mx-auto w-5/6 h-16 items-center-middle flex border-dashed border-[1.5px]  border-white rounded-xl'>
           <p className='pl-3 mx-auto ml-0  content-center'> {bankName} </p>
           <p className='pr-3 mx-auto mr-0  content-center'> {amount}€ </p> 
       </button>
