@@ -18,6 +18,8 @@ export function NewTransactionForms({ type }) {
   });
   const [error, setError] = useState('');
 
+  console.log(transactionData);
+
   const handleTransactionTypeChange = (e) => {
     setTransactionData({ ...transactionData, transactionType: e.target.value });
   };

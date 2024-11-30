@@ -117,7 +117,7 @@ export function Home() {
       </div>
 
       {/* Footer */}
-      <Drawer views={{ 'New-transaction': <NewTransactionForms /> }} />
+      <Drawer views={{ 'New-transaction': <NewTransactionForms type={transactionType} /> }} />
       <IoAddCircle
         size={70}
         className="text-indigo-400 cursor-pointer fixed bottom-4 right-4"

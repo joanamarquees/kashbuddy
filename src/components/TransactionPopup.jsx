@@ -26,8 +26,6 @@ export function TransactionPopup({ transaction }) {
   const { deleteTransaction } = useDeleteTransaction();
   const { updateTransaction } = useUpdateTransaction();
 
-  console.log(daysjs(transactionData.date).format('YYYY-MM-DD'));
-
   useEffect(() => {
     const fetchCategory = async () => {
       const categoryDoc = await getDoc(doc(db, 'categories', transaction.categoryId));
