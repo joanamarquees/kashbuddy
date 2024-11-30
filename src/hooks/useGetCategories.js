@@ -5,6 +5,7 @@ import { useGetUserInfo } from "./useGetUserInfo";
 
 export const useGetCategories = () => {
   const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const categoriesCollectionRef = collection(db, "categories"); // change to incomes or expenses
   const { userId } = useGetUserInfo();
@@ -13,11 +14,11 @@ export const useGetCategories = () => {
     let unsubscribe;
 
     try {
-      const queryCategories = query(
-        categoriesCollectionRef,
-        where("userId", "==", userId),
-        orderBy("value")
-      );
+    const queryCategories = query(
+      categoriesCollectionRef,
+      where("userId", "==", userId),
+      orderBy("value")
+    );
 
     unsubscribe = onSnapshot(queryCategories, (snapshot) => {
         let docs = [];
@@ -26,7 +27,7 @@ export const useGetCategories = () => {
           const data = doc.data(); // get the data from the firebase doc
           const id = doc.id
           
-          docs.push({ id, ...data });            
+          docs.push({ id, ...data });
         })
 
         setCategories(docs);
@@ -34,14 +35,18 @@ export const useGetCategories = () => {
       
     } catch (err) {
       console.error(err);
-    }
+      setLoading(false);
+      }
 
     return () => unsubscribe();
   }
-  
+
   useEffect(() => {
     getCategories()
   }, []);
 
-  return { categories };
-}
+  return {
+    categories,
+    loading
+  };
+};

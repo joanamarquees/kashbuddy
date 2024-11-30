@@ -14,7 +14,7 @@ import { useGetCategories } from '../../../hooks/useGetCategories.js';
 
 export function Categories() {
   const navigate = useNavigate();
-  const { categories } = useGetCategories();
+  const { categories, loading } = useGetCategories();
 
   return (
     <div className='container mx-auto px-4 h-full'>
@@ -31,19 +31,31 @@ export function Categories() {
           Categories
         </h1>
 
-        {categories.length >= 1 ?
-          <button> 
+        {categories.length >= 1 && !loading ? (
+          <button>
             <IoAdd
               size={30}
               onClick={() => setDrawerState('New-category')}
               className='cursor-pointer mx-2'
             />
           </button>
-          : <IoAdd size={30} className='invisible' />
-        }
+        ) : (
+          <IoAdd size={30} className='invisible' />
+        )}
       </div>
 
-      {categories.length <= 0 ? (
+      {/* Content */}
+      {loading ? (
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 animate-pulse'>
+          {/* Skeleton Loaders */}
+          {Array.from({ length: 6 }).map((_, index) => (
+            <div
+              key={index}
+              className='h-14 bg-zinc-700 rounded-full shadow-md'
+            />
+          ))}
+        </div>
+      ) : categories.length <= 0 ? (
         <div className='py-6 flex flex-col items-center justify-center gap-8 md:text-lg'>
           <p className='text-zinc-300 leading-relaxed max-w-80 md:max-w-lg text-center font-sans'>
             You haven't registered any category, how about registering one right now?
@@ -53,7 +65,7 @@ export function Categories() {
           </Button>
         </div>
       ) : (
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3'>
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3'>
       
       {categories.map((category) => {
           return (
@@ -65,8 +77,8 @@ export function Categories() {
           );
         })}
 
-      </div>
-      )}     
+        </div>
+      )}
     </div>
   );
 }
