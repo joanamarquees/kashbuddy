@@ -87,7 +87,7 @@ export function Popup({ category, allCategories }) {
                   </button>
                   <div className='px-4 pb-4 sm:p-6 sm:pb-4 flex flex-col justify-center items-center align-center gap-6'>
                     <div className='sm:flex sm:items-center'>
-                      <div className='modal-box space-y-5'>
+                      <div className='modal-box space-y-3'>
     
                         <h3 className='font-bold text-lg text-center'> Edit Category </h3>
 

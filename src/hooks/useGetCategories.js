@@ -31,6 +31,7 @@ export const useGetCategories = () => {
         })
 
         setCategories(docs);
+        setLoading(false);
       })
       
     } catch (err) {

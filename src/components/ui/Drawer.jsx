@@ -66,12 +66,12 @@ export const Drawer = ({ views }) => {
 
             {/* drawer content */}
             <motion.div
-              className='pb-[calc(6rem+env(safe-area-inset-bottom))]'
+              className='pb-[calc(6rem+env(safe-area-inset-bottom))] overflow-scroll'
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               key={contentId}
               layout='position'
-            >
+            > 
               {views[contentId]}
             </motion.div>
           </motion.div>

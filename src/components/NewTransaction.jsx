@@ -73,7 +73,8 @@ export function NewTransactionForms({ type }) {
         <Input
           id='date'
           type='date'
-          className={`w-full z-50 ${!transactionData.date && 'text-zinc-400'}`}
+          placeholder='dd-mm-yyyy'
+          className={`w-full z-50 text-left ${!transactionData.date && 'text-zinc-400'}`}
           onChange={handleDateChange}
         />
       </div>
@@ -93,7 +94,7 @@ export function NewTransactionForms({ type }) {
         />
       </div>
       <div className='flex gap-2 justify-center my-4'>
-        <Button variant='secondary'>
+        <Button variant='secondary' onClick={() => setDrawerState(null)}>
           Cancel
         </Button>
         <Button onClick={handleAddTransaction}>

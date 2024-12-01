@@ -15,7 +15,7 @@ export function IconPicker({ categoryData, setCategoryData }) {
       {iconList.map((Icon, index) => (
         <div
           key={index}
-          className={`flex flex-col items-center cursor-pointer p-2 rounded-full hover:bg-gray-200 transition ${
+          className={`flex flex-col items-center cursor-pointer p-2 rounded-full transition ${
             selectedIcon === index ? 'bg-indigo-400/50' : ''
           }`}
           onClick={() => handleSelectIcon(index)}

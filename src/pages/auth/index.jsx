@@ -13,12 +13,11 @@ export const Auth = () => {
   const navigate = useNavigate();
   const [error, setError] = useState(null);
   const { isAuth } = useGetUserInfo();
-
+  
   const signInWithGoogle = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
-
-      // Save user auth info to local state and localStorage
+      
       const authData = {
         userId: result.user.uid,
         name: result.user.displayName,
@@ -26,12 +25,12 @@ export const Auth = () => {
       };
       localStorage.setItem('auth', JSON.stringify(authData));
       navigate('/home')
-
+      
     } catch (error) {
       setError(error.message);
     }
   };
-
+  
   if(isAuth) navigate('/home');
 
   return (
