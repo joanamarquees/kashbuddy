@@ -6,7 +6,6 @@ import { useGetUserInfo } from "./useGetUserInfo";
 export const useGetAccounts = () => {
   const [accounts, setAccounts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const accountsCollection = collection(db, 'accounts');
   const { userId } = useGetUserInfo();
 
   useEffect(() => {
@@ -16,7 +15,7 @@ export const useGetAccounts = () => {
     }
 
     const queryAccounts = query(
-      accountsCollection,
+      collection(db, 'accounts'),
       where("userId", "==", userId),
       orderBy("createdAt", "desc")
     );
@@ -41,7 +40,7 @@ export const useGetAccounts = () => {
     );
 
     return () => unsubscribe();
-  }, [userId, accountsCollection]);
+  }, [userId]);
 
   return {
     accounts,

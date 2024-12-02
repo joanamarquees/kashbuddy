@@ -7,15 +7,14 @@ export const useGetCategories = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const categoriesCollectionRef = collection(db, "categories"); // change to incomes or expenses
   const { userId } = useGetUserInfo();
 
-  const getCategories = () => {
+  useEffect(() => {
     let unsubscribe;
 
     try {
     const queryCategories = query(
-      categoriesCollectionRef,
+      collection(db, "categories"),
       where("userId", "==", userId),
       orderBy("value")
     );
@@ -40,11 +39,7 @@ export const useGetCategories = () => {
       }
 
     return () => unsubscribe();
-  }
-
-  useEffect(() => {
-    getCategories()
-  }, [getCategories]);
+  }, [userId]);
 
   return {
     categories,

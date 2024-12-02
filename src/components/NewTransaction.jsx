@@ -18,8 +18,6 @@ export function NewTransactionForms({ type }) {
   });
   const [error, setError] = useState('');
 
-  console.log(transactionData);
-
   const handleTransactionTypeChange = (e) => {
     setTransactionData({ ...transactionData, transactionType: e.target.value });
   };
@@ -89,8 +87,8 @@ export function NewTransactionForms({ type }) {
         <Dropdown
           transactionData={transactionData}
           setTransactionData={setTransactionData}
-          placeholder='account'
           field='accountId'
+          placeholder='account'
         />
       </div>
       <div className='flex gap-2 justify-center my-4'>
