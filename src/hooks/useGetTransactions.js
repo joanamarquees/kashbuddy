@@ -10,7 +10,7 @@ export const useGetTransactions = () => {
   const transactionCollectionRef = collection(db, "transactions");
   const { userId } = useGetUserInfo();
 
-  const getTransactions = async () => {
+  const getTransactions = () => {
     let unsubscribe;
 
     try {

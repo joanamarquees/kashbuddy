@@ -1,4 +1,4 @@
-import { collection, doc, deleteDoc, getDocs } from 'firebase/firestore';
+import { doc, deleteDoc } from 'firebase/firestore';
 import { db } from '../config/firebase-config';
 
 /**
@@ -7,7 +7,6 @@ import { db } from '../config/firebase-config';
 export const useDeleteCategory = () => {
 
   const deleteCategory = async ({ id }) => {
-    console.log(`Deleting category ${id}`);
 
     const deleted = await deleteDoc(doc(db, 'categories', id));
 

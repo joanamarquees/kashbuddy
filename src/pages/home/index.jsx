@@ -34,7 +34,7 @@ export function Home() {
     if (!accountsLoading && accounts.length === 0) {
       navigate('/accounts');
     }
-  }, [accountsLoading]);
+  }, [accountsLoading, accounts.length, navigate]);
 
   const handleTransactionTypeChange = (e) => {
     setTransactionType(e.target.value);

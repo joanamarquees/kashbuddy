@@ -10,7 +10,7 @@ export const useGetCategories = () => {
   const categoriesCollectionRef = collection(db, "categories"); // change to incomes or expenses
   const { userId } = useGetUserInfo();
 
-  const getCategories = async () => {
+  const getCategories = () => {
     let unsubscribe;
 
     try {
@@ -44,7 +44,7 @@ export const useGetCategories = () => {
 
   useEffect(() => {
     getCategories()
-  }, []);
+  }, [getCategories]);
 
   return {
     categories,

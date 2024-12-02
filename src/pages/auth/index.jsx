@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // to change from login to home page
 
 import { auth, provider } from '../../config/firebase-config';

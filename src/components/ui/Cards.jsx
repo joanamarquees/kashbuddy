@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { useGetAccounts } from '../../hooks/useGetAccounts';
 import { IoMdArrowRoundBack } from 'react-icons/io';
 import { calculateNetworth } from '../../utils/networth.js'
 

@@ -73,7 +73,6 @@ export function DisplayCategories({ type, transactions }) {
   return (
     <div className='grid grid-cols-2 gap-2 mt-3'>
       {chartData.map(({ category, amount, color }) => (
-        console.log('category', category),
         <div
           key={category}
           className='container col-span-1 rounded-xl h-24 flex flex-col align-middle pt-5'

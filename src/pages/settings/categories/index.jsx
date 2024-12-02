@@ -7,7 +7,6 @@ import { IoAdd } from 'react-icons/io5';
 import { Button } from '../../../components/ui/Button.jsx';
 import { Drawer, setDrawerState } from '../../../components/ui/Drawer.jsx';
 import { NewCategoryForms } from '../../../components/NewCategory.jsx';
-import { iconList } from '../../../utils/categories.js';
 import { Popup } from '../../../components/CategoryPopup.jsx';
 
 import { useGetCategories } from '../../../hooks/useGetCategories.js';

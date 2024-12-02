@@ -41,7 +41,7 @@ export const useGetAccounts = () => {
     );
 
     return () => unsubscribe();
-  }, [userId]);
+  }, [userId, accountsCollection]);
 
   return {
     accounts,

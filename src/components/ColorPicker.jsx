@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Button } from './ui/Button';
 import { IoAdd } from 'react-icons/io5';
 
 export function ColorPicker({ categoryData, setCategoryData, allCategories }) {
@@ -15,12 +14,6 @@ export function ColorPicker({ categoryData, setCategoryData, allCategories }) {
   const handleColorChange = (e) => {
     setColor(e.target.value);
     setCategoryData({ ...categoryData, color: e.target.value });
-  };
-
-  const addColor = () => {
-    if (!colors.includes(color)) {
-      setColors([color, ...colors]);
-    }
   };
 
   return (
