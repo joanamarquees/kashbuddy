@@ -10,7 +10,7 @@ export const useGetTransactions = () => {
   const transactionCollectionRef = collection(db, "transactions");
   const { userId } = useGetUserInfo();
 
-  const getTransactions = () => {
+  useEffect(() => {
     let unsubscribe;
 
     try {
@@ -38,14 +38,7 @@ export const useGetTransactions = () => {
     }
 
     return () => unsubscribe && unsubscribe();
-  };
-
-  useEffect(() => {
-    getTransactions();
-    return () => {
-      setLoading(true);
-    };
-  }, []);
+  }, [transactionCollectionRef, userId]);
 
   return {
     transactions,
