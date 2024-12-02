@@ -94,7 +94,7 @@ export function NewCategoryForms({ allCategories }) {
 
       {/* Footer */}
       <div className='flex gap-2 justify-center'>
-        <Button variant='secondary'>
+        <Button variant='secondary' onClick={() => setDrawerState(null)}>
           Cancel
         </Button>
         <Button onClick={handleAddCategory}>

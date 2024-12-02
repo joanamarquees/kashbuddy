@@ -41,10 +41,10 @@ export function NewAccountForms() {
       <p className='ml-2 font-medium'> Bank networth </p>
       <Input
         id='amount'
-        inputMode='numeric'
+        inputMode='decimal'
         placeholder='Insert your bank networth...'
         value={accountData.amount}
-        onChange={(e) => setAccountData({ ...accountData, amount: e.target.value.replace(/[^0-9.]/g, '').replace(/^0+(\d)/, '$1').replace(/(\..*)\./g, '$1') })}
+        onChange={(e) => setAccountData({ ...accountData, amount: e.target.value.replace(',', '.') })}
       />
 
       <div className='my-4 flex justify-center'>

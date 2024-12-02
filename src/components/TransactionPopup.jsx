@@ -147,7 +147,7 @@ export function TransactionPopup({ transaction }) {
                         <div className="flex justify-between gap-4 w-full">
                           <Input
                             id='update amount'
-                            inputMode='numeric'
+                            inputMode='decimal'
                             placeholder={transactionData.amount}
                             className='w-1/2'
                             value={transactionData.amount}

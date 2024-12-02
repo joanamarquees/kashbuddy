@@ -24,7 +24,7 @@ export function Popup({bankName, amount}) {
   async function handleUpdateAmount() {
     await updateAmount({
       bankName,
-      'amount': Number(parseFloat(newAmount)),
+      'amount': Math.round(newAmount),
     });
     closeModal();
   }
@@ -81,11 +81,11 @@ export function Popup({bankName, amount}) {
                         <h3 className='font-bold text-lg text-center'> Bank netwoth </h3>
                         <Input
                           id='update amount'
+                          inputMode='decimal'
                           autoFocus
-                          inputMode='numeric'
                           placeholder={amount}
                           value={newAmount}
-                          onChange={(e) => setNewAmount(e.target.value.replace(/[^0-9.]/g, '').replace(/^0+(\d)/, '$1').replace(/(\..*)\./g, '$1'))} 
+                          onChange={(e) => setNewAmount(e.target.value.replace(',', '.'))} 
                         />
                       </div>
                     </div>

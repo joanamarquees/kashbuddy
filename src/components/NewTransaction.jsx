@@ -13,7 +13,7 @@ export function NewTransactionForms({ type }) {
     amount: '',
     categoryId: '',
     transactionType: type,
-    date: '',
+    date: new Date(),
     accountId: '',
   });
   const [error, setError] = useState('');
@@ -64,17 +64,17 @@ export function NewTransactionForms({ type }) {
       <div className='flex justify-between gap-4 w-full'>
         <Input
           id='amount'
-          inputMode='numeric'
+          inputMode='decimal'
           placeholder='0.00€'
           className='w-1/2'
           value={transactionData.amount}
-          onChange={(e) => setTransactionData({ ...transactionData, amount: e.target.value.replace(/[^0-9.]/g, '').replace(/^0+(\d)/, '$1').replace(/(\..*)\./g, '$1')})}
+          onChange={(e) => setTransactionData({ ...transactionData, amount: e.target.value.replace(',', '.')})}
         />
         <Input
           id='date'
           type='date'
-          placeholder='dd-mm-yyyy'
-          className={`w-full z-50 text-left ${!transactionData.date && 'text-zinc-400'}`}
+          value={transactionData.date.toISOString().split('T')[0] || ''}
+          className={`w-full z-50 ${!transactionData.date && 'text-zinc-400'}`}
           onChange={handleDateChange}
         />
       </div>

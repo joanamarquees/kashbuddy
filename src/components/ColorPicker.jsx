@@ -34,7 +34,7 @@ export function ColorPicker({ categoryData, setCategoryData, allCategories }) {
               type='color'
               value={color}
               onChange={handleColorChange}
-              className='appearance-none w-full h-full p-0 cursor-pointer opacity-0 absolute'
+              className='appearance-none w-full h-full p-0 cursor-pointer opacity-0 absolute z-50'
             />
             <IoAdd
               onClick={() => inputRef.current.click()}
