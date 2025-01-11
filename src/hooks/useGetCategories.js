@@ -10,6 +10,7 @@ export const useGetCategories = () => {
   const { userId } = useGetUserInfo();
 
   useEffect(() => {
+  useEffect(() => {
     let unsubscribe;
 
     try {
