@@ -6,6 +6,7 @@ import { Calendar } from '../../components/ui/Calendar.jsx';
 import { FinancialCard } from '../../components/ui/Cards.jsx';
 import { Drawer, setDrawerState } from '../../components/ui/Drawer.jsx';
 import { NewTransactionForms } from '../../components/NewTransaction.jsx';
+import { useAddCategory } from '../../hooks/useAddCategory.js';
 import { TransactionSwitch } from '../../components/TransactionSwitch.jsx';
 import { DisplayTransactions } from '../../components/DisplayTransactions.jsx';
 import { FinancialStats } from '../../components/FinancialStats.jsx';
@@ -21,17 +22,68 @@ import isoWeek from 'dayjs/plugin/isoWeek';
 
 dayjs.extend(isoWeek);
 
+let defaultCategories = [
+  {
+    value: 'grocery',
+    label: 'grocery',
+    iconIndex: 2,
+    color: '#7a2680',
+    categoryType: 'expense',
+  },
+  {
+    value: 'transports',
+    label: 'transports',
+    iconIndex: 16,
+    color: '#204718',
+    categoryType: 'expense',
+  },
+  {
+    value: 'health',
+    label: 'health',
+    iconIndex: 8,
+    color: '#eb4034',
+    categoryType: 'expense',
+  },
+  {
+    value: 'food',
+    label: 'food',
+    iconIndex: 42,
+    color: '#34d6eb',
+    categoryType: 'expense',
+  },
+  {
+    value: 'salary',
+    label: 'salary',
+    iconIndex: 34,
+    color: '#381bab',
+    categoryType: 'income',
+  },
+]
+
 export function Home() {
   const navigate = useNavigate();
   const { transactions, loading } = useGetTransactions();
   const { accounts, loading: accountsLoading } = useGetAccounts();
+  const { addCategory } = useAddCategory(); 
   const [flip, setFlip] = useState(false);
   const [currentDate, setCurrentDate] = useState(dayjs());
   const [transactionType, setTransactionType] = useState('expense');
   const [filteredTransactions, setFilteredTransactions] = useState(transactions);
 
   useEffect(() => {
-    if (!accountsLoading && accounts.length === 0) {
+    if (!accountsLoading && accounts.length === 0) { 
+      //If its a new user: create default categories && navigate for /accounts
+      
+      {defaultCategories.map((category) => (
+        addCategory({
+          'value': category.value,
+          'label': category.label,
+          'iconIndex': category.iconIndex,
+          'color': category.color,
+          'categoryType': category.categoryType,
+        })
+      ))}     
+
       navigate('/accounts');
     }
   }, [accountsLoading, accounts.length, navigate]);
