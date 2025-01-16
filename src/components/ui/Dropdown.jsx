@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useGetCategories } from '../../hooks/useGetCategories';
 import { useGetAccounts } from '../../hooks/useGetAccounts';
 import { getCategoriesByType } from '../../utils/categories';

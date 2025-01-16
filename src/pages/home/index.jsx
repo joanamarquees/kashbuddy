@@ -74,7 +74,7 @@ export function Home() {
     if (!accountsLoading && accounts.length === 0) { 
       //If its a new user: create default categories && navigate for /accounts
       
-      {defaultCategories.map((category) => (
+      defaultCategories.map((category) => (
         addCategory({
           'value': category.value,
           'label': category.label,
@@ -82,11 +82,11 @@ export function Home() {
           'color': category.color,
           'categoryType': category.categoryType,
         })
-      ))}     
+      ))    
 
       navigate('/accounts');
     }
-  }, [accountsLoading, accounts.length, navigate]);
+  }, [accountsLoading, accounts.length, navigate, addCategory]);
 
   const handleTransactionTypeChange = (e) => {
     setTransactionType(e.target.value);
@@ -164,6 +164,7 @@ export function Home() {
             ) : (
               <DisplayTransactions type={transactionType} transactions={filteredTransactions} />
             )}
+
 
           </>
         )}
