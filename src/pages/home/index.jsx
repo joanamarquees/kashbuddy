@@ -164,6 +164,7 @@ export function Home() {
             ) : (
               <DisplayTransactions type={transactionType} transactions={filteredTransactions} />
             )}
+
           </>
         )}
       </div>
