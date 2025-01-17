@@ -7,7 +7,6 @@ export const useGetTransactions = () => {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const transactionCollectionRef = collection(db, "transactions");
   const { userId } = useGetUserInfo();
 
   useEffect(() => {
@@ -15,7 +14,7 @@ export const useGetTransactions = () => {
 
     try {
       const queryTransactions = query(
-        transactionCollectionRef,
+        collection(db, "transactions"),
         where("userId", "==", userId),
         orderBy("date", "desc")
       );
@@ -38,7 +37,7 @@ export const useGetTransactions = () => {
     }
 
     return () => unsubscribe && unsubscribe();
-  }, [transactionCollectionRef, userId]);
+  }, [userId]);
 
   return {
     transactions,

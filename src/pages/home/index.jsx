@@ -103,7 +103,7 @@ export function Home() {
       return dayjs(transactionDate).isSame(currentDate, 'month');
     });
 
-    setFilteredTransactions(filtered);
+    setFilteredTransactions(filtered);  
   }, [currentDate, transactions]);
 
   return (
