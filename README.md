@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-<a href="https://kashbuddy.vercel.app/"> Project Link </a>
+<a href="https://kashbuddy.tudu.dev/"> Project Link </a>
 </p>
 
 <p align="center">
