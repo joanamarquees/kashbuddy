@@ -1,13 +1,14 @@
+import { ImSpinner } from "react-icons/im";
 import { IoIosArrowBack } from "react-icons/io";
-import { MdAddCard } from "react-icons/md";
+import { IoAddCircle } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
-import { Popup } from "../../components/AccountPopup.jsx";
 import { NewAccountForms } from "../../components/NewAccount.jsx";
 import { Button } from "../../components/ui/Button.jsx";
 import { Drawer, setDrawerState } from "../../components/ui/Drawer.jsx";
 
 import { useGetAccounts } from "../../hooks/useGetAccounts.js";
 import { calculateNetworth } from "../../utils/networth.js";
+import { AccountCard } from "./_components/accountCard.jsx";
 
 export function Accounts() {
 	const navigate = useNavigate();
@@ -15,61 +16,29 @@ export function Accounts() {
 	const { totalNetworth } = calculateNetworth(accounts);
 
 	return (
-		<div className="container mx-auto px-5 h-full select-none">
+		<div className="mx-auto px-5 h-full select-none space-y-2">
 			<Drawer views={{ "New-account": <NewAccountForms /> }} />
 
 			{/* Header */}
-			<div className="py-6 flex flex-row items-center justify-between space-x-2">
+			<div className="flex flex-row items-center justify-start">
 				{accounts.length >= 1 && (
-					<button type="button">
-						<IoIosArrowBack
-							size={30}
-							className="cursor-pointer"
-							onClick={() => navigate("/home")}
-						/>
-					</button>
-				)}
-
-				<h1 className="text-2xl md:text-4xl font-bold font-sans">
-					BankAccounts
-				</h1>
-
-				{accounts.length >= 1 && (
-					<button type="button">
-						<MdAddCard
-							size={30}
-							onClick={() => setDrawerState("New-account")}
-							className="cursor-pointer"
-						/>
+					<button type="button" onClick={() => navigate("/home")}>
+						<IoIosArrowBack size={35} className="cursor-pointer" />
 					</button>
 				)}
 			</div>
 
-			{loading ? (
-				<div>
-					{/* Skeleton for Networth */}
-					<div className="animate-pulse">
-						<h2 className="text-gray-300 text-center text-2xl md:text-4xl font-sans">
-							NETWORTH
-						</h2>
-						<div className="text-center font-extrabold py-10">
-							<div className="w-48 h-16 bg-gray-300 rounded-lg mx-auto"></div>
-						</div>
-					</div>
-
-					{/* Skeleton for Accounts List */}
-					<div className="flex flex-col gap-3">
-						{[1, 2, 3].map((index) => (
-							<div
-								key={index}
-								className="flex h-16 justify-between items-center p-4 bg-zinc-800 rounded-lg animate-pulse"
-							/>
-						))}
-					</div>
+			{/* Loading Spinner */}
+			{loading && (
+				<div className="h-full w-full flex items-center justify-center animate-spin">
+					<ImSpinner />
 				</div>
-			) : accounts.length <= 0 ? (
-				// No Accounts
-				<div className="py-6 flex flex-col items-center justify-center gap-8 md:text-lg">
+			)}
+
+			{/* No Accounts */}
+			{accounts.length <= 0 && (
+				<div className="py-6 h-full w-full flex flex-col items-center justify-center gap-8 md:text-lg">
+					{/* TODO: add an empty wallet svg */}
 					<p className="text-zinc-300 leading-relaxed max-w-80 md:max-w-lg text-center font-sans">
 						You haven't registered any bank account, how about registering one
 						right now?
@@ -78,22 +47,53 @@ export function Accounts() {
 						Add an account
 					</Button>
 				</div>
-			) : (
-				// Accounts Page Content
-				<div>
-					<h2 className="text-zinc-400 text-center text-2xl md:text-4xl font-sans">
-						{" "}
-						NETWORTH{" "}
-					</h2>
-					<h3 className="text-indigo-400 text-center font-extrabold text-5xl md:text-7xl py-10 font-sans">
-						{" "}
-						{totalNetworth}€{" "}
-					</h3>
-					<div className="flex flex-col gap-3">
-						{accounts.map(({ bankName, amount }) => (
-							<Popup key={bankName} bankName={bankName} amount={amount} />
-						))}
+			)}
+
+			{/* Accounts Page Content */}
+			{accounts.length >= 1 && (
+				<div className="space-y-10">
+					{/* Total Net Worth */}
+					<div className="space-y-2">
+						<h2 className="text-zinc-400 text-center uppercase tracking-wider font-bold text-sm font-sans">
+							TOTAL NET WORTH
+						</h2>
+						<span className="flex items-end justify-center text-indigo-400 text-center font-extrabold text-6xl md:text-7xl font-sans">
+							{totalNetworth}
+							<p className="text-muted-color font-medium text-3xl ml-1">€</p>
+						</span>
 					</div>
+
+					{/* Accounts list */}
+					<div className="space-y-5">
+						<div className="flex items-center justify-between px-2">
+							<h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em]">
+								Your Accounts
+							</h3>
+							{/* <button
+								type="button"
+								onClick={() => setDrawerState("New-account")}
+								className="p-2 bg-light-background text-primary rounded-lg "
+							>
+								<FaPlus className="w-4 h-4" />
+							</button> */}
+						</div>
+
+						<div className="flex flex-col space-y-4 w-full">
+							{accounts.map(({ bankName, amount }) => (
+								<AccountCard
+									key={bankName}
+									bankName={bankName}
+									amount={amount}
+								/>
+							))}
+						</div>
+					</div>
+
+					<IoAddCircle
+						size={70}
+						className="text-indigo-400 cursor-pointer fixed bottom-5 right-5"
+						onClick={() => setDrawerState("New-account")}
+					/>
 				</div>
 			)}
 		</div>
