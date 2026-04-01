@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import isoWeek from "dayjs/plugin/isoWeek";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ReactCardFlip from "react-card-flip";
 import { IoAddCircle, IoSettingsOutline } from "react-icons/io5";
 import { PiBank } from "react-icons/pi";
@@ -19,7 +19,7 @@ import { useGetTransactions } from "../../hooks/useGetTransactions.js";
 
 dayjs.extend(isoWeek);
 
-let defaultCategories = [
+const defaultCategories = [
 	{
 		value: "grocery",
 		label: "grocery",

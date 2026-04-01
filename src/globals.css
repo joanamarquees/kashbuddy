@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 /* reset css */
 /* http://meyerweb.com/eric/tools/css/reset/ 
