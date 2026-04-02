@@ -1,11 +1,11 @@
-import { ImSpinner } from "react-icons/im";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoAddCircle } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
+import { Header } from "../../components/Header.jsx";
+import { LoadingScreen } from "../../components/LoadingScreen.jsx";
 import { NewAccountForms } from "../../components/NewAccount.jsx";
 import { Button } from "../../components/ui/Button.jsx";
 import { Drawer, setDrawerState } from "../../components/ui/Drawer.jsx";
-
 import { useGetAccounts } from "../../hooks/useGetAccounts.js";
 import { calculateNetworth } from "../../utils/networth.js";
 import { AccountCard } from "./_components/accountCard.jsx";
@@ -20,20 +20,18 @@ export function Accounts() {
 			<Drawer views={{ "New-account": <NewAccountForms /> }} />
 
 			{/* Header */}
-			<div className="flex flex-row items-center justify-start">
-				{accounts.length >= 1 && (
-					<button type="button" onClick={() => navigate("/home")}>
-						<IoIosArrowBack size={35} className="cursor-pointer" />
-					</button>
-				)}
-			</div>
+			<Header
+				leftIcon={
+					<IoIosArrowBack
+						size={35}
+						className="cursor-pointer"
+						onClick={() => navigate("/home")}
+					/>
+				}
+			/>
 
 			{/* Loading Spinner */}
-			{loading && (
-				<div className="h-full w-full flex items-center justify-center animate-spin">
-					<ImSpinner />
-				</div>
-			)}
+			{loading && <LoadingScreen />}
 
 			{/* No Accounts */}
 			{accounts.length <= 0 && (

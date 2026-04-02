@@ -1,0 +1,88 @@
+import { doc, getDoc } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import {
+	Bar,
+	BarChart,
+	Cell,
+	ResponsiveContainer,
+	XAxis,
+	YAxis,
+} from "recharts";
+import { db } from "../../../config/firebase-config";
+
+export function FinancialStats({ transactions, type }) {
+	const [categories, setCategories] = useState({});
+
+	useEffect(() => {
+		const fetchCategories = async () => {
+			const categoryData = {};
+
+			for (const transaction of transactions) {
+				const categoryId = transaction.categoryId;
+				if (!categoryData[categoryId]) {
+					const categoryDoc = await getDoc(doc(db, "categories", categoryId));
+					categoryData[categoryId] = categoryDoc.data();
+				}
+			}
+			setCategories(categoryData);
+		};
+		fetchCategories();
+	}, [transactions]);
+
+	// Calculate total amount for each category
+	const categoryTotals = transactions.reduce((acc, transaction) => {
+		if (transaction.transactionType !== type) {
+			return acc;
+		}
+		const categoryId = transaction.categoryId;
+		if (!acc[categoryId]) {
+			acc[categoryId] = 0;
+		}
+		acc[categoryId] += parseFloat(transaction.amount);
+		return acc;
+	}, {});
+
+	// Format the data for Recharts (each object contains a category and total amount)
+	const chartData = Object.keys(categoryTotals).map((categoryId) => ({
+		category: categories[categoryId]?.label,
+		amount: categoryTotals[categoryId],
+		color: categories[categoryId]?.color || "#FFFFFF",
+	}));
+
+	// If there is no data, display a message
+	if (chartData.length === 0) {
+		return (
+			<div
+				className="bg-primary/20 backdrop-blur-lg border-2 border-primary/50
+						rounded-xl mx-auto w-[90%] h-52 items-center justify-center flex flex-col space-y-8 shadow-lg"
+			>
+				<p className="text-5xl">🎉</p>
+				<p className="text-center font-semibold uppercase text-zinc-100">
+					You have no {type}s this month!
+				</p>
+			</div>
+		);
+	}
+
+	return (
+		<div
+			className="bg-primary/20 backdrop-blur-lg border-2 border-primary/50
+						rounded-xl mx-auto w-[90%] h-52 items-center justify-center flex flex-col space-y-8 shadow-lg"
+		>
+			{/* Content */}
+			<div className="relative mx-auto w-full md:w-88.25 h-full py-3 items-center">
+				<ResponsiveContainer width="100%" height="100%">
+					<BarChart data={chartData} margin={{ top: 20 }}>
+						<XAxis hide />
+						<YAxis hide />
+						<Bar dataKey="amount" label={{ position: "top" }} radius={10}>
+							{chartData.map((entry) => (
+								<Cell key={`cell-${entry}`} fill="oklch(67.3% 0.182 276.935)" />
+							))}
+						</Bar>
+					</BarChart>
+				</ResponsiveContainer>
+			</div>
+		</div>
+	);
+}
