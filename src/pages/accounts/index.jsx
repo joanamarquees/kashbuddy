@@ -1,5 +1,5 @@
 import { IoIosArrowBack } from "react-icons/io";
-import { IoAddCircle } from "react-icons/io5";
+import { IoAdd } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { Header } from "../../components/Header.jsx";
 import { LoadingScreen } from "../../components/LoadingScreen.jsx";
@@ -67,13 +67,6 @@ export function Accounts() {
 							<h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em]">
 								Your Accounts
 							</h3>
-							{/* <button
-								type="button"
-								onClick={() => setDrawerState("New-account")}
-								className="p-2 bg-light-background text-primary rounded-lg "
-							>
-								<FaPlus className="w-4 h-4" />
-							</button> */}
 						</div>
 
 						<div className="flex flex-col space-y-4 w-full">
@@ -87,11 +80,14 @@ export function Accounts() {
 						</div>
 					</div>
 
-					<IoAddCircle
-						size={70}
-						className="text-indigo-400 cursor-pointer fixed bottom-5 right-5"
+					{/* Add account button */}
+					<button
+						type="button"
 						onClick={() => setDrawerState("New-account")}
-					/>
+						className="fixed bottom-5 right-5 bg-primary/20 w-16 h-16 p-2 cursor-pointer flex items-center justify-center rounded-full active:scale-95 transition-all"
+					>
+						<IoAdd size className="text-primary" />
+					</button>
 				</div>
 			)}
 		</div>

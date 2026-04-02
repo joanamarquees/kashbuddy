@@ -28,7 +28,7 @@ export function AccountCard({ bankName, amount }) {
 			<button
 				type="button"
 				onClick={() => setIsOpen(true)}
-				className="bg-light-background/50 border-2 border-light-background rounded-xl px-4 py-5 flex items-center justify-between shadow-md active:scale-95 transition-all"
+				className="bg-light-background border-2 border-primary/10 rounded-xl px-4 py-5 flex items-center justify-between shadow-md active:scale-95 transition-all"
 			>
 				<div className="flex flex-col">
 					<span className="text-sm font-medium text-white">{bankName}</span>
