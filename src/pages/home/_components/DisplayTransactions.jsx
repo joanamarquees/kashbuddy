@@ -1,7 +1,10 @@
-import { AddTransactionCard } from "./AddTransactionCard.jsx";
-import { NewTransactionForms } from "./NewTransaction";
-import { TransactionPopup } from "./TransactionPopup.jsx";
-import { Drawer, setDrawerState } from "./ui/Drawer";
+import {
+	AddTransactionCard,
+	Drawer,
+	NewTransactionForms,
+	setDrawerState,
+	TransactionCard,
+} from "../../../components/index.js";
 
 export function DisplayTransactions({ type, transactions }) {
 	const total = transactions.reduce((counter, transaction) => {
@@ -27,15 +30,15 @@ export function DisplayTransactions({ type, transactions }) {
 	}
 
 	return (
-		<ul>
+		<div className="space-y-3">
 			{transactions.map((transaction) => {
 				const { id, transactionType } = transaction;
 
 				if (transactionType === type) {
-					return <TransactionPopup key={id} transaction={transaction} />;
+					return <TransactionCard key={id} transaction={transaction} />;
 				}
 				return null;
 			})}
-		</ul>
+		</div>
 	);
 }

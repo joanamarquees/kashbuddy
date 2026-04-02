@@ -10,7 +10,7 @@ import {
 } from "recharts";
 import { db } from "../../../config/firebase-config";
 
-export function FinancialStats({ transactions, type }) {
+export function StatsCard({ transactions, type }) {
 	const [categories, setCategories] = useState({});
 
 	useEffect(() => {
@@ -49,40 +49,36 @@ export function FinancialStats({ transactions, type }) {
 		color: categories[categoryId]?.color || "#FFFFFF",
 	}));
 
-	// If there is no data, display a message
-	if (chartData.length === 0) {
-		return (
-			<div
-				className="bg-primary/20 backdrop-blur-lg border-2 border-primary/50
-						rounded-xl mx-auto w-[90%] h-52 items-center justify-center flex flex-col space-y-8 shadow-lg"
-			>
-				<p className="text-5xl">🎉</p>
-				<p className="text-center font-semibold uppercase text-zinc-100">
-					You have no {type}s this month!
-				</p>
-			</div>
-		);
-	}
-
 	return (
 		<div
 			className="bg-primary/20 backdrop-blur-lg border-2 border-primary/50
 						rounded-xl mx-auto w-[90%] h-52 items-center justify-center flex flex-col space-y-8 shadow-lg"
 		>
-			{/* Content */}
-			<div className="relative mx-auto w-full md:w-88.25 h-full py-3 items-center">
-				<ResponsiveContainer width="100%" height="100%">
-					<BarChart data={chartData} margin={{ top: 20 }}>
-						<XAxis hide />
-						<YAxis hide />
-						<Bar dataKey="amount" label={{ position: "top" }} radius={10}>
-							{chartData.map((entry) => (
-								<Cell key={`cell-${entry}`} fill="oklch(67.3% 0.182 276.935)" />
-							))}
-						</Bar>
-					</BarChart>
-				</ResponsiveContainer>
-			</div>
+			{chartData.length === 0 ? (
+				<div className="flex flex-col items-center space-y-4">
+					<p className="text-5xl">🎉</p>
+					<p className="text-center font-semibold uppercase text-zinc-100">
+						You have no {type}s this month!
+					</p>
+				</div>
+			) : (
+				<div className="mx-auto w-full md:w-88.25 min-h-0 h-full py-1 items-center">
+					<ResponsiveContainer width="100%" height="100%">
+						<BarChart data={chartData}>
+							<XAxis hide />
+							<YAxis hide />
+							<Bar dataKey="amount" label={{ position: "top" }} radius={10}>
+								{chartData.map((entry) => (
+									<Cell
+										key={`cell-${entry}`}
+										fill="oklch(67.3% 0.182 276.935)"
+									/>
+								))}
+							</Bar>
+						</BarChart>
+					</ResponsiveContainer>
+				</div>
+			)}
 		</div>
 	);
 }

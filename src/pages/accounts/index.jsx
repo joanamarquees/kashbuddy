@@ -1,14 +1,19 @@
 import { IoIosArrowBack } from "react-icons/io";
 import { IoAdd } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
-import { Header } from "../../components/Header.jsx";
-import { LoadingScreen } from "../../components/LoadingScreen.jsx";
-import { NewAccountForms } from "../../components/NewAccount.jsx";
-import { Button } from "../../components/ui/Button.jsx";
-import { Drawer, setDrawerState } from "../../components/ui/Drawer.jsx";
+import {
+	Button,
+	Drawer,
+	Header,
+	LoadingScreen,
+	NewAccountForms,
+	setDrawerState,
+} from "../../components/index.js";
 import { useGetAccounts } from "../../hooks/useGetAccounts.js";
 import { calculateNetworth } from "../../utils/networth.js";
-import { AccountCard } from "./_components/accountCard.jsx";
+import { AccountCard } from "./_components/AccountCard.jsx";
+
+//
 
 export function Accounts() {
 	const navigate = useNavigate();
@@ -16,7 +21,7 @@ export function Accounts() {
 	const { totalNetworth } = calculateNetworth(accounts);
 
 	return (
-		<div className="mx-auto px-5 h-full select-none space-y-2">
+		<div className="mx-auto px-5 h-full select-none space-y-2 overflow-y-scroll">
 			<Drawer views={{ "New-account": <NewAccountForms /> }} />
 
 			{/* Header */}

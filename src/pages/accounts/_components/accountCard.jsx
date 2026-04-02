@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDeleteAccount } from "../../../hooks/useDeleteAccount.js";
 import { useUpdateAccount } from "../../../hooks/useUpdateAccount.js";
-import { Modal } from "./accountModal.jsx";
+import { AccountModal } from "./accountModal.jsx";
 
 export function AccountCard({ bankName, amount }) {
 	const [isOpen, setIsOpen] = useState(false);
@@ -37,7 +37,8 @@ export function AccountCard({ bankName, amount }) {
 			</button>
 
 			{isOpen && (
-				<Modal
+				<AccountModal
+					isOpen={isOpen}
 					onClose={closeModal}
 					onSave={handleUpdateAmount}
 					onDelete={handleDeleteAccount}

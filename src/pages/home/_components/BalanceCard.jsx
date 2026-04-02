@@ -1,7 +1,7 @@
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { calculateNetworth } from "../../../utils/networth.js";
 
-export const FinancialCard = ({ transactions, accounts }) => {
+export const TotalBalanceCard = ({ transactions, accounts }) => {
 	const { totalNetworth, totalExpenses, totalIncomes } = calculateNetworth(
 		accounts,
 		transactions,
@@ -24,7 +24,7 @@ export const FinancialCard = ({ transactions, accounts }) => {
 			</div>
 
 			{/* Income and Expenses Section */}
-			<div className="w-full flex justify-center items-center space-x-20">
+			<div className="w-full flex justify-center items-center space-x-12 md:space-x-20">
 				{/* Expenses Section */}
 				<div className="flex items-center space-x-2">
 					{/* Circle Icon */}

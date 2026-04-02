@@ -1,9 +1,12 @@
 import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { db } from "../config/firebase-config";
-import { AddTransactionCard } from "./AddTransactionCard";
-import { NewTransactionForms } from "./NewTransaction";
-import { Drawer, setDrawerState } from "./ui/Drawer";
+import {
+	AddTransactionCard,
+	Drawer,
+	NewTransactionForms,
+	setDrawerState,
+} from "../../../components/index.js";
+import { db } from "../../../config/firebase-config.js";
 
 export function DisplayCategories({ type, transactions }) {
 	const [categories, setCategories] = useState({});
@@ -63,7 +66,7 @@ export function DisplayCategories({ type, transactions }) {
 	}
 
 	return (
-		<div className="grid grid-cols-2 gap-2 mt-3">
+		<div className="grid grid-cols-2 gap-2">
 			{chartData.map(({ category, amount, color }) => (
 				<div
 					key={category}

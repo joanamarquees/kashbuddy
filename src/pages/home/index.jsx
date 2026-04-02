@@ -3,20 +3,25 @@ import isoWeek from "dayjs/plugin/isoWeek";
 import { useEffect, useState } from "react";
 import ReactCardFlip from "react-card-flip";
 import { HiOutlineWallet } from "react-icons/hi2";
-import { IoAddCircle, IoSettingsOutline } from "react-icons/io5";
+import { IoAdd, IoSettingsOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom"; // to change from login to home page
-import { DisplayCategories } from "../../components/DisplayCategories.jsx";
-import { DisplayTransactions } from "../../components/DisplayTransactions.jsx";
-import { Header } from "../../components/Header.jsx";
-import { LoadingScreen } from "../../components/LoadingScreen.jsx";
-import { NewTransactionForms } from "../../components/NewTransaction.jsx";
-import { TransactionSwitch } from "../../components/TransactionSwitch.jsx";
-import { Calendar } from "../../components/ui/Calendar.jsx";
-import { Drawer, setDrawerState } from "../../components/ui/Drawer.jsx";
+import {
+	Calendar,
+	Drawer,
+	Header,
+	LoadingScreen,
+	NewTransactionForms,
+	setDrawerState,
+	TransactionSwitch,
+} from "../../components/index.js";
+// Hooks
 import { useGetAccounts } from "../../hooks/useGetAccounts.js";
 import { useGetTransactions } from "../../hooks/useGetTransactions.js";
-import { FinancialCard } from "./_components/BalanceCard.jsx";
-import { FinancialStats } from "./_components/FinancialStatsCard.jsx";
+
+import { TotalBalanceCard } from "./_components/BalanceCard.jsx";
+import { DisplayCategories } from "./_components/DisplayCategories.jsx";
+import { DisplayTransactions } from "./_components/DisplayTransactions.jsx";
+import { StatsCard } from "./_components/StatsCard.jsx";
 
 dayjs.extend(isoWeek);
 
@@ -80,24 +85,32 @@ export function Home() {
 					<LoadingScreen />
 				) : (
 					<>
-						<ReactCardFlip flipDirection="horizontal" isFlipped={flip}>
+						<ReactCardFlip
+							flipDirection="horizontal"
+							isFlipped={flip}
+							containerClassName="h-52"
+						>
 							<button
 								type="button"
 								className="w-full cursor-pointer"
 								onClick={flipCard}
 							>
-								<FinancialCard
+								<TotalBalanceCard
 									transactions={filteredTransactions}
 									accounts={accounts}
 								/>
 							</button>
 
-							<div className="cursor-pointer" onClick={flipCard}>
-								<FinancialStats
+							<button
+								type="button"
+								className="w-full cursor-pointer"
+								onClick={flipCard}
+							>
+								<StatsCard
 									transactions={filteredTransactions}
 									type={transactionType}
 								/>
-							</div>
+							</button>
 						</ReactCardFlip>
 
 						{/* Transaction switch */}
@@ -128,11 +141,13 @@ export function Home() {
 					"New-transaction": <NewTransactionForms type={transactionType} />,
 				}}
 			/>
-			<IoAddCircle
-				size={70}
-				className="text-indigo-400 cursor-pointer fixed bottom-5 right-5"
+			<button
+				type="button"
 				onClick={() => setDrawerState("New-transaction")}
-			/>
+				className="fixed bottom-5 right-5 bg-primary/20 w-16 h-16 p-2 cursor-pointer flex items-center justify-center rounded-full active:scale-95 transition-all"
+			>
+				<IoAdd size className="text-primary" />
+			</button>
 		</div>
 	);
 }

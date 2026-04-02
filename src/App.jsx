@@ -8,7 +8,7 @@ import { Settings } from "./pages/settings/index";
 function App() {
 	return (
 		// Add padding top safe and padding bottom safe
-		<div className="h-dvh bg-background text-main-color antialiased py-5">
+		<div className="h-dvh bg-background text-main-color antialiased py-5 overflow-hidden">
 			<Router>
 				<Routes>
 					<Route path="/" exact element={<Auth />} />{" "}
