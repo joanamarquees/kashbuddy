@@ -1,19 +1,91 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; // to change from login to home page
 
 import { auth, provider } from '../../config/firebase-config';
-import { signInWithPopup } from 'firebase/auth';
-import { useGetUserInfo } from '../../hooks/useGetUserInfo'
+import { signInWithPopup, getAdditionalUserInfo } from 'firebase/auth';
+import { useGetUserInfo } from '../../hooks/useGetUserInfo';
+import { db } from '../../config/firebase-config';
+import { collection, query, where, getDocs, addDoc } from 'firebase/firestore';
 
 import { Button } from '../../components/ui/Button.jsx';
 
 import logo from '../../assets/logo_light.svg';
 
+const defaultCategories = [
+	{
+		value: "grocery",
+		label: "grocery",
+		iconIndex: 2,
+		color: "#7a2680",
+		categoryType: "expense",
+	},
+	{
+		value: "transports",
+		label: "transports",
+		iconIndex: 16,
+		color: "#204718",
+		categoryType: "expense",
+	},
+	{
+		value: "health",
+		label: "health",
+		iconIndex: 8,
+		color: "#eb4034",
+		categoryType: "expense",
+	},
+	{
+		value: "food",
+		label: "food",
+		iconIndex: 42,
+		color: "#34d6eb",
+		categoryType: "expense",
+	},
+	{
+		value: "salary",
+		label: "salary",
+		iconIndex: 34,
+		color: "#381bab",
+		categoryType: "income",
+	},
+];
+
 export const Auth = () => {
   const navigate = useNavigate();
   const [error, setError] = useState(null);
-  const { isAuth } = useGetUserInfo();
-  
+  const { isAuth, userId } = useGetUserInfo();
+  const [checkingAuth, setCheckingAuth] = useState(true);
+
+  // Redirect already-authenticated users initially
+  useEffect(() => {
+    const checkInitialRoute = async () => {
+      if (!isAuth || !userId) {
+        setCheckingAuth(false);
+        return;
+      }
+
+      try {
+        const accountsQuery = query(
+          collection(db, 'accounts'),
+          where("userId", "==", userId)
+        );
+        const snapshot = await getDocs(accountsQuery);
+        
+        if (snapshot.empty) {
+          navigate('/accounts', { replace: true });
+        } else {
+          navigate('/home', { replace: true });
+        }
+      } catch (err) {
+        console.error("Error checking initial route", err);
+        navigate('/home', { replace: true });
+      }
+    };
+    checkInitialRoute();
+  }, [isAuth, userId, navigate]);
+
+  // While redirecting or checking auth state, render nothing to avoid flashes
+  if (isAuth || checkingAuth) return null;
+
   const signInWithGoogle = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
@@ -23,15 +95,39 @@ export const Auth = () => {
         name: result.user.displayName,
         isAuth: true,
       };
+      
+      const additionalInfo = getAdditionalUserInfo(result);
+      if (additionalInfo?.isNewUser) {
+        const categoriesCollection = collection(db, 'categories');
+        const promises = defaultCategories.map(cat => 
+          addDoc(categoriesCollection, {
+            userId: result.user.uid,
+            ...cat
+          })
+        );
+        // Run in background, we don't need to block login for this
+        Promise.all(promises).catch(err => console.error("Error generating default categories", err));
+      }
+
       localStorage.setItem('auth', JSON.stringify(authData));
-      navigate('/home')
+      
+      // Check accounts to figure out where to route them
+      const accountsQuery = query(
+        collection(db, 'accounts'),
+        where("userId", "==", result.user.uid)
+      );
+      const snapshot = await getDocs(accountsQuery);
+      
+      if (snapshot.empty) {
+        navigate('/accounts', { replace: true });
+      } else {
+        navigate('/home', { replace: true });
+      }
       
     } catch (error) {
       setError(error.message);
     }
   };
-  
-  if(isAuth) navigate('/home');
 
   return (
     <div className='h-screen flex flex-col items-center justify-center gap-8'>

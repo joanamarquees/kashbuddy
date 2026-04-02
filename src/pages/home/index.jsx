@@ -2,89 +2,33 @@ import dayjs from "dayjs";
 import isoWeek from "dayjs/plugin/isoWeek";
 import { useEffect, useState } from "react";
 import ReactCardFlip from "react-card-flip";
+import { HiOutlineWallet } from "react-icons/hi";
 import { IoAddCircle, IoSettingsOutline } from "react-icons/io5";
-import { PiBank } from "react-icons/pi";
 import { useNavigate } from "react-router-dom"; // to change from login to home page
 import { DisplayCategories } from "../../components/DisplayCategories.jsx";
 import { DisplayTransactions } from "../../components/DisplayTransactions.jsx";
 import { FinancialStats } from "../../components/FinancialStats.jsx";
+import { Header } from "../../components/Header.jsx";
 import { NewTransactionForms } from "../../components/NewTransaction.jsx";
 import { TransactionSwitch } from "../../components/TransactionSwitch.jsx";
 import { Calendar } from "../../components/ui/Calendar.jsx";
 import { FinancialCard } from "../../components/ui/Cards.jsx";
 import { Drawer, setDrawerState } from "../../components/ui/Drawer.jsx";
-import { useAddCategory } from "../../hooks/useAddCategory.js";
 import { useGetAccounts } from "../../hooks/useGetAccounts.js";
 import { useGetTransactions } from "../../hooks/useGetTransactions.js";
 
 dayjs.extend(isoWeek);
 
-const defaultCategories = [
-	{
-		value: "grocery",
-		label: "grocery",
-		iconIndex: 2,
-		color: "#7a2680",
-		categoryType: "expense",
-	},
-	{
-		value: "transports",
-		label: "transports",
-		iconIndex: 16,
-		color: "#204718",
-		categoryType: "expense",
-	},
-	{
-		value: "health",
-		label: "health",
-		iconIndex: 8,
-		color: "#eb4034",
-		categoryType: "expense",
-	},
-	{
-		value: "food",
-		label: "food",
-		iconIndex: 42,
-		color: "#34d6eb",
-		categoryType: "expense",
-	},
-	{
-		value: "salary",
-		label: "salary",
-		iconIndex: 34,
-		color: "#381bab",
-		categoryType: "income",
-	},
-];
-
 export function Home() {
 	const navigate = useNavigate();
 	const { transactions, loading } = useGetTransactions();
 	const { accounts, loading: accountsLoading } = useGetAccounts();
-	const { addCategory } = useAddCategory();
+
 	const [flip, setFlip] = useState(false);
 	const [currentDate, setCurrentDate] = useState(dayjs());
 	const [transactionType, setTransactionType] = useState("expense");
 	const [filteredTransactions, setFilteredTransactions] =
 		useState(transactions);
-
-	useEffect(() => {
-		if (!accountsLoading && accounts.length === 0) {
-			//If its a new user: create default categories && navigate for /accounts
-
-			defaultCategories.map((category) =>
-				addCategory({
-					value: category.value,
-					label: category.label,
-					iconIndex: category.iconIndex,
-					color: category.color,
-					categoryType: category.categoryType,
-				}),
-			);
-
-			navigate("/accounts");
-		}
-	}, [accountsLoading, accounts.length, navigate, addCategory]);
 
 	const handleTransactionTypeChange = (e) => {
 		setTransactionType(e.target.value);
@@ -107,7 +51,7 @@ export function Home() {
 	}, [currentDate, transactions]);
 
 	return (
-		<div className="container mx-auto px-4 h-full">
+		<div className="container mx-auto px-5 h-full">
 			{/* Header */}
 			<div className="py-6 flex flex-row items-center justify-center gap-3 md:gap-52">
 				<PiBank
@@ -128,7 +72,7 @@ export function Home() {
 			</div>
 
 			{/* Main Content */}
-			<div className="w-[353px] md:w-[50%] mx-auto place-items-center">
+			<div className="w-88.25 md:w-[50%] mx-auto place-items-center">
 				{loading || accountsLoading ? (
 					// Skeleton for the card and categories/transactions
 					<>
