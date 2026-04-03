@@ -80,7 +80,7 @@ export function Home() {
 			/>
 
 			{/* Main Content */}
-			<div className="h-full w-full md:w-[50%] mx-auto place-items-center space-y-8">
+			<div className="h-full w-full mx-auto place-items-center space-y-8">
 				{loading || accountsLoading ? (
 					<LoadingScreen />
 				) : (
