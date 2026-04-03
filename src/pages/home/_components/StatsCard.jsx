@@ -64,15 +64,19 @@ export function StatsCard({ transactions, type }) {
 			) : (
 				<div className="mx-auto w-full md:w-88.25 min-h-0 h-full py-1 items-center">
 					<ResponsiveContainer width="100%" height="100%">
-						<BarChart data={chartData} margin={{ top: 20 }}>
+						<BarChart data={chartData} margin={{ bottom: 20 }}>
 							<XAxis hide />
 							<YAxis hide />
-							<Bar dataKey="amount" label={{ position: "top" }} radius={10}>
+							<Bar
+								dataKey="amount"
+								label={{
+									position: "bottom",
+									fill: "#BABABA",
+								}}
+								radius={10}
+							>
 								{chartData.map((entry) => (
-									<Cell
-										key={`cell-${entry}`}
-										fill="oklch(67.3% 0.182 276.935)"
-									/>
+									<Cell key={`cell-${entry}`} fill={entry.color} />
 								))}
 							</Bar>
 						</BarChart>

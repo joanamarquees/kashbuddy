@@ -5,6 +5,7 @@ import {
 	setDrawerState,
 } from "../../../components/index.js";
 import { useData } from "../../../context/DataContext.jsx";
+import { iconList } from "../../../utils/categories.js";
 
 export function DisplayCategories({ type, transactions }) {
 	const { categories } = useData();
@@ -31,6 +32,7 @@ export function DisplayCategories({ type, transactions }) {
 		category: categoryMap[categoryId]?.value,
 		amount: categoryTotals[categoryId],
 		color: categoryMap[categoryId]?.color || "#FFFFFF",
+		iconIndex: categoryMap[categoryId]?.iconIndex,
 	}));
 
 	if (chartData.length === 0) {
@@ -49,21 +51,42 @@ export function DisplayCategories({ type, transactions }) {
 	}
 
 	return (
-		<div className="grid grid-cols-2 gap-2">
-			{chartData.map(({ category, amount, color }) => (
-				<div
-					key={category}
-					className="container col-span-1 rounded-xl h-24 flex flex-col align-middle pt-5"
-					style={{ backgroundColor: color }}
-				>
-					<p className="text-zinc-950 font-medium text-xl mx-auto content-center">
-						{category}
-					</p>
-					<p className="text-zinc-950 font-bold text-sm mx-auto content-center">
-						{amount}€
-					</p>
-				</div>
-			))}
+		<div className="grid grid-cols-2 gap-4">
+			{chartData.map((cat, idx) => {
+				return (
+					<div
+						key={idx}
+						className="bg-light-background border-2 border-primary/10 p-4 rounded-2xl relative overflow-hidden group transition-all hover:border-white/10"
+						style={{
+							borderColor: `${cat.color}`,
+						}}
+					>
+						<div className="relative z-10 space-y-3 flex justify-start items-center space-x-2">
+							<div className="space-y-3">
+								<p className="text-xs font-bold text-gray-400 uppercase tracking-widest">
+									{cat.category}
+								</p>
+								<p className="text-xl font-bold text-white tracking-tight leading-none">
+									{cat.amount}€
+								</p>
+							</div>
+						</div>
+						<div
+							className="absolute bottom-1 right-1 w-14 h-14 flex items-center justify-center opacity-30"
+							style={{ color: `${cat.color}` }}
+						>
+							{cat.iconIndex !== undefined && iconList[cat.iconIndex] ? (
+								(() => {
+									const Icon = iconList[cat.iconIndex];
+									return <Icon size={35} />;
+								})()
+							) : (
+								<p className="text-lg font-bold">{cat.category?.[0]}</p>
+							)}
+						</div>
+					</div>
+				);
+			})}
 		</div>
 	);
 }
