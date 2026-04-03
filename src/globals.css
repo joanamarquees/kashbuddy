@@ -6,6 +6,11 @@
 	--color-primary: oklch(67.3% 0.182 276.935);
 	--color-main-color: oklch(98.5% 0 0); /* text */
 	--color-muted-color: oklch(60% 0.02 276.935);
+	--color-card-surface: color-mix(
+		in oklch,
+		var(--color-primary) 20%,
+		var(--color-background)
+	);
 }
 
 /* reset css */

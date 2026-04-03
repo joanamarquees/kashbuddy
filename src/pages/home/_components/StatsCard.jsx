@@ -51,7 +51,7 @@ export function StatsCard({ transactions, type }) {
 
 	return (
 		<div
-			className="bg-primary/20 backdrop-blur-lg border-2 border-primary/50
+			className="bg-card-surface border-2 border-primary/50
 						rounded-xl mx-auto w-[90%] h-52 items-center justify-center flex flex-col space-y-8 shadow-lg"
 		>
 			{chartData.length === 0 ? (

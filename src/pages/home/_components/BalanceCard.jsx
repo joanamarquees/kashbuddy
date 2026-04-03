@@ -9,12 +9,12 @@ export const TotalBalanceCard = ({ transactions, accounts }) => {
 
 	return (
 		<div
-			className="bg-primary/20 backdrop-blur-lg border-2 border-primary/50
+			className="bg-card-surface border-2 border-primary/50
 			rounded-xl mx-auto w-[90%] max-w-92 h-52 items-center justify-center flex flex-col space-y-8 shadow-lg"
 		>
 			{/* Card Title */}
 			<div className="flex flex-col items-center">
-				<h2 className="text-zinc-400 text-center uppercase tracking-wider font-bold text-xs font-sans">
+				<h2 className="text-muted-color text-center uppercase tracking-wider font-bold text-xs font-sans">
 					Total Balance
 				</h2>
 				<span className="flex items-end justify-center text-main-color text-center font-extrabold text-5xl font-sans">
