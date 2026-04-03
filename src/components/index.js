@@ -4,7 +4,7 @@ export { Popup } from "./CategoryPopup.jsx";
 export { ColorPicker } from "./ColorPicker.jsx";
 export { Header } from "./Header.jsx";
 export { IconPicker } from "./IconPicker.jsx";
-export { LoadingScreen } from "./LoadingScreen.jsx";
+export { LoadingScreen, SmallLoadingScreen } from "./LoadingScreen.jsx";
 export { NewAccountForms } from "./NewAccount.jsx";
 export { NewCategoryForms } from "./NewCategory.jsx";
 export { NewTransactionForms } from "./NewTransaction.jsx";

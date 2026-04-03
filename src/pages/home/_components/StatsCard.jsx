@@ -64,7 +64,7 @@ export function StatsCard({ transactions, type }) {
 			) : (
 				<div className="mx-auto w-full md:w-88.25 min-h-0 h-full py-1 items-center">
 					<ResponsiveContainer width="100%" height="100%">
-						<BarChart data={chartData}>
+						<BarChart data={chartData} margin={{ top: 20 }}>
 							<XAxis hide />
 							<YAxis hide />
 							<Bar dataKey="amount" label={{ position: "top" }} radius={10}>

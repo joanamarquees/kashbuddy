@@ -5,3 +5,9 @@ export const LoadingScreen = () => (
 		<ImSpinner />
 	</div>
 );
+
+export const SmallLoadingScreen = () => (
+	<div className="h-fit w-full flex items-center justify-center animate-spin py-10">
+		<ImSpinner />
+	</div>
+);
