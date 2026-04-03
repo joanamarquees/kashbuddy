@@ -1,14 +1,12 @@
-import { doc, getDoc } from "firebase/firestore";
-import { useEffect, useState } from "react";
-import { db } from "../../../config/firebase-config.js";
-import { iconList } from "../../../utils/categories.js";
+import { useState } from "react";
+import { useData } from "../../../context/DataContext";
 import { useDeleteTransaction } from "../../../hooks/useDeleteTransaction.js";
 import { useUpdateTransaction } from "../../../hooks/useUpdateTransaction.js";
+import { iconList } from "../../../utils/categories.js";
 import { TransactionModal } from "./TransactionModal.jsx";
 
 export const TransactionCard = ({ transaction }) => {
-	const [category, setCategory] = useState(null);
-	const [account, setAccount] = useState(null);
+	const { categories, accounts } = useData();
 	const [isOpen, setIsOpen] = useState(false);
 
 	const [transactionData, setTransactionData] = useState({
@@ -22,29 +20,8 @@ export const TransactionCard = ({ transaction }) => {
 	const { updateTransaction } = useUpdateTransaction();
 	const { deleteTransaction } = useDeleteTransaction();
 
-	useEffect(() => {
-		if (transaction.categoryId) {
-			const fetchCategory = async () => {
-				const categoryDoc = await getDoc(
-					doc(db, "categories", transaction.categoryId),
-				);
-				setCategory(categoryDoc.data());
-			};
-			fetchCategory();
-		}
-	}, [transaction.categoryId]);
-
-	useEffect(() => {
-		if (transaction.accountId) {
-			const fetchAccount = async () => {
-				const accountDoc = await getDoc(
-					doc(db, "accounts", transaction.accountId),
-				);
-				setAccount(accountDoc.data());
-			};
-			fetchAccount();
-		}
-	}, [transaction.accountId]);
+	const category = categories?.find((c) => c.id === transaction.categoryId);
+	const account = accounts?.find((a) => a.id === transaction.accountId);
 
 	const Icon = iconList[category?.iconIndex];
 
@@ -55,7 +32,9 @@ export const TransactionCard = ({ transaction }) => {
 			date:
 				transaction.date instanceof Date
 					? transaction.date
-					: new Date((transaction.date?.seconds || 0) * 1000 || transaction.date),
+					: new Date(
+							(transaction.date?.seconds || 0) * 1000 || transaction.date,
+						),
 		});
 	}
 

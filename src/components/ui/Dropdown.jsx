@@ -1,8 +1,7 @@
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
-import { useGetAccounts } from "../../hooks/useGetAccounts";
-import { useGetCategories } from "../../hooks/useGetCategories";
+import { useData } from "../../context/DataContext";
 import { getCategoriesByType } from "../../utils/categories";
 
 export function Dropdown({
@@ -13,9 +12,8 @@ export function Dropdown({
 	label,
 	value,
 }) {
+	const { categories, accounts } = useData();
 	const [selected, setSelected] = useState(!!value);
-	const { categories } = useGetCategories();
-	const { accounts } = useGetAccounts();
 
 	const handleChange = (e) => {
 		setTransactionData({ ...transactionData, [field]: e.target.value });

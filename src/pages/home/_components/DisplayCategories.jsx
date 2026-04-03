@@ -1,35 +1,18 @@
-import { doc, getDoc } from "firebase/firestore";
-import { useEffect, useState } from "react";
 import {
 	AddTransactionCard,
 	Drawer,
 	NewTransactionForms,
 	setDrawerState,
 } from "../../../components/index.js";
-import { db } from "../../../config/firebase-config.js";
+import { useData } from "../../../context/DataContext.jsx";
 
 export function DisplayCategories({ type, transactions }) {
-	const [categories, setCategories] = useState({});
+	const { categories } = useData();
 
-	useEffect(() => {
-		const fetchCategories = async () => {
-			const categoryData = {};
-
-			for (const transaction of transactions) {
-				if (transaction.transactionType !== type) {
-					continue;
-				}
-
-				const categoryId = transaction.categoryId;
-				if (!categoryData[categoryId]) {
-					const categoryDoc = await getDoc(doc(db, "categories", categoryId));
-					categoryData[categoryId] = categoryDoc.data();
-				}
-			}
-			setCategories(categoryData);
-		};
-		fetchCategories();
-	}, [transactions, type]);
+	const categoryMap = categories.reduce((acc, cat) => {
+		acc[cat.id] = cat;
+		return acc;
+	}, {});
 
 	// Calculate total amount for each category
 	const categoryTotals = transactions.reduce((acc, transaction) => {
@@ -45,9 +28,9 @@ export function DisplayCategories({ type, transactions }) {
 	}, {});
 
 	const chartData = Object.keys(categoryTotals).map((categoryId) => ({
-		category: categories[categoryId]?.value,
+		category: categoryMap[categoryId]?.value,
 		amount: categoryTotals[categoryId],
-		color: categories[categoryId]?.color || "#FFFFFF",
+		color: categoryMap[categoryId]?.color || "#FFFFFF",
 	}));
 
 	if (chartData.length === 0) {
