@@ -16,3 +16,4 @@ export { Calendar } from "./ui/Calendar.jsx";
 export { Drawer, setDrawerState } from "./ui/Drawer.jsx";
 export { Dropdown } from "./ui/Dropdown.jsx";
 export { Input } from "./ui/Input.jsx";
+export { Modal } from "./ui/Modal.jsx";

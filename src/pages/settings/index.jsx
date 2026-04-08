@@ -126,7 +126,7 @@ export function Settings() {
 					{/* Categories */}
 					<button
 						type="button"
-						className="bg-light-background border-2 border-primary/10 space-x-3 rounded-xl w-full p-5 flex items-center group hover:border-[#818cf8]/30 transition-all active:scale-[0.98]"
+						className="bg-light-background border-2 border-primary/10 space-x-4 rounded-xl w-full p-5 flex items-center group hover:border-[#818cf8]/30 transition-all active:scale-[0.98]"
 						onClick={() => navigate("/settings/categories")}
 					>
 						<IoGrid size={25} style={{ color: "purple" }} />
@@ -136,7 +136,7 @@ export function Settings() {
 					{/* Logout */}
 					<button
 						type="button"
-						className="bg-light-background border-2 border-primary/10 space-x-3 rounded-xl w-full p-5 flex items-center group hover:border-[#818cf8]/30 transition-all active:scale-[0.98]"
+						className="bg-light-background border-2 border-primary/10 space-x-4 rounded-xl w-full p-5 flex items-center group hover:border-[#818cf8]/30 transition-all active:scale-[0.98]"
 						onClick={signUserOut}
 					>
 						<IoLogOutOutline size={25} className="text-red-400" />

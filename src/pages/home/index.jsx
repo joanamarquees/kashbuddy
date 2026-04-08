@@ -57,7 +57,7 @@ export function Home() {
 	}, [currentDate, transactions]);
 
 	return (
-		<div className="container mx-auto px-5 h-full">
+		<div className="container mx-auto px-5 h-full overflow-y-scroll">
 			{/* Header */}
 			<Header
 				leftIcon={
@@ -141,12 +141,13 @@ export function Home() {
 					"New-transaction": <NewTransactionForms type={transactionType} />,
 				}}
 			/>
+
 			<button
 				type="button"
 				onClick={() => setDrawerState("New-transaction")}
 				className="fixed bottom-5 right-5 bg-primary/20 w-16 h-16 p-2 cursor-pointer flex items-center justify-center rounded-full active:scale-95 transition-all"
 			>
-				<IoAdd size className="text-primary" />
+				<IoAdd size={45} className="text-primary" />
 			</button>
 		</div>
 	);
