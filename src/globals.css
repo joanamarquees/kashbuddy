@@ -44,3 +44,16 @@ input[type="submit"],
 button {
 	cursor: pointer;
 }
+
+/* custom variant to user for the standalone pwa app */
+@custom-variant app {
+	@media (display-mode: standalone) {
+		@slot;
+	}
+}
+
+@custom-variant web {
+	@media (display-mode: browser) {
+		@slot;
+	}
+}
