@@ -13,7 +13,7 @@ export const Modal = ({ isOpen = true, onClose, title, children }) => {
 			/>
 
 			{/* Modal Content */}
-			<div className="relative my-auto w-full max-w-4.5/5 md:max-w-3/5 max-h-4/5 bg-light-background rounded-4xl p-8 border border-white/10 shadow-2xl">
+			<div className="relative my-auto w-full max-w-4/5 max-h-4/5 bg-light-background rounded-4xl p-8 border border-white/10 shadow-2xl">
 				<div className="flex flex-row items-center justify-between">
 					<button
 						type="button"

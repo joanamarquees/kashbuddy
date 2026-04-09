@@ -57,3 +57,17 @@ button {
 		@slot;
 	}
 }
+
+@utility pt-safe-or-5 {
+	padding-top: env(safe-area-inset-top);
+	@media (pointer: fine) {
+		padding-top: max(env(safe-area-inset-top), 1.25rem);
+	}
+}
+
+@utility pb-safe-or-5 {
+	padding-bottom: env(safe-area-inset-bottom);
+	@media (pointer: fine) {
+		padding-bottom: max(env(safe-area-inset-bottom), 1.25rem);
+	}
+}

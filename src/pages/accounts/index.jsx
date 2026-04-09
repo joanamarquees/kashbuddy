@@ -1,28 +1,59 @@
+import { useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
-import { IoAdd } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import {
+	AccountForm,
+	AddButton,
 	Button,
-	Drawer,
 	Header,
 	LoadingScreen,
-	NewAccountForms,
-	setDrawerState,
-} from "../../components/index.js";
-import { useGetAccounts } from "../../hooks/useGetAccounts.js";
-import { calculateNetworth } from "../../utils/networth.js";
+} from "@/components/index.js";
+import { useAddAccount } from "@/hooks/useAddAccounts.js";
+import { useGetAccounts } from "@/hooks/useGetAccounts.js";
+import { calculateNetworth } from "@/utils/networth.js";
 import { AccountCard } from "./_components/AccountCard.jsx";
 
-//
+const EMPTY_ACCOUNT = { bankName: "", amount: "" };
 
 export function Accounts() {
 	const navigate = useNavigate();
 	const { accounts, loading } = useGetAccounts();
 	const { totalNetworth } = calculateNetworth(accounts);
+	const { addAccount } = useAddAccount();
+
+	const [isNewAccountOpen, setIsNewAccountOpen] = useState(false);
+	const [newAccountData, setNewAccountData] = useState(EMPTY_ACCOUNT);
+	const [error, setError] = useState("");
+
+	const handleOpenNewAccount = () => {
+		setNewAccountData(EMPTY_ACCOUNT);
+		setError("");
+		setIsNewAccountOpen(true);
+	};
+
+	const handleAddAccount = async () => {
+		if (!newAccountData.bankName || !newAccountData.amount) {
+			setError("Please fill in all fields");
+			return;
+		}
+		await addAccount({
+			bankName: newAccountData.bankName,
+			amount: Number(parseFloat(newAccountData.amount)),
+		});
+		setIsNewAccountOpen(false);
+	};
 
 	return (
 		<div className="mx-auto px-5 h-full select-none space-y-2 overflow-y-scroll">
-			<Drawer views={{ "New-account": <NewAccountForms /> }} />
+			{/* Add Account Form */}
+			<AccountForm
+				isOpen={isNewAccountOpen}
+				onClose={() => setIsNewAccountOpen(false)}
+				onSave={handleAddAccount}
+				formData={newAccountData}
+				setFormData={setNewAccountData}
+				isEdit={false}
+			/>
 
 			{/* Header */}
 			<Header
@@ -41,14 +72,11 @@ export function Accounts() {
 			{/* No Accounts */}
 			{accounts.length <= 0 && (
 				<div className="py-6 h-full w-full flex flex-col items-center justify-center gap-8 md:text-lg">
-					{/* TODO: add an empty wallet svg */}
 					<p className="text-zinc-300 leading-relaxed max-w-80 md:max-w-lg text-center font-sans">
 						You haven't registered any bank account, how about registering one
 						right now?
 					</p>
-					<Button onClick={() => setDrawerState("New-account")}>
-						Add an account
-					</Button>
+					<Button onClick={handleOpenNewAccount}>Add an account</Button>
 				</div>
 			)}
 
@@ -86,13 +114,7 @@ export function Accounts() {
 					</div>
 
 					{/* Add account button */}
-					<button
-						type="button"
-						onClick={() => setDrawerState("New-account")}
-						className="fixed bottom-5 right-5 bg-primary/20 w-16 h-16 p-2 cursor-pointer flex items-center justify-center rounded-full active:scale-95 transition-all"
-					>
-						<IoAdd size={45} className="text-primary" />
-					</button>
+					<AddButton onClick={handleOpenNewAccount} />
 				</div>
 			)}
 		</div>

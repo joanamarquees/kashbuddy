@@ -42,9 +42,9 @@ export const BottomSheet = ({
 				>
 					<Drawer.Handle className="mx-auto h-1 w-12 shrink-0 rounded-full bg-main-color" />
 					{title && (
-						<h2 className="text-md font-extrabold mx-auto w-full text-center uppercase tracking-wide text-main-color">
+						<Drawer.Title className="text-md font-extrabold mx-auto w-full text-center uppercase tracking-wide text-main-color">
 							{title}
-						</h2>
+						</Drawer.Title>
 					)}
 					<div className="px-5 overflow-y-scroll">{children}</div>
 				</div>

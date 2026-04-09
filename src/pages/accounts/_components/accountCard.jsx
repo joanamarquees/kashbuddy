@@ -1,20 +1,21 @@
 import { useState } from "react";
-import { useDeleteAccount } from "../../../hooks/useDeleteAccount.js";
-import { useUpdateAccount } from "../../../hooks/useUpdateAccount.js";
-import { AccountModal } from "./accountModal.jsx";
+import { AccountForm } from "@/components/index";
+import { useDeleteAccount } from "@/hooks/useDeleteAccount.js";
+import { useUpdateAccount } from "@/hooks/useUpdateAccount.js";
 
 export function AccountCard({ bankName, amount }) {
 	const [isOpen, setIsOpen] = useState(false);
 	const { updateAmount } = useUpdateAccount();
 	const { deleteAccount } = useDeleteAccount();
-	const [newAmount, setNewAmount] = useState(amount);
+
+	const [formData, setFormData] = useState({ bankName, amount });
 
 	function closeModal() {
 		setIsOpen(false);
 	}
 
 	async function handleUpdateAmount() {
-		await updateAmount({ bankName, amount: Math.round(newAmount) });
+		await updateAmount({ bankName, amount: Math.round(formData.amount) });
 		closeModal();
 	}
 
@@ -36,17 +37,15 @@ export function AccountCard({ bankName, amount }) {
 				<span className="text-lg font-bold text-white">{amount}€</span>
 			</button>
 
-			{isOpen && (
-				<AccountModal
-					isOpen={isOpen}
-					onClose={closeModal}
-					onSave={handleUpdateAmount}
-					onDelete={handleDeleteAccount}
-					bankName={bankName}
-					amount={newAmount}
-					onAmountChange={setNewAmount}
-				/>
-			)}
+			<AccountForm
+				isOpen={isOpen}
+				onClose={closeModal}
+				onSave={handleUpdateAmount}
+				onDelete={handleDeleteAccount}
+				formData={formData}
+				setFormData={setFormData}
+				isEdit={true}
+			/>
 		</>
 	);
 }
