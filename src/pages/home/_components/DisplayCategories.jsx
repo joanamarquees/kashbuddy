@@ -1,13 +1,8 @@
-import {
-	AddTransactionCard,
-	Drawer,
-	NewTransactionForms,
-	setDrawerState,
-} from "../../../components/index.js";
-import { useData } from "../../../context/DataContext.jsx";
-import { iconList } from "../../../utils/categories.js";
+import { AddTransactionCard } from "@/components/index.js";
+import { useData } from "@/context/DataContext.jsx";
+import { iconList } from "@/utils/categories.js";
 
-export function DisplayCategories({ type, transactions }) {
+export function DisplayCategories({ type, transactions, onAddClick }) {
 	const { categories } = useData();
 
 	const categoryMap = categories.reduce((acc, cat) => {
@@ -37,25 +32,20 @@ export function DisplayCategories({ type, transactions }) {
 
 	if (chartData.length === 0) {
 		return (
-			<>
-				<Drawer
-					views={{ "New-transaction": <NewTransactionForms type={type} /> }}
-				/>
-				<AddTransactionCard
-					transactionType={type}
-					onClick={() => setDrawerState("New-transaction")}
-					text={`You don’t have any ${type} this month. Tap to add one.`}
-				/>
-			</>
+			<AddTransactionCard
+				transactionType={type}
+				onClick={onAddClick}
+				text={`You don't have any ${type} this month. Tap to add one.`}
+			/>
 		);
 	}
 
 	return (
 		<div className="grid grid-cols-2 gap-4">
-			{chartData.map((cat, idx) => {
+			{chartData.map((cat) => {
 				return (
 					<div
-						key={idx}
+						key={cat.category}
 						className="bg-light-background border-2 border-primary/10 p-4 rounded-2xl relative overflow-hidden group transition-all hover:border-white/10"
 						style={{
 							borderColor: `${cat.color}`,

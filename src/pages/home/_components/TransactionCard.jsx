@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { useData } from "../../../context/DataContext";
-import { useDeleteTransaction } from "../../../hooks/useDeleteTransaction.js";
-import { useUpdateTransaction } from "../../../hooks/useUpdateTransaction.js";
-import { iconList } from "../../../utils/categories.js";
-import { TransactionModal } from "./TransactionModal.jsx";
+import { TransactionForm } from "@/components/index";
+import { useData } from "@/context/DataContext";
+import { useDeleteTransaction } from "@/hooks/useDeleteTransaction.js";
+import { useUpdateTransaction } from "@/hooks/useUpdateTransaction.js";
+import { iconList } from "@/utils/categories.js";
 
 export const TransactionCard = ({ transaction }) => {
 	const { categories, accounts } = useData();
@@ -93,18 +93,17 @@ export const TransactionCard = ({ transaction }) => {
 				</p>
 			</button>
 
-			{isOpen && (
-				<TransactionModal
-					isOpen={isOpen}
-					onClose={closeModal}
-					onSave={handleUpdateTransaction}
-					onDelete={handleDeleteTransaction}
-					transactionData={transactionData}
-					setTransactionData={setTransactionData}
-					category={category}
-					account={account}
-				/>
-			)}
+			<TransactionForm
+				isOpen={isOpen}
+				onClose={closeModal}
+				onSave={handleUpdateTransaction}
+				onDelete={handleDeleteTransaction}
+				transactionData={transactionData}
+				setTransactionData={setTransactionData}
+				category={category}
+				account={account}
+				isEdit={true}
+			/>
 		</>
 	);
 };

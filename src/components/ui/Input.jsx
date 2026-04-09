@@ -1,5 +1,5 @@
 import { forwardRef } from "react";
-import { twMerge } from "tailwind-merge";
+import { cn } from "@/utils/cn";
 
 export const Input = forwardRef(
 	({ label, isMoneyInput, className, ...props }, ref) => {
@@ -11,12 +11,12 @@ export const Input = forwardRef(
 				>
 					{label}
 				</label>
-				<div className="relative">
+				<div className="relative w-full min-w-0">
 					<input
 						{...props}
 						ref={ref}
-						className={twMerge(
-							"w-full bg-black/20 border border-white/5 rounded-2xl px-4 py-4 focus:outline-none focus:border-primary/50 transition-colors placeholder:text-muted-color placeholder:uppercase placeholder:text-sm",
+						className={cn(
+							"block w-full min-w-0 max-w-full appearance-none bg-black/20 border border-white/5 rounded-2xl px-4 py-4 focus:outline-none focus:border-primary/50 transition-colors placeholder:text-muted-color placeholder:uppercase placeholder:text-sm disabled:text-muted-color",
 							isMoneyInput && "pr-12",
 							className,
 						)}

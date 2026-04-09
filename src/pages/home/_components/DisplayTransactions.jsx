@@ -1,15 +1,12 @@
 import { useEffect, useState } from "react";
 import {
 	AddTransactionCard,
-	Drawer,
-	NewTransactionForms,
 	SmallLoadingScreen,
-	setDrawerState,
 	TransactionCard,
-} from "../../../components/index.js";
-import { useData } from "../../../context/DataContext";
+} from "@/components/index.js";
+import { useData } from "@/context/DataContext";
 
-export function DisplayTransactions({ type, transactions }) {
+export function DisplayTransactions({ type, transactions, onAddClick }) {
 	const { loading: dataLoading } = useData();
 	const [isSwitching, setIsSwitching] = useState(false);
 	const [prevType, setPrevType] = useState(type);
@@ -43,13 +40,10 @@ export function DisplayTransactions({ type, transactions }) {
 	if (total === 0) {
 		return (
 			<>
-				<Drawer
-					views={{ "New-transaction": <NewTransactionForms type={type} /> }}
-				/>
 				<AddTransactionCard
 					transactionType={type}
-					onClick={() => setDrawerState("New-transaction")}
-					text={`You don’t have any ${type} this month. Tap to add one.`}
+					onClick={onAddClick}
+					text={`You don't have any ${type} this month. Tap to add one.`}
 				/>
 			</>
 		);

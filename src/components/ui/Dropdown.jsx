@@ -1,8 +1,8 @@
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
-import { twMerge } from "tailwind-merge";
-import { useData } from "../../context/DataContext";
-import { getCategoriesByType } from "../../utils/categories";
+import { useData } from "@/context/DataContext";
+import { getCategoriesByType } from "@/utils/categories";
+import { cn } from "@/utils/cn";
 
 export function Dropdown({
 	transactionData,
@@ -11,6 +11,7 @@ export function Dropdown({
 	placeholder,
 	label,
 	value,
+	onChange,
 }) {
 	const { categories, accounts } = useData();
 	const [selected, setSelected] = useState(!!value);
@@ -18,6 +19,7 @@ export function Dropdown({
 	const handleChange = (e) => {
 		setTransactionData({ ...transactionData, [field]: e.target.value });
 		setSelected(true);
+		onChange?.(e);
 	};
 
 	return (
@@ -31,7 +33,7 @@ export function Dropdown({
 			<div className="flex flex-row bg-black/20 border border-white/5 focus:outline-none focus:border-primary/50 transition-colors cursor-pointer rounded-2xl items-center justify-between">
 				<select
 					id={field}
-					className={twMerge(
+					className={cn(
 						"w-full pl-4 py-4 text-sm appearance-none",
 						selected ? "text-zinc-50" : "text-muted-color uppercase",
 					)}

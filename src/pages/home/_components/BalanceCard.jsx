@@ -1,5 +1,5 @@
 import { IoMdArrowRoundBack } from "react-icons/io";
-import { calculateNetworth } from "../../../utils/networth.js";
+import { calculateNetworth } from "@/utils/networth.js";
 
 export const TotalBalanceCard = ({ transactions, accounts }) => {
 	const { totalNetworth, totalExpenses, totalIncomes } = calculateNetworth(
