@@ -1,6 +1,5 @@
 export { TransactionCard } from "../pages/home/_components/TransactionCard.jsx";
 export { AddTransactionCard } from "./AddTransactionCard.jsx";
-export { Popup } from "./CategoryPopup.jsx";
 export { ColorPicker } from "./ColorPicker.jsx";
 export { Header } from "./Header.jsx";
 export { IconPicker } from "./IconPicker.jsx";
