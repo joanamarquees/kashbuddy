@@ -1,21 +1,58 @@
+import { useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
-import { IoAdd } from "react-icons/io5";
-
 import { useNavigate } from "react-router-dom";
 import {
+	AddButton,
 	Button,
-	Drawer,
+	CategoryForm,
 	Header,
 	LoadingScreen,
-	NewCategoryForms,
-	setDrawerState,
-} from "../../../components/index.js";
-import { useGetCategories } from "../../../hooks/useGetCategories.js";
+} from "@/components/index.js";
+import { useAddCategory } from "@/hooks/useAddCategory.js";
+import { useGetCategories } from "@/hooks/useGetCategories.js";
 import { CategoryCard } from "./_components/CategoryCard.jsx";
+
+const EMPTY_CATEGORY = {
+	value: "",
+	label: "",
+	iconIndex: 5,
+	color: "#ffffff",
+	categoryType: "expense",
+};
 
 export function Categories() {
 	const navigate = useNavigate();
 	const { categories, loading } = useGetCategories();
+	const { addCategory } = useAddCategory();
+
+	const [isNewCategoryOpen, setIsNewCategoryOpen] = useState(false);
+	const [newCategoryData, setNewCategoryData] = useState(EMPTY_CATEGORY);
+	const [error, setError] = useState("");
+
+	const handleOpenNewCategory = () => {
+		setNewCategoryData(EMPTY_CATEGORY);
+		setError("");
+		setIsNewCategoryOpen(true);
+	};
+
+	const handleAddCategory = async () => {
+		if (
+			!newCategoryData.label ||
+			!newCategoryData.color ||
+			!newCategoryData.categoryType
+		) {
+			setError("Please fill in all fields");
+			return;
+		}
+		await addCategory({
+			value: newCategoryData.value,
+			label: newCategoryData.label,
+			iconIndex: newCategoryData.iconIndex,
+			color: newCategoryData.color,
+			categoryType: newCategoryData.categoryType,
+		});
+		setIsNewCategoryOpen(false);
+	};
 
 	return (
 		<div className="container mx-auto px-4 h-full overflow-y-scroll pb-8 overscroll-contain">
@@ -33,7 +70,7 @@ export function Categories() {
 						Categories
 					</h1>
 				}
-				rightIcon={<div className="w-8"></div>}
+				rightIcon={<div className="w-8" />}
 			/>
 
 			{/* Content */}
@@ -45,10 +82,7 @@ export function Categories() {
 						You haven't registered any category, how about registering one right
 						now?
 					</p>
-					<Button
-						onClick={() => setDrawerState("New-category")}
-						className="cursor-pointer"
-					>
+					<Button onClick={handleOpenNewCategory} className="cursor-pointer">
 						Add a category
 					</Button>
 				</div>
@@ -65,20 +99,19 @@ export function Categories() {
 					})}
 
 					{/* Add category button */}
-					<button
-						type="button"
-						onClick={() => setDrawerState("New-category")}
-						className="fixed bottom-5 right-5 bg-primary/20 w-16 h-16 p-2 cursor-pointer flex items-center justify-center rounded-full active:scale-95 transition-all"
-					>
-						<IoAdd size={45} className="text-primary" />
-					</button>
+					<AddButton onClick={handleOpenNewCategory} />
 				</div>
 			)}
 
-			<Drawer
-				views={{
-					"New-category": <NewCategoryForms allCategories={categories} />,
-				}}
+			{/* Add Category Form */}
+			<CategoryForm
+				isOpen={isNewCategoryOpen}
+				onClose={() => setIsNewCategoryOpen(false)}
+				onSave={handleAddCategory}
+				categoryData={newCategoryData}
+				setCategoryData={setNewCategoryData}
+				allCategories={categories}
+				isEdit={false}
 			/>
 		</div>
 	);

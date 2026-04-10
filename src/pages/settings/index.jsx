@@ -1,24 +1,14 @@
 import { signOut } from "firebase/auth";
-import { motion } from "framer-motion";
 import { useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoGrid, IoLogOutOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
-import { twMerge } from "tailwind-merge";
-import { Header } from "../../components/index";
-import { Drawer, setDrawerState } from "../../components/ui/Drawer";
-import { auth } from "../../config/firebase-config";
 
-const avatarSeeds = [
-	"Joana",
-	"Maria",
-	"Sofia",
-	"Beatriz",
-	"Ines",
-	"Leonor",
-	"Matilde",
-	"Alice",
-];
+import { Header } from "@/components/index";
+
+import { auth } from "@/config/firebase-config";
+
+import { AvatarPicker } from "./_components/AvatarPicker.jsx";
 
 const AVATAR_STORAGE_KEY = "avatarSeed";
 
@@ -29,11 +19,16 @@ function getStoredAvatarSeed() {
 export function Settings() {
 	const navigate = useNavigate();
 	const [avatarSeed, setAvatarSeed] = useState(getStoredAvatarSeed);
+	const [isAvatarPickerOpen, setIsAvatarPickerOpen] = useState(false);
 
 	const handleSelectAvatar = (seed) => {
 		setAvatarSeed(seed);
 		localStorage.setItem(AVATAR_STORAGE_KEY, seed);
-		setDrawerState(null);
+		setIsAvatarPickerOpen(false);
+	};
+
+	const handleOpenAvatarPicker = () => {
+		setIsAvatarPickerOpen(true);
 	};
 
 	const signUserOut = async () => {
@@ -46,35 +41,7 @@ export function Settings() {
 		}
 	};
 
-	const avatarPicker = {
-		avatar: (
-			<div className="px-6 pb-4">
-				<h3 className="text-xl font-bold mb-6 text-center">Choose Avatar</h3>
-				<div className="grid grid-cols-4 gap-4">
-					{avatarSeeds.map((seed) => (
-						<motion.button
-							key={seed}
-							whileHover={{ scale: 1.1 }}
-							whileTap={{ scale: 0.9 }}
-							onClick={() => handleSelectAvatar(seed)}
-							className={twMerge(
-								"aspect-square rounded-2xl overflow-hidden border-2 transition-all",
-								avatarSeed === seed
-									? "border-[#818cf8] bg-[#818cf8]/10"
-									: "border-white/5 bg-black/20 hover:border-white/20",
-							)}
-						>
-							<img
-								src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}`}
-								alt={seed}
-								className="w-full h-full object-cover"
-							/>
-						</motion.button>
-					))}
-				</div>
-			</div>
-		),
-	};
+
 
 	return (
 		<div className="mx-auto px-4 h-full flex flex-col space-y-3">
@@ -100,7 +67,7 @@ export function Settings() {
 				<button
 					type="button"
 					className="relative active:scale-95"
-					onClick={() => setDrawerState("avatar")}
+					onClick={handleOpenAvatarPicker}
 				>
 					<div className="w-24 h-24 border-4 border-primary shadow-2xl shadow-primary/20 rounded-3xl bg-light-background flex items-center justify-center overflow-hidden">
 						<img
@@ -145,7 +112,12 @@ export function Settings() {
 				</div>
 			</div>
 
-			<Drawer views={avatarPicker} />
+			<AvatarPicker
+				isOpen={isAvatarPickerOpen}
+				currentSeed={avatarSeed}
+				onSelect={handleSelectAvatar}
+				onClose={() => setIsAvatarPickerOpen(false)}
+			/>
 		</div>
 	);
 }

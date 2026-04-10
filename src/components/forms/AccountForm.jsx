@@ -52,7 +52,7 @@ export function AccountForm({
 				}
 			/>
 
-			<div className="pt-2 flex flex-col gap-3">
+			<div className="pt-2 flex flex-col space-y-3">
 				{isEdit ? (
 					<>
 						<Button type="button" onClick={onSave} variant="primary">
@@ -68,10 +68,7 @@ export function AccountForm({
 						</Button>
 					</>
 				) : (
-					<div className="flex gap-2 justify-center">
-						<Button variant="secondary" onClick={onClose}>
-							Cancel
-						</Button>
+					<>
 						<Button
 							onClick={onSave}
 							disabled={!formData.bankName || !formData.amount}
@@ -81,7 +78,10 @@ export function AccountForm({
 						>
 							Add Account
 						</Button>
-					</div>
+						<Button variant="delete" onClick={onClose}>
+							Cancel
+						</Button>
+					</>
 				)}
 			</div>
 		</div>

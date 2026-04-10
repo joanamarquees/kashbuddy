@@ -1,20 +1,22 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IoAdd } from "react-icons/io5";
 
 export function ColorPicker({ categoryData, setCategoryData, allCategories }) {
 	const inputRef = useRef(null);
 	const [colors, setColors] = useState([]);
-	const [color, setColor] = useState(categoryData.color); // Default color
+
+	const currentColor = categoryData?.color || "#ffffff";
 
 	useEffect(() => {
-		const uniqueColors = [
-			...new Set(allCategories.map((category) => category.color)),
-		];
-		setColors(uniqueColors);
+		if (allCategories) {
+			const uniqueColors = [
+				...new Set(allCategories.map((category) => category.color)),
+			];
+			setColors(uniqueColors);
+		}
 	}, [allCategories]);
 
 	const handleColorChange = (e) => {
-		setColor(e.target.value);
 		setCategoryData({ ...categoryData, color: e.target.value });
 	};
 
@@ -27,18 +29,18 @@ export function ColorPicker({ categoryData, setCategoryData, allCategories }) {
 						<input
 							ref={inputRef}
 							type="color"
-							value={color}
+							value={currentColor}
 							onChange={handleColorChange}
 							className="appearance-none w-full h-full p-0 cursor-pointer opacity-0 absolute z-50"
 						/>
 						<IoAdd
 							onClick={() => inputRef.current.click()}
 							size={33}
-							className="absolute cursor-pointer text-zinc-950"
+							className="absolute cursor-pointer text-zinc-950 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
 						/>
 						<button
 							type="button"
-							style={{ backgroundColor: color }}
+							style={{ backgroundColor: currentColor }}
 							className="w-full h-full rounded-full cursor-pointer"
 							onClick={() => inputRef.current.click()}
 						/>
@@ -46,13 +48,15 @@ export function ColorPicker({ categoryData, setCategoryData, allCategories }) {
 				</div>
 
 				{/* Display the selected colors as balls */}
-				{colors.map((color, index) => (
+				{colors.map((presetColor, index) => (
 					<button
 						type="button"
 						key={index}
-						className="w-8 h-8 rounded-full cursor-pointer"
-						onClick={() => setCategoryData({ ...categoryData, color: color })}
-						style={{ backgroundColor: color }}
+						className="w-8 h-8 rounded-full cursor-pointer flex-shrink-0"
+						onClick={() =>
+							setCategoryData({ ...categoryData, color: presetColor })
+						}
+						style={{ backgroundColor: presetColor }}
 					/>
 				))}
 			</div>

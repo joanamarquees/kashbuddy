@@ -8,7 +8,7 @@ import {
 	XAxis,
 	YAxis,
 } from "recharts";
-import { db } from "../../../config/firebase-config";
+import { db } from "@/config/firebase-config";
 
 export function StatsCard({ transactions, type }) {
 	const [categories, setCategories] = useState({});

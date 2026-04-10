@@ -173,7 +173,17 @@ export function TransactionForm({
 					</>
 				) : (
 					<>
-						<Button variant="primary" onClick={onSave}>
+						<Button
+							variant={
+								!transactionData.description ||
+								!transactionData.amount ||
+								!transactionData.categoryId ||
+								!transactionData.accountId
+									? "secondary"
+									: "primary"
+							}
+							onClick={onSave}
+						>
 							Add Transaction
 						</Button>
 						<Button variant="delete" onClick={onClose}>

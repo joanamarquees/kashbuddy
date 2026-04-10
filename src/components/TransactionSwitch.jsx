@@ -1,5 +1,6 @@
 import { BsCashCoin } from "react-icons/bs";
 import { MdOutlineLocalGroceryStore } from "react-icons/md";
+import { cn } from "@/utils/cn";
 
 export const TransactionSwitch = ({ type, handleChange }) => {
 	return (
@@ -43,9 +44,10 @@ export const TransactionSwitch = ({ type, handleChange }) => {
 
 			{/* Slider for active tab */}
 			<div
-				className={`absolute w-[calc(50%-0.125rem)] h-[calc(98%-0.125rem)] bg-indigo-400 shadow-sm rounded-[10px] transition-all duration-300 ease-in-out z-0 ${
-					type === "income" ? "translate-x-full" : ""
-				}`}
+				className={cn(
+					"absolute w-[calc(50%-0.125rem)] h-[calc(98%-0.125rem)] bg-indigo-400 shadow-sm rounded-[10px] transition-all duration-300 ease-in-out z-0",
+					type === "income" ? "translate-x-full" : "",
+				)}
 			/>
 		</div>
 	);

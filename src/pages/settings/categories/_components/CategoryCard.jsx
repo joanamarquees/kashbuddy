@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { useDeleteCategory } from "../../../../hooks/useDeleteCategory";
-import { useUpdateCategory } from "../../../../hooks/useUpdateCategory";
-import { iconList } from "../../../../utils/categories";
-import { CategoryModal } from "./CategoryModal";
+import { CategoryForm } from "@/components/forms/CategoryForm.jsx";
+import { useDeleteCategory } from "@/hooks/useDeleteCategory";
+import { useUpdateCategory } from "@/hooks/useUpdateCategory";
+import { iconList } from "@/utils/categories";
 
 export function CategoryCard({ category, allCategories }) {
 	const { id } = category;
@@ -53,17 +53,16 @@ export function CategoryCard({ category, allCategories }) {
 				</p>
 			</button>
 
-			{isOpen && (
-				<CategoryModal
-					isOpen={isOpen}
-					onClose={closeModal}
-					onSave={handleUpdateCategory}
-					onDelete={handleDeleteCategory}
-					categoryData={category}
-					setCategoryData={setCategoryData}
-					allCategories={allCategories}
-				/>
-			)}
+			<CategoryForm
+				isOpen={isOpen}
+				onClose={closeModal}
+				onSave={handleUpdateCategory}
+				onDelete={handleDeleteCategory}
+				categoryData={categoryData}
+				setCategoryData={setCategoryData}
+				allCategories={allCategories}
+				isEdit={true}
+			/>
 		</>
 	);
 }
