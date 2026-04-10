@@ -35,7 +35,7 @@ export function DisplayCategories({ type, transactions, onAddClick }) {
 			<AddTransactionCard
 				transactionType={type}
 				onClick={onAddClick}
-				text={`You don't have any ${type} this month. Tap to add one.`}
+				text={`Categorize your ${type}s to see detailed insights. Tap to add your first transaction!`}
 			/>
 		);
 	}

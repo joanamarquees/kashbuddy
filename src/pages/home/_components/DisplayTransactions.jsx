@@ -39,13 +39,11 @@ export function DisplayTransactions({ type, transactions, onAddClick }) {
 
 	if (total === 0) {
 		return (
-			<>
-				<AddTransactionCard
-					transactionType={type}
-					onClick={onAddClick}
-					text={`You don't have any ${type} this month. Tap to add one.`}
-				/>
-			</>
+			<AddTransactionCard
+				transactionType={type}
+				onClick={onAddClick}
+				text={`No ${type}s found for this month. Tap to add your first one and start tracking!`}
+			/>
 		);
 	}
 
