@@ -11,7 +11,7 @@ import {
 import { useAddAccount } from "@/hooks/useAddAccounts.js";
 import { useGetAccounts } from "@/hooks/useGetAccounts.js";
 import { calculateNetworth } from "@/utils/networth.js";
-import { AccountCard } from "./_components/AccountCard.jsx";
+import { AccountCard } from "./_components/accountCard.jsx";
 
 const EMPTY_ACCOUNT = { bankName: "", amount: "" };
 
