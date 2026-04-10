@@ -1,7 +1,6 @@
 /** biome-ignore-all lint/suspicious/noArrayIndexKey: index is used to distinguish chart bars */
-import { doc, getDoc } from "firebase/firestore";
+
 import { BarChart3 } from "lucide-react";
-import { useEffect, useState } from "react";
 import {
 	Bar,
 	BarChart,
@@ -10,33 +9,27 @@ import {
 	XAxis,
 	YAxis,
 } from "recharts";
-import { db } from "@/config/firebase-config";
+import { useData } from "@/context/DataContext.jsx";
 
 export function StatsCard({ transactions, type }) {
-	const [categories, setCategories] = useState({});
+	const { categories: categoriesList } = useData();
 
-	useEffect(() => {
-		const fetchCategories = async () => {
-			const categoryData = {};
+	const categoryMap = categoriesList.reduce((acc, cat) => {
+		acc[cat.id] = cat;
+		return acc;
+	}, {});
 
-			for (const transaction of transactions) {
-				const categoryId = transaction.categoryId;
-				if (!categoryData[categoryId]) {
-					const categoryDoc = await getDoc(doc(db, "categories", categoryId));
-					categoryData[categoryId] = categoryDoc.data();
-				}
-			}
-			setCategories(categoryData);
-		};
-		fetchCategories();
-	}, [transactions]);
-
-	// Calculate total amount for each category
+	// Calculate total amount for each category, grouping unknown/missing categories
 	const categoryTotals = transactions.reduce((acc, transaction) => {
 		if (transaction.transactionType !== type) {
 			return acc;
 		}
-		const categoryId = transaction.categoryId;
+
+		// Use 'uncategorized' key if category doesn't exist
+		const categoryId = categoryMap[transaction.categoryId]
+			? transaction.categoryId
+			: "uncategorized";
+
 		if (!acc[categoryId]) {
 			acc[categoryId] = 0;
 		}
@@ -44,12 +37,15 @@ export function StatsCard({ transactions, type }) {
 		return acc;
 	}, {});
 
-	// Format the data for Recharts (each object contains a category and total amount)
-	const chartData = Object.keys(categoryTotals).map((categoryId) => ({
-		category: categories[categoryId]?.label,
-		amount: categoryTotals[categoryId],
-		color: categories[categoryId]?.color || "#FFFFFF",
-	}));
+	// Format the data for Recharts
+	const chartData = Object.keys(categoryTotals).map((categoryId) => {
+		const category = categoryMap[categoryId];
+		return {
+			category: category?.value || "Uncategorized",
+			amount: categoryTotals[categoryId],
+			color: category?.color || "#94a3b8",
+		};
+	});
 
 	const ghostData = [
 		{ amount: 100, color: "var(--color-primary)" },

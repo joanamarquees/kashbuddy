@@ -10,12 +10,17 @@ export function DisplayCategories({ type, transactions, onAddClick }) {
 		return acc;
 	}, {});
 
-	// Calculate total amount for each category
+	// Calculate total amount for each category, grouping unknown/missing categories
 	const categoryTotals = transactions.reduce((acc, transaction) => {
 		if (transaction.transactionType !== type) {
 			return acc;
 		}
-		const categoryId = transaction.categoryId;
+
+		// Use 'uncategorized' key if category doesn't exist
+		const categoryId = categoryMap[transaction.categoryId]
+			? transaction.categoryId
+			: "uncategorized";
+
 		if (!acc[categoryId]) {
 			acc[categoryId] = 0;
 		}
@@ -23,12 +28,15 @@ export function DisplayCategories({ type, transactions, onAddClick }) {
 		return acc;
 	}, {});
 
-	const chartData = Object.keys(categoryTotals).map((categoryId) => ({
-		category: categoryMap[categoryId]?.value,
-		amount: categoryTotals[categoryId],
-		color: categoryMap[categoryId]?.color || "#FFFFFF",
-		iconIndex: categoryMap[categoryId]?.iconIndex,
-	}));
+	const chartData = Object.keys(categoryTotals).map((categoryId) => {
+		const category = categoryMap[categoryId];
+		return {
+			category: category?.value || "Uncategorized",
+			amount: categoryTotals[categoryId].toFixed(2),
+			color: category?.color || "#94a3b8", // Slate-400 for uncategorized
+			iconIndex: category?.iconIndex,
+		};
+	});
 
 	if (chartData.length === 0) {
 		return (
