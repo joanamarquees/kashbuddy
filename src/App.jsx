@@ -3,6 +3,7 @@ import { DataProvider } from "./context/DataContext";
 import { Accounts } from "./pages/accounts/index";
 import { Auth } from "./pages/auth/index";
 import { Home } from "./pages/home/index";
+import { NotFound } from "./pages/notFound/index";
 import { Categories } from "./pages/settings/categories/index";
 import { Settings } from "./pages/settings/index";
 
@@ -22,6 +23,7 @@ function App() {
 						<Route path="settings/categories" element={<Categories />} />{" "}
 						{/* Categories page */}
 						{/* Add the forms page to add a new expense */}
+						<Route path="*" element={<NotFound />} />
 					</Routes>
 				</DataProvider>
 			</Router>

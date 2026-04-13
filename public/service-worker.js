@@ -2,9 +2,10 @@ const CACHE_NAME = 'kashbuddy-cache-v1';
 const urlsToCache = [
   '/',
   '/index.html',
-  '/static/css/main.d514fbb9.css',
-  '/static/js/main.588dfb76.js',
-  '/static/media/logo_light.a719729351baab499a26bd0e93d25760.svg'
+  '/404.html',
+  '/manifest.json',
+  '/icon.png'
+  // Note: CSS and JS files with hashes should ideally be handled by a build-time PWA plugin
 ];
 
 self.addEventListener('install', (event) => {
@@ -17,13 +18,29 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+  // For navigation requests, try to serve index.html from cache if fetch fails
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request).catch(() => {
+        return caches.match('/index.html');
+      })
+    );
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request)
       .then((response) => {
         if (response) {
           return response;
         }
-        return fetch(event.request);
+        return fetch(event.request).catch(() => {
+          // If a file like an image is missing offline, we could return 404.html here
+          // but usually we just let it fail.
+          if (event.request.destination === 'image') {
+            return caches.match('/icon.png');
+          }
+        });
       })
   );
 });
