@@ -1,32 +1,31 @@
-import React, { useState } from 'react';
+import { useState } from "react";
 
-import { iconList } from '../utils/categories.js';
+import { iconList } from "@/utils/categories.js";
+import { cn } from "@/utils/cn";
 
 export function IconPicker({ categoryData, setCategoryData }) {
-  const [selectedIcon, setSelectedIcon] = useState(5);
+	const [selectedIcon, setSelectedIcon] = useState(5);
 
-  const handleSelectIcon = (index) => {
-    setSelectedIcon(index);
-    setCategoryData({ ...categoryData, iconIndex: index });
-  }
+	const handleSelectIcon = (index) => {
+		setSelectedIcon(index);
+		setCategoryData({ ...categoryData, iconIndex: index });
+	};
 
-  return (
-    <div className='grid grid-cols-6 md:grid-cols-12 lg:grid-cols-18'>
-      {iconList.map((Icon, index) => (
-        <div
-          key={index}
-          className={`flex flex-col items-center cursor-pointer p-2 rounded-full transition ${
-            selectedIcon === index ? 'bg-indigo-400/50' : ''
-          }`}
-          onClick={() => handleSelectIcon(index)}
-        >
-          <Icon
-            size={24}
-          />
-        </div>
-      ))}
-    </div>
-
-  );
-};
-
+	return (
+		<div className="grid grid-cols-6 md:grid-cols-8 gap-2">
+			{iconList.map((Icon, index) => (
+				<button
+					type="button"
+					key={index}
+					className={cn(
+						"flex flex-col items-center cursor-pointer p-1 rounded-full transition",
+						selectedIcon === index ? "bg-indigo-400/50" : "",
+					)}
+					onClick={() => handleSelectIcon(index)}
+				>
+					<Icon size={24} />
+				</button>
+			))}
+		</div>
+	);
+}

@@ -1,16 +1,27 @@
-import { IoAddCircle } from "react-icons/io5";
+import { Plus } from "lucide-react";
+import { cn } from "@/utils/cn";
 
 export const AddTransactionCard = ({ transactionType, onClick, text }) => (
 	<button
 		type="button"
-		className="container mx-auto p-3 w-full h-24 my-3 flex items-center border-dashed border-[1.5px] border-white rounded-xl cursor-pointer"
+		className="w-full p-4 flex items-center bg-card-surface/50 border-2 border-dashed border-primary/20 rounded-2xl cursor-pointer transition-all hover:bg-primary/5 hover:border-primary/40 group mb-4"
 		onClick={onClick}
 	>
-		<IoAddCircle
-			size={70}
-			className="text-center"
-			style={{ color: transactionType === "expense" ? "#f73131" : "#82f576" }}
-		/>
-		<p className="text-left text-sm ml-3">{text}</p>
+		<div
+			className={cn(
+				"p-3 rounded-xl transition-colors shrink-0",
+				transactionType === "expense" ? "bg-red-400/20" : "bg-green-400/20",
+			)}
+		>
+			<Plus
+				className={cn(
+					"w-8 h-8",
+					transactionType === "expense" ? "text-red-400" : "text-green-400",
+				)}
+			/>
+		</div>
+		<p className="text-left text-sm font-medium text-zinc-300 ml-4 leading-relaxed">
+			{text}
+		</p>
 	</button>
 );

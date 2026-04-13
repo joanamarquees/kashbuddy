@@ -1,99 +1,120 @@
+import { useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
-import { MdAddCard } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import { Popup } from "../../components/AccountPopup.jsx";
-import { NewAccountForms } from "../../components/NewAccount.jsx";
-import { Button } from "../../components/ui/Button.jsx";
-import { Drawer, setDrawerState } from "../../components/ui/Drawer.jsx";
+import {
+	AccountForm,
+	AddButton,
+	Button,
+	Header,
+	LoadingScreen,
+} from "@/components/index.js";
+import { useAddAccount } from "@/hooks/useAddAccounts.js";
+import { useGetAccounts } from "@/hooks/useGetAccounts.js";
+import { calculateNetworth } from "@/utils/networth.js";
+import { AccountCard } from "./_components/accountCard.jsx";
 
-import { useGetAccounts } from "../../hooks/useGetAccounts.js";
-import { calculateNetworth } from "../../utils/networth.js";
+const EMPTY_ACCOUNT = { bankName: "", amount: "" };
 
 export function Accounts() {
 	const navigate = useNavigate();
 	const { accounts, loading } = useGetAccounts();
 	const { totalNetworth } = calculateNetworth(accounts);
+	const { addAccount } = useAddAccount();
+
+	const [isNewAccountOpen, setIsNewAccountOpen] = useState(false);
+	const [newAccountData, setNewAccountData] = useState(EMPTY_ACCOUNT);
+	const [error, setError] = useState("");
+
+	const handleOpenNewAccount = () => {
+		setNewAccountData(EMPTY_ACCOUNT);
+		setError("");
+		setIsNewAccountOpen(true);
+	};
+
+	const handleAddAccount = async () => {
+		if (!newAccountData.bankName || !newAccountData.amount) {
+			setError("Please fill in all fields");
+			return;
+		}
+		await addAccount({
+			bankName: newAccountData.bankName,
+			amount: Number(parseFloat(newAccountData.amount)),
+		});
+		setIsNewAccountOpen(false);
+	};
 
 	return (
-		<div className="container mx-auto px-5 h-full select-none">
-			<Drawer views={{ "New-account": <NewAccountForms /> }} />
+		<div className="mx-auto px-5 h-full select-none space-y-2 overflow-y-scroll">
+			{/* Add Account Form */}
+			<AccountForm
+				isOpen={isNewAccountOpen}
+				onClose={() => setIsNewAccountOpen(false)}
+				onSave={handleAddAccount}
+				formData={newAccountData}
+				setFormData={setNewAccountData}
+				isEdit={false}
+			/>
 
 			{/* Header */}
-			<div className="py-6 flex flex-row items-center justify-between space-x-2">
-				{accounts.length >= 1 && (
-					<button type="button">
-						<IoIosArrowBack
-							size={30}
-							className="cursor-pointer"
-							onClick={() => navigate("/home")}
-						/>
-					</button>
-				)}
+			<Header
+				leftIcon={
+					<IoIosArrowBack
+						size={35}
+						className="cursor-pointer"
+						onClick={() => navigate("/home")}
+					/>
+				}
+			/>
 
-				<h1 className="text-2xl md:text-4xl font-bold font-sans">
-					BankAccounts
-				</h1>
+			{/* Loading Spinner */}
+			{loading && <LoadingScreen />}
 
-				{accounts.length >= 1 && (
-					<button type="button">
-						<MdAddCard
-							size={30}
-							onClick={() => setDrawerState("New-account")}
-							className="cursor-pointer"
-						/>
-					</button>
-				)}
-			</div>
-
-			{loading ? (
-				<div>
-					{/* Skeleton for Networth */}
-					<div className="animate-pulse">
-						<h2 className="text-gray-300 text-center text-2xl md:text-4xl font-sans">
-							NETWORTH
-						</h2>
-						<div className="text-center font-extrabold py-10">
-							<div className="w-48 h-16 bg-gray-300 rounded-lg mx-auto"></div>
-						</div>
-					</div>
-
-					{/* Skeleton for Accounts List */}
-					<div className="flex flex-col gap-3">
-						{[1, 2, 3].map((index) => (
-							<div
-								key={index}
-								className="flex h-16 justify-between items-center p-4 bg-zinc-800 rounded-lg animate-pulse"
-							/>
-						))}
-					</div>
-				</div>
-			) : accounts.length <= 0 ? (
-				// No Accounts
-				<div className="py-6 flex flex-col items-center justify-center gap-8 md:text-lg">
+			{/* No Accounts */}
+			{accounts.length <= 0 && (
+				<div className="py-6 h-full w-full flex flex-col items-center justify-center gap-8 md:text-lg">
 					<p className="text-zinc-300 leading-relaxed max-w-80 md:max-w-lg text-center font-sans">
 						You haven't registered any bank account, how about registering one
 						right now?
 					</p>
-					<Button onClick={() => setDrawerState("New-account")}>
-						Add an account
-					</Button>
+					<Button onClick={handleOpenNewAccount}>Add an account</Button>
 				</div>
-			) : (
-				// Accounts Page Content
-				<div>
-					<h2 className="text-zinc-400 text-center text-2xl md:text-4xl font-sans">
-						{" "}
-						NETWORTH{" "}
-					</h2>
-					<h3 className="text-indigo-400 text-center font-extrabold text-5xl md:text-7xl py-10 font-sans">
-						{" "}
-						{totalNetworth}€{" "}
-					</h3>
-					<div className="flex flex-col gap-3">
-						{accounts.map(({ bankName, amount }) => (
-							<Popup key={bankName} bankName={bankName} amount={amount} />
-						))}
+			)}
+
+			{/* Accounts Page Content */}
+			{accounts.length >= 1 && (
+				<div className="space-y-10">
+					{/* Total Net Worth */}
+					<div className="space-y-2">
+						<h2 className="text-zinc-400 text-center uppercase tracking-wider font-bold text-sm font-sans">
+							TOTAL NET WORTH
+						</h2>
+						<span className="flex items-end justify-center text-indigo-400 text-center font-extrabold text-6xl md:text-7xl font-sans">
+							{totalNetworth}
+							<p className="text-muted-color font-medium text-3xl ml-1">€</p>
+						</span>
 					</div>
+
+					{/* Accounts list */}
+					<div className="space-y-5">
+						<div className="flex items-center justify-between px-2">
+							<h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em]">
+								Your Accounts
+							</h3>
+						</div>
+
+						<div className="flex flex-col space-y-4 w-full">
+							{accounts.map(({ bankName, amount }) => (
+								<AccountCard
+									key={bankName}
+									bankName={bankName}
+									amount={amount}
+								/>
+							))}
+						</div>
+					</div>
+
+					{/* Add account button */}
+					<AddButton onClick={handleOpenNewAccount} />
 				</div>
 			)}
 		</div>

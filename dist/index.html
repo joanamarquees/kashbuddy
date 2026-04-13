@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/icon.png" />
+    <meta name="viewport" content="width=device-width, user-scalable=0, 
+        initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0 viewport-fit=cover"/>
+    <title>kashbuddy</title>
+    <link rel="manifest" href="/manifest.json" />
+    <script type="module" crossorigin src="/assets/index-CRnUA_gj.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-90DVR-xx.css">
+  </head>
+  <body class="bg-zinc-900 text-zinc-50 antialiased">
+    <div id="root" ></div>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/service-worker.js')
+            .then((registration) => {
+              console.log('ServiceWorker registration successful with scope: ', registration.scope);
+            }, (error) => {
+              console.log('ServiceWorker registration failed: ', error);
+            });
+        });
+      }
+    </script>
+  </body>
+</html>

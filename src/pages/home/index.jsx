@@ -1,93 +1,86 @@
 import dayjs from "dayjs";
 import isoWeek from "dayjs/plugin/isoWeek";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ReactCardFlip from "react-card-flip";
-import { IoAddCircle, IoSettingsOutline } from "react-icons/io5";
-import { PiBank } from "react-icons/pi";
-import { useNavigate } from "react-router-dom"; // to change from login to home page
-import { DisplayCategories } from "../../components/DisplayCategories.jsx";
-import { DisplayTransactions } from "../../components/DisplayTransactions.jsx";
-import { FinancialStats } from "../../components/FinancialStats.jsx";
-import { NewTransactionForms } from "../../components/NewTransaction.jsx";
-import { TransactionSwitch } from "../../components/TransactionSwitch.jsx";
-import { Calendar } from "../../components/ui/Calendar.jsx";
-import { FinancialCard } from "../../components/ui/Cards.jsx";
-import { Drawer, setDrawerState } from "../../components/ui/Drawer.jsx";
-import { useAddCategory } from "../../hooks/useAddCategory.js";
-import { useGetAccounts } from "../../hooks/useGetAccounts.js";
-import { useGetTransactions } from "../../hooks/useGetTransactions.js";
+import { HiOutlineWallet } from "react-icons/hi2";
+import { IoSettingsOutline } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
+import {
+	AddButton,
+	Calendar,
+	Header,
+	LoadingScreen,
+	TransactionForm,
+	TransactionSwitch,
+} from "@/components/index.js";
+import { useAddTransaction } from "@/hooks/useAddTransaction.js";
+import { useGetAccounts } from "@/hooks/useGetAccounts.js";
+import { useGetTransactions } from "@/hooks/useGetTransactions.js";
+
+import { TotalBalanceCard } from "./_components/BalanceCard.jsx";
+import { DisplayCategories } from "./_components/DisplayCategories.jsx";
+import { DisplayTransactions } from "./_components/DisplayTransactions.jsx";
+import { StatsCard } from "./_components/StatsCard.jsx";
 
 dayjs.extend(isoWeek);
 
-let defaultCategories = [
-	{
-		value: "grocery",
-		label: "grocery",
-		iconIndex: 2,
-		color: "#7a2680",
-		categoryType: "expense",
-	},
-	{
-		value: "transports",
-		label: "transports",
-		iconIndex: 16,
-		color: "#204718",
-		categoryType: "expense",
-	},
-	{
-		value: "health",
-		label: "health",
-		iconIndex: 8,
-		color: "#eb4034",
-		categoryType: "expense",
-	},
-	{
-		value: "food",
-		label: "food",
-		iconIndex: 42,
-		color: "#34d6eb",
-		categoryType: "expense",
-	},
-	{
-		value: "salary",
-		label: "salary",
-		iconIndex: 34,
-		color: "#381bab",
-		categoryType: "income",
-	},
-];
+const EMPTY_TRANSACTION = (type) => ({
+	description: "",
+	amount: "",
+	categoryId: "",
+	transactionType: type,
+	date: new Date(),
+	accountId: "",
+});
 
 export function Home() {
 	const navigate = useNavigate();
 	const { transactions, loading } = useGetTransactions();
 	const { accounts, loading: accountsLoading } = useGetAccounts();
-	const { addCategory } = useAddCategory();
+	const { addTransaction } = useAddTransaction();
+
 	const [flip, setFlip] = useState(false);
 	const [currentDate, setCurrentDate] = useState(dayjs());
 	const [transactionType, setTransactionType] = useState("expense");
 	const [filteredTransactions, setFilteredTransactions] =
 		useState(transactions);
+	const [isNewTransactionOpen, setIsNewTransactionOpen] = useState(false);
+	const [newTransactionData, setNewTransactionData] = useState(
+		EMPTY_TRANSACTION("expense"),
+	);
+	const [error, setError] = useState("");
 
-	useEffect(() => {
-		if (!accountsLoading && accounts.length === 0) {
-			//If its a new user: create default categories && navigate for /accounts
-
-			defaultCategories.map((category) =>
-				addCategory({
-					value: category.value,
-					label: category.label,
-					iconIndex: category.iconIndex,
-					color: category.color,
-					categoryType: category.categoryType,
-				}),
-			);
-
-			navigate("/accounts");
-		}
-	}, [accountsLoading, accounts.length, navigate, addCategory]);
+	const handleOpenNewTransaction = () => {
+		setNewTransactionData(EMPTY_TRANSACTION(transactionType));
+		setError("");
+		setIsNewTransactionOpen(true);
+	};
 
 	const handleTransactionTypeChange = (e) => {
 		setTransactionType(e.target.value);
+	};
+
+	const handleAddTransaction = async () => {
+		if (
+			!newTransactionData.description ||
+			!newTransactionData.amount ||
+			!newTransactionData.categoryId ||
+			!newTransactionData.transactionType ||
+			!newTransactionData.date ||
+			!newTransactionData.accountId
+		) {
+			setError("Please fill in all fields");
+			return;
+		}
+		await addTransaction({
+			description: newTransactionData.description,
+			amount: Number(parseFloat(newTransactionData.amount)),
+			categoryId: newTransactionData.categoryId,
+			transactionType: newTransactionData.transactionType,
+			date: new Date(newTransactionData.date),
+			accountId: newTransactionData.accountId,
+		});
+		setIsNewTransactionOpen(false);
 	};
 
 	const flipCard = () => {
@@ -107,58 +100,60 @@ export function Home() {
 	}, [currentDate, transactions]);
 
 	return (
-		<div className="container mx-auto px-4 h-full">
+		<div className="container mx-auto px-5 h-full overflow-y-scroll">
 			{/* Header */}
-			<div className="py-6 flex flex-row items-center justify-center gap-3 md:gap-52">
-				<PiBank
-					size={35}
-					className="text-indigo-400 cursor-pointer mx-2"
-					onClick={() => navigate("/accounts")}
-				/>
-
-				{/* Month search */}
-				<Calendar currentDate={currentDate} setCurrentDate={setCurrentDate} />
-
-				{/* Settings */}
-				<IoSettingsOutline
-					size={35}
-					className="text-indigo-400 cursor-pointer mx-2"
-					onClick={() => navigate("/settings")}
-				/>
-			</div>
+			<Header
+				leftIcon={
+					<HiOutlineWallet
+						size={35}
+						className="text-indigo-400 cursor-pointer"
+						onClick={() => navigate("/accounts")}
+					/>
+				}
+				centerElement={
+					<Calendar currentDate={currentDate} setCurrentDate={setCurrentDate} />
+				}
+				rightIcon={
+					<IoSettingsOutline
+						size={35}
+						className="text-indigo-400 cursor-pointer"
+						onClick={() => navigate("/settings")}
+					/>
+				}
+			/>
 
 			{/* Main Content */}
-			<div className="w-[353px] md:w-[50%] mx-auto place-items-center">
+			<div className="h-full w-full mx-auto place-items-center space-y-8">
 				{loading || accountsLoading ? (
-					// Skeleton for the card and categories/transactions
-					<>
-						<div className="w-full h-64 bg-gray-300 animate-pulse rounded-lg mb-6"></div>
-						<div className="flex gap-2 mb-4">
-							<div className="w-1/2 h-8 bg-gray-300 animate-pulse rounded-md"></div>
-							<div className="w-1/2 h-8 bg-gray-300 animate-pulse rounded-md"></div>
-						</div>
-						<div className="space-y-4">
-							<div className="w-full h-20 bg-gray-300 animate-pulse rounded-lg"></div>
-							<div className="w-full h-20 bg-gray-300 animate-pulse rounded-lg"></div>
-							<div className="w-full h-20 bg-gray-300 animate-pulse rounded-lg"></div>
-						</div>
-					</>
+					<LoadingScreen />
 				) : (
 					<>
-						<ReactCardFlip flipDirection="horizontal" isFlipped={flip}>
-							<div className="cursor-pointer" onClick={flipCard}>
-								<FinancialCard
+						<ReactCardFlip
+							flipDirection="horizontal"
+							isFlipped={flip}
+							containerClassName="h-52"
+						>
+							<button
+								type="button"
+								className="w-full cursor-pointer"
+								onClick={flipCard}
+							>
+								<TotalBalanceCard
 									transactions={filteredTransactions}
 									accounts={accounts}
 								/>
-							</div>
+							</button>
 
-							<div className="cursor-pointer" onClick={flipCard}>
-								<FinancialStats
+							<button
+								type="button"
+								className="w-full cursor-pointer"
+								onClick={flipCard}
+							>
+								<StatsCard
 									transactions={filteredTransactions}
 									type={transactionType}
 								/>
-							</div>
+							</button>
 						</ReactCardFlip>
 
 						{/* Transaction switch */}
@@ -172,28 +167,32 @@ export function Home() {
 							<DisplayCategories
 								type={transactionType}
 								transactions={filteredTransactions}
+								onAddClick={handleOpenNewTransaction}
 							/>
 						) : (
 							<DisplayTransactions
 								type={transactionType}
 								transactions={filteredTransactions}
+								onAddClick={handleOpenNewTransaction}
 							/>
 						)}
 					</>
 				)}
 			</div>
 
-			{/* Footer */}
-			<Drawer
-				views={{
-					"New-transaction": <NewTransactionForms type={transactionType} />,
-				}}
+			{/* Add Transaction Form */}
+			<TransactionForm
+				isOpen={isNewTransactionOpen}
+				onClose={() => setIsNewTransactionOpen(false)}
+				onSave={handleAddTransaction}
+				transactionData={newTransactionData}
+				setTransactionData={setNewTransactionData}
+				isEdit={false}
+				error={error}
+				setError={setError}
 			/>
-			<IoAddCircle
-				size={70}
-				className="text-indigo-400 cursor-pointer fixed bottom-4 right-4"
-				onClick={() => setDrawerState("New-transaction")}
-			/>
+
+			<AddButton onClick={handleOpenNewTransaction} />
 		</div>
 	);
 }
