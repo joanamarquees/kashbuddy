@@ -10,7 +10,7 @@ import { Settings } from "./pages/settings/index";
 function App() {
 	return (
 		// Add padding top safe and padding bottom safe
-		<div className="h-dvh bg-background text-main-color antialiased pt-safe-or-5 pb-safe-or-5 overflow-hidden">
+		<div className="max-h-dvh bg-background text-main-color antialiased pt-safe-or-5 pb-safe-or-5 overflow-scroll">
 			<Router>
 				<DataProvider>
 					<Routes>

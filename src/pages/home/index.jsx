@@ -100,7 +100,8 @@ export function Home() {
 	}, [currentDate, transactions]);
 
 	return (
-		<div className="container mx-auto px-5 h-full overflow-y-scroll">
+		<>
+			<div className="container mx-auto px-5 h-full overflow-y-scroll">
 			{/* Header */}
 			<Header
 				leftIcon={
@@ -192,7 +193,8 @@ export function Home() {
 				setError={setError}
 			/>
 
-			<AddButton onClick={handleOpenNewTransaction} />
 		</div>
+			<AddButton onClick={handleOpenNewTransaction} />
+		</>
 	);
 }
