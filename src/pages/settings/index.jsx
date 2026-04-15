@@ -3,10 +3,9 @@ import { useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoGrid, IoLogOutOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
-
 import { Header } from "@/components/index";
-
 import { auth } from "@/config/firebase-config";
+import { useGetUserInfo } from "@/hooks/useGetUserInfo";
 
 import { AvatarPicker } from "./_components/AvatarPicker.jsx";
 
@@ -18,6 +17,7 @@ function getStoredAvatarSeed() {
 
 export function Settings() {
 	const navigate = useNavigate();
+	const { name } = useGetUserInfo();
 	const [avatarSeed, setAvatarSeed] = useState(getStoredAvatarSeed);
 	const [isAvatarPickerOpen, setIsAvatarPickerOpen] = useState(false);
 
@@ -40,8 +40,6 @@ export function Settings() {
 			console.log(e);
 		}
 	};
-
-
 
 	return (
 		<div className="mx-auto px-4 h-full flex flex-col space-y-3">
@@ -78,7 +76,7 @@ export function Settings() {
 					</div>
 				</button>
 				<p className="text-md text-gray-500 font-medium tracking-wide lowercase">
-					youremail@gmail.com
+					{name}
 				</p>
 			</div>
 
