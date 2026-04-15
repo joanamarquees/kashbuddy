@@ -18,6 +18,17 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+  // Skip non-GET requests
+  if (event.request.method !== 'GET') return;
+
+  const url = new URL(event.request.url);
+
+  // Skip cross-origin requests (Firestore, Firebase Auth, Google APIs, etc)
+  if (url.origin !== self.location.origin) return;
+
+  // Skip chrome-extension requests
+  if (url.protocol === 'chrome-extension:') return;
+
   // For navigation requests, try to serve index.html from cache if fetch fails
   if (event.request.mode === 'navigate') {
     event.respondWith(
@@ -28,6 +39,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // Cache-first strategy for other local assets
   event.respondWith(
     caches.match(event.request)
       .then((response) => {
@@ -36,10 +48,11 @@ self.addEventListener('fetch', (event) => {
         }
         return fetch(event.request).catch(() => {
           // If a file like an image is missing offline, we could return 404.html here
-          // but usually we just let it fail.
           if (event.request.destination === 'image') {
             return caches.match('/icon.png');
           }
+          // Ensure we don't return undefined, which causes "unexpected error"
+          return new Response('Not found', { status: 404 });
         });
       })
   );

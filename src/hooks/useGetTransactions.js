@@ -10,6 +10,11 @@ export const useGetTransactions = () => {
   const { userId } = useGetUserInfo();
 
   useEffect(() => {
+    if (!userId) {
+      setLoading(false);
+      return;
+    }
+
     let unsubscribe;
 
     try {
@@ -29,6 +34,9 @@ export const useGetTransactions = () => {
         });
 
         setTransactions(docs);
+        setLoading(false);
+      }, (error) => {
+        console.error("Error fetching transactions:", error);
         setLoading(false);
       });
     } catch (err) {

@@ -39,7 +39,7 @@ export const useGetAccounts = () => {
       }
     );
 
-    return () => unsubscribe();
+    return () => unsubscribe && unsubscribe();
   }, [userId]);
 
   return {

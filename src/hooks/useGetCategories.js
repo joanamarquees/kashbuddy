@@ -10,16 +10,21 @@ export const useGetCategories = () => {
   const { userId } = useGetUserInfo();
 
   useEffect(() => {
+    if (!userId) {
+      setLoading(false);
+      return;
+    }
+
     let unsubscribe;
 
     try {
-    const queryCategories = query(
-      collection(db, "categories"),
-      where("userId", "==", userId),
-      orderBy("value")
-    );
+      const queryCategories = query(
+        collection(db, "categories"),
+        where("userId", "==", userId),
+        orderBy("value")
+      );
 
-    unsubscribe = onSnapshot(queryCategories, (snapshot) => {
+      unsubscribe = onSnapshot(queryCategories, (snapshot) => {
         let docs = [];
 
         snapshot.forEach((doc) => {
@@ -31,14 +36,17 @@ export const useGetCategories = () => {
 
         setCategories(docs);
         setLoading(false);
-      })
+      }, (error) => {
+        console.error("Error fetching categories:", error);
+        setLoading(false);
+      });
       
     } catch (err) {
       console.error(err);
       setLoading(false);
-      }
+    }
 
-    return () => unsubscribe();
+    return () => unsubscribe && unsubscribe();
   }, [userId]);
 
   return {
