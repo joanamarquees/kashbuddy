@@ -21,6 +21,8 @@ export function CategoryForm({
 	setCategoryData,
 	allCategories,
 	isEdit = false,
+	error,
+	setError,
 }) {
 	const nameId = useId();
 	const isDesktop = useMediaQuery("(min-width: 450px)");
@@ -105,25 +107,27 @@ export function CategoryForm({
 						label="Category Name"
 						placeholder={categoryData?.value || "Category Name"}
 						value={categoryData?.value || ""}
-						onChange={(e) =>
+						onChange={(e) => {
 							setCategoryData({
 								...categoryData,
 								value: e.target.value,
 								label: e.target.value,
-							})
-						}
+							});
+							setError?.("");
+						}}
 					/>
 
 					{/* Category Type Switch */}
 					{!isEdit && (
 						<TransactionSwitch
 							type={categoryData?.categoryType}
-							handleChange={(e) =>
+							handleChange={(e) => {
 								setCategoryData({
 									...categoryData,
 									categoryType: e.target.value,
-								})
-							}
+								});
+								setError?.("");
+							}}
 						/>
 					)}
 
@@ -151,6 +155,17 @@ export function CategoryForm({
 
 					{/* Action Buttons */}
 					<div className="pt-2 flex flex-col gap-3">
+						<div
+							className={cn(
+								"overflow-hidden transition-all duration-300 ease-in-out",
+								error ? "max-h-10 opacity-100" : "max-h-0",
+							)}
+						>
+							<p className="text-red-400 text-[10px] font-bold uppercase text-center tracking-widest h-5">
+								{error}
+							</p>
+						</div>
+
 						{isEdit ? (
 							<>
 								<Button type="button" onClick={onSave} variant="primary">

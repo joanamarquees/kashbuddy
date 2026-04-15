@@ -112,6 +112,8 @@ export function Categories() {
 				setCategoryData={setNewCategoryData}
 				allCategories={categories}
 				isEdit={false}
+				error={error}
+				setError={setError}
 			/>
 		</>
 	);

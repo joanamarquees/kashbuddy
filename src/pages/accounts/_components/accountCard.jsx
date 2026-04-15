@@ -9,13 +9,20 @@ export function AccountCard({ bankName, amount }) {
 	const { deleteAccount } = useDeleteAccount();
 
 	const [formData, setFormData] = useState({ bankName, amount });
+	const [error, setError] = useState("");
 
 	function closeModal() {
 		setIsOpen(false);
+		setError("");
 	}
 
 	async function handleUpdateAmount() {
-		await updateAmount({ bankName, amount: Math.round(formData.amount) });
+		if (!formData.bankName || !formData.amount) {
+			setError("Please fill in all fields");
+			return;
+		}
+
+		await updateAmount({ bankName, amount: Number(parseFloat(formData.amount)) });
 		closeModal();
 	}
 
@@ -45,6 +52,8 @@ export function AccountCard({ bankName, amount }) {
 				formData={formData}
 				setFormData={setFormData}
 				isEdit={true}
+				error={error}
+				setError={setError}
 			/>
 		</>
 	);

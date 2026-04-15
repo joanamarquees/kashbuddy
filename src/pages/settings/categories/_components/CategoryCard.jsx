@@ -10,9 +10,11 @@ export function CategoryCard({ category, allCategories }) {
 	const { deleteCategory } = useDeleteCategory();
 	const [isOpen, setIsOpen] = useState(false);
 	const [categoryData, setCategoryData] = useState(category);
+	const [error, setError] = useState("");
 
 	function closeModal() {
 		setIsOpen(false);
+		setError("");
 	}
 
 	function openModal() {
@@ -25,6 +27,15 @@ export function CategoryCard({ category, allCategories }) {
 	}
 
 	async function handleUpdateCategory() {
+		if (
+			!categoryData.label ||
+			!categoryData.color ||
+			!categoryData.categoryType
+		) {
+			setError("Please fill in all fields");
+			return;
+		}
+
 		await updateCategory({
 			...categoryData,
 		});
@@ -62,6 +73,8 @@ export function CategoryCard({ category, allCategories }) {
 				setCategoryData={setCategoryData}
 				allCategories={allCategories}
 				isEdit={true}
+				error={error}
+				setError={setError}
 			/>
 		</>
 	);

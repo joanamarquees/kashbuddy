@@ -8,6 +8,7 @@ import { iconList } from "@/utils/categories.js";
 export const TransactionCard = ({ transaction }) => {
 	const { categories, accounts } = useData();
 	const [isOpen, setIsOpen] = useState(false);
+	const [error, setError] = useState("");
 
 	const [transactionData, setTransactionData] = useState({
 		...transaction,
@@ -27,6 +28,7 @@ export const TransactionCard = ({ transaction }) => {
 
 	function closeModal() {
 		setIsOpen(false);
+		setError("");
 		setTransactionData({
 			...transaction,
 			date:
@@ -39,6 +41,18 @@ export const TransactionCard = ({ transaction }) => {
 	}
 
 	async function handleUpdateTransaction() {
+		if (
+			!transactionData.description ||
+			!transactionData.amount ||
+			!transactionData.categoryId ||
+			!transactionData.transactionType ||
+			!transactionData.date ||
+			!transactionData.accountId
+		) {
+			setError("Please fill in all fields");
+			return;
+		}
+
 		await updateTransaction({
 			id: transactionData.id,
 			transactionType: transactionData.transactionType,
@@ -103,6 +117,8 @@ export const TransactionCard = ({ transaction }) => {
 				category={category}
 				account={account}
 				isEdit={true}
+				error={error}
+				setError={setError}
 			/>
 		</>
 	);

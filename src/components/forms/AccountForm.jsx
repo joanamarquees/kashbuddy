@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/Button.jsx";
 import { Input } from "@/components/ui/Input.jsx";
 import { Modal } from "@/components/ui/Modal.jsx";
 import { useMediaQuery } from "@/hooks/useMediaQuery.js";
+import { cn } from "@/utils/cn";
 
 export function AccountForm({
 	isOpen,
@@ -13,6 +14,8 @@ export function AccountForm({
 	formData,
 	setFormData,
 	isEdit = false,
+	error,
+	setError,
 }) {
 	const isDesktop = useMediaQuery("(min-width: 450px)");
 
@@ -33,7 +36,10 @@ export function AccountForm({
 				placeholder="Insert your bank name..."
 				value={formData.bankName}
 				disabled={isEdit}
-				onChange={(e) => setFormData({ ...formData, bankName: e.target.value })}
+				onChange={(e) => {
+					setFormData({ ...formData, bankName: e.target.value });
+					setError?.("");
+				}}
 			/>
 
 			<Input
@@ -44,15 +50,27 @@ export function AccountForm({
 				placeholder="Insert your bank networth..."
 				isMoneyInput
 				value={formData.amount}
-				onChange={(e) =>
+				onChange={(e) => {
 					setFormData({
 						...formData,
 						amount: e.target.value.replace(",", "."),
-					})
-				}
+					});
+					setError?.("");
+				}}
 			/>
 
 			<div className="pt-2 flex flex-col space-y-3">
+				<div
+					className={cn(
+						"overflow-hidden transition-all duration-300 ease-in-out",
+						error ? "max-h-10 opacity-100" : "max-h-0",
+					)}
+				>
+					<p className="text-red-400 text-[10px] font-bold uppercase text-center tracking-widest h-5">
+						{error}
+					</p>
+				</div>
+
 				{isEdit ? (
 					<>
 						<Button type="button" onClick={onSave} variant="primary">
@@ -71,7 +89,6 @@ export function AccountForm({
 					<>
 						<Button
 							onClick={onSave}
-							disabled={!formData.bankName || !formData.amount}
 							variant={
 								!formData.bankName || !formData.amount ? "secondary" : "primary"
 							}
