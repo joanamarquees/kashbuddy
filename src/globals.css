@@ -67,7 +67,27 @@ button {
 
 @utility pb-safe-or-5 {
 	padding-bottom: env(safe-area-inset-bottom);
+	@media (display-mode: standalone) {
+		padding-bottom: max(env(safe-area-inset-bottom), 1.25rem);
+	}
 	@media (pointer: fine) {
 		padding-bottom: max(env(safe-area-inset-bottom), 1.25rem);
 	}
+}
+
+@utility px-safe-or-4 {
+	padding-left: max(env(safe-area-inset-left), 1rem);
+	padding-right: max(env(safe-area-inset-right), 1rem);
+}
+
+@utility pb-safe {
+	padding-bottom: env(safe-area-inset-bottom);
+}
+
+@utility mb-safe {
+	margin-bottom: env(safe-area-inset-bottom);
+}
+
+@utility bottom-safe {
+	bottom: env(safe-area-inset-bottom);
 }

@@ -4,7 +4,7 @@ export const Modal = ({ isOpen = true, onClose, title, children }) => {
 	if (!isOpen) return null;
 
 	return (
-		<div className="fixed inset-0 z-50 flex items-end justify-center px-4 pb-8 sm:items-center sm:p-0">
+		<div className="fixed inset-0 z-50 flex items-end justify-center px-4 pb-[calc(2rem+env(safe-area-inset-bottom,0px))] sm:items-center sm:p-0">
 			<button
 				type="button"
 				onClick={onClose}

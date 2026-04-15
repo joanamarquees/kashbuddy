@@ -35,7 +35,7 @@ export const BottomSheet = ({
 				<div
 					className={cn(
 						"flex-1 flex min-h-0 w-full flex-col overflow-y-hidden space-y-5",
-						contentClassName ?? "px-safe-or-4 py-4",
+						contentClassName ?? "px-safe-or-4 pt-4 pb-safe-or-5",
 						//apply bottom safe area margin when we want to avoid safe area so that the content is not cut off by the safe area
 						avoidBottomSafeArea && "mb-safe",
 					)}
