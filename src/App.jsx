@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { DataProvider } from "./context/DataContext";
 import { Accounts } from "./pages/accounts/index";
@@ -8,9 +9,29 @@ import { Categories } from "./pages/settings/categories/index";
 import { Settings } from "./pages/settings/index";
 
 function App() {
+	useEffect(() => {
+		const splash = document.getElementById("splash-screen");
+		if (splash) {
+			// Wait 5 seconds before starting the fade-out
+			const fadeTimer = setTimeout(() => {
+				// Add fade-out class to trigger CSS transition
+				splash.classList.add("fade-out");
+
+				// Remove element from DOM after transition finishes (400ms match CSS)
+				const removeTimer = setTimeout(() => {
+					splash.remove();
+				}, 400);
+
+				return () => clearTimeout(removeTimer);
+			}, 3000);
+
+			return () => clearTimeout(fadeTimer);
+		}
+	}, []);
+
 	return (
 		// Add padding top safe and padding bottom safe
-		<div className="max-h-dvh bg-background text-main-color antialiased pt-safe-or-5 pb-safe-or-5 overflow-scroll">
+		<div className="h-dvh bg-background text-main-color antialiased flex flex-col pt-safe-or-5 pb-safe-or-5 overflow-hidden">
 			<Router>
 				<DataProvider>
 					<Routes>
