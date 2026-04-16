@@ -31,7 +31,7 @@ function App() {
 
 	return (
 		// Add padding top safe and padding bottom safe
-		<div className="max-h-dvh bg-background text-main-color antialiased pt-safe-or-5 pb-safe-or-5 overflow-scroll">
+		<div className="max-h-dvh max-w-md mx-auto bg-background text-main-color antialiased pt-safe-or-5 pb-safe-or-5 overflow-scroll">
 			<Router>
 				<DataProvider>
 					<Routes>
