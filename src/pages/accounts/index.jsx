@@ -45,7 +45,7 @@ export function Accounts() {
 
 	return (
 		<>
-			<div className="mx-auto px-5 h-full select-none space-y-2 overflow-y-scroll">
+			<div className="mx-auto px-5 flex-1 select-none space-y-2 overflow-y-scroll">
 				{/* Add Account Form */}
 				<AccountForm
 					isOpen={isNewAccountOpen}

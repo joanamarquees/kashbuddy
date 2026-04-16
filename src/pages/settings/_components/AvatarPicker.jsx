@@ -41,7 +41,7 @@ export function AvatarPicker({ isOpen, currentSeed, onSelect, onClose }) {
 						<img
 							src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}`}
 							alt={seed}
-							className="w-full h-full object-cover"
+							className="w-full h-full object-cover text-center lowercase text-xs flex items-center justify-center"
 						/>
 					</button>
 				))}

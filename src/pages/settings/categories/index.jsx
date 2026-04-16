@@ -56,7 +56,7 @@ export function Categories() {
 
 	return (
 		<>
-			<div className="container mx-auto px-4 h-full overflow-y-scroll pb-8 overscroll-contain">
+			<div className="container mx-auto px-4 flex-1 overflow-y-scroll pb-8 overscroll-contain">
 				{/* Header */}
 				<Header
 					leftIcon={

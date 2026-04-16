@@ -42,7 +42,7 @@ export function Settings() {
 	};
 
 	return (
-		<div className="mx-auto px-4 h-full flex flex-col space-y-3">
+		<div className="mx-auto px-4 flex-1 flex flex-col space-y-3">
 			{/* Header */}
 			<Header
 				leftIcon={
@@ -70,8 +70,8 @@ export function Settings() {
 					<div className="w-24 h-24 border-4 border-primary shadow-2xl shadow-primary/20 rounded-3xl bg-light-background flex items-center justify-center overflow-hidden">
 						<img
 							src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${avatarSeed}`}
-							alt="Profile"
-							className="w-full h-full object-cover"
+							alt="your avatar"
+							className="w-full h-full object-cover text-center lowercase text-xs flex items-center justify-center"
 						/>
 					</div>
 				</button>

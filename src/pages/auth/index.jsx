@@ -127,7 +127,7 @@ export const Auth = () => {
 	};
 
 	return (
-		<div className="h-screen flex flex-col items-center justify-center gap-8 px-5">
+		<div className="flex-1 flex flex-col items-center justify-center gap-8 px-5">
 			<img src={logo} className="w-64 md:w-96" alt="Kashbuddy logo" />
 			<div className="leading-relaxed max-w-80 text-center font-sans font-semibold text-lg text-green-100">
 				<p>Welcome to Kashbuddy!</p>
