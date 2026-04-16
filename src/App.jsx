@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { DataProvider } from "./context/DataContext";
 import { Accounts } from "./pages/accounts/index";
@@ -31,7 +31,7 @@ function App() {
 
 	return (
 		// Add padding top safe and padding bottom safe
-		<div className="h-dvh bg-background text-main-color antialiased flex flex-col pt-safe-or-5 pb-safe-or-5 overflow-hidden">
+		<div className="max-h-dvh bg-background text-main-color antialiased pt-safe-or-5 pb-safe-or-5 overflow-scroll">
 			<Router>
 				<DataProvider>
 					<Routes>

@@ -101,7 +101,7 @@ export function Home() {
 
 	return (
 		<>
-			<div className="container mx-auto px-5 flex-1 overflow-y-scroll">
+			<div className="container mx-auto px-5 h-full overflow-y-scroll">
 			{/* Header */}
 			<Header
 				leftIcon={

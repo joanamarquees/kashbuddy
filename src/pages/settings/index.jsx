@@ -42,7 +42,7 @@ export function Settings() {
 	};
 
 	return (
-		<div className="mx-auto px-4 flex-1 flex flex-col space-y-3">
+		<div className="mx-auto px-4 h-full flex flex-col space-y-3">
 			{/* Header */}
 			<Header
 				leftIcon={

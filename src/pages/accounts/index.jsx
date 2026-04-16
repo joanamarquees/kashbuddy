@@ -45,7 +45,7 @@ export function Accounts() {
 
 	return (
 		<>
-			<div className="mx-auto px-5 flex-1 select-none space-y-2 overflow-y-scroll">
+			<div className="mx-auto px-5 h-full select-none space-y-2 overflow-y-scroll">
 				{/* Add Account Form */}
 				<AccountForm
 					isOpen={isNewAccountOpen}
@@ -74,7 +74,7 @@ export function Accounts() {
 
 				{/* No Accounts */}
 				{accounts.length <= 0 && (
-					<div className="py-6 h-full w-full flex flex-col items-center justify-center gap-8 md:text-lg">
+					<div className="py-6 w-full flex-1 flex-col items-center justify-center gap-8 md:text-lg">
 						<p className="text-zinc-300 leading-relaxed max-w-80 md:max-w-lg text-center font-sans">
 							You haven't registered any bank account, how about registering one
 							right now?
