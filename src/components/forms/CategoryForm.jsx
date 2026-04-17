@@ -157,13 +157,17 @@ export function CategoryForm({
 					<div className="pt-2 flex flex-col gap-3">
 						<div
 							className={cn(
-								"overflow-hidden transition-all duration-300 ease-in-out",
-								error ? "max-h-10 opacity-100" : "max-h-0",
+								"grid transition-all duration-300 ease-in-out",
+								error
+									? "grid-rows-[1fr] opacity-100"
+									: "grid-rows-[0fr] opacity-0",
 							)}
 						>
-							<p className="text-red-400 text-[10px] font-bold uppercase text-center tracking-widest h-5">
-								{error}
-							</p>
+							<div className="overflow-hidden">
+								<p className="text-red-400 text-[10px] font-bold uppercase text-center tracking-widest py-1">
+									{error}
+								</p>
+							</div>
 						</div>
 
 						{isEdit ? (
