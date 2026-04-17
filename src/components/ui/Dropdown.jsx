@@ -1,5 +1,4 @@
 import { ChevronDown } from "lucide-react";
-import { useState } from "react";
 import { useData } from "@/context/DataContext";
 import { getCategoriesByType } from "@/utils/categories";
 import { cn } from "@/utils/cn";
@@ -14,13 +13,25 @@ export function Dropdown({
 	onChange,
 }) {
 	const { categories, accounts } = useData();
-	const [selected, setSelected] = useState(!!value);
 
 	const handleChange = (e) => {
-		setTransactionData({ ...transactionData, [field]: e.target.value });
-		setSelected(true);
+		const newValue = e.target.value;
+		setTransactionData((prev) => ({ ...prev, [field]: newValue }));
 		onChange?.(e);
 	};
+
+	// Build the options list first so we can validate the current value.
+	// This handles stale IDs left over from deleted categories/accounts —
+	// if the value doesn't match any live option we fall back to "default"
+	// so the placeholder shows and the first real option can be selected.
+	const options =
+		field === "categoryId"
+			? getCategoriesByType(categories, transactionData.transactionType)
+			: accounts;
+
+	const isValidValue = value && options.some((opt) => opt.id === value);
+	const effectiveValue = isValidValue ? value : "default";
+	const selected = !!isValidValue;
 
 	return (
 		<div className="space-y-2 w-1/2">
@@ -38,34 +49,17 @@ export function Dropdown({
 						selected ? "text-zinc-50" : "text-muted-color uppercase",
 					)}
 					onChange={handleChange}
-					value={value ?? "default"}
+					value={effectiveValue}
 					required
 				>
 					<option value="default" disabled>
 						{placeholder}
 					</option>
-					{field === "categoryId"
-						? getCategoriesByType(
-								categories,
-								transactionData.transactionType,
-							).map(({ id, label }) => (
-								<option
-									key={id}
-									value={id}
-									className="text-zinc-50 bg-zinc-900"
-								>
-									{label}
-								</option>
-							))
-						: accounts.map(({ id, bankName }) => (
-								<option
-									key={id}
-									value={id}
-									className="text-zinc-50 bg-zinc-900"
-								>
-									{bankName}
-								</option>
-							))}
+					{options.map(({ id, label: optLabel, bankName }) => (
+						<option key={id} value={id} className="text-zinc-50 bg-zinc-900">
+							{optLabel ?? bankName}
+						</option>
+					))}
 				</select>
 				{/* Custom chevron icon */}
 				<span className="text-gray-500 pointer-events-none px-3.5">

@@ -21,14 +21,12 @@ export const useUpdateTransaction = () => {
     
     const transactionDoc = await getDoc(transactionRef);
     if (!transactionDoc.exists()) {
-      console.error('No matching documents found');
-      return;
+      throw new Error('Transaction not found.');
     }
 
     const accountDoc = await getDoc(doc(db, 'accounts', accountId));
     if (!accountDoc.exists()) {
-      console.error('No matching account found');
-      return;
+      throw new Error('The account linked to this transaction no longer exists. Please select a valid account.');
     }
 
     const currentAmount = transactionDoc.data().amount;

@@ -53,19 +53,23 @@ export const TransactionCard = ({ transaction }) => {
 			return;
 		}
 
-		await updateTransaction({
-			id: transactionData.id,
-			transactionType: transactionData.transactionType,
-			description: transactionData.description,
-			amount: Number(parseFloat(transactionData.amount)),
-			categoryId: transactionData.categoryId,
-			date:
-				transactionData.date instanceof Date
-					? transactionData.date
-					: new Date(transactionData.date),
-			accountId: transactionData.accountId,
-		});
-		setIsOpen(false);
+		try {
+			await updateTransaction({
+				id: transactionData.id,
+				transactionType: transactionData.transactionType,
+				description: transactionData.description,
+				amount: Number(parseFloat(transactionData.amount)),
+				categoryId: transactionData.categoryId,
+				date:
+					transactionData.date instanceof Date
+						? transactionData.date
+						: new Date(transactionData.date),
+				accountId: transactionData.accountId,
+			});
+			setIsOpen(false);
+		} catch (err) {
+			setError(err.message || "Something went wrong. Please try again.");
+		}
 	}
 
 	async function handleDeleteTransaction() {
