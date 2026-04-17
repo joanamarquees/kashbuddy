@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import {
@@ -10,6 +10,7 @@ import {
 } from "@/components/index.js";
 import { useAddCategory } from "@/hooks/useAddCategory.js";
 import { useGetCategories } from "@/hooks/useGetCategories.js";
+import { useGetTransactions } from "@/hooks/useGetTransactions.js";
 import { CategoryCard } from "./_components/CategoryCard.jsx";
 
 const EMPTY_CATEGORY = {
@@ -24,6 +25,12 @@ export function Categories() {
 	const navigate = useNavigate();
 	const { categories, loading } = useGetCategories();
 	const { addCategory } = useAddCategory();
+	const { transactions } = useGetTransactions();
+
+	const usedCategoryIds = useMemo(
+		() => new Set(transactions.map((t) => t.categoryId).filter(Boolean)),
+		[transactions],
+	);
 
 	const [isNewCategoryOpen, setIsNewCategoryOpen] = useState(false);
 	const [newCategoryData, setNewCategoryData] = useState(EMPTY_CATEGORY);
@@ -95,6 +102,7 @@ export function Categories() {
 									key={category.id}
 									category={category}
 									allCategories={categories}
+									isUsed={usedCategoryIds.has(category.id)}
 								/>
 							);
 						})}
